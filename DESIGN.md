@@ -610,5 +610,7 @@ Claude Code
 | 转标记 | — | 线的末端额外放一个 `mil_arrow2` 箭头标记；另有「清标记」按钮 | 折线标记本身没有箭头 |
 | 鼠标松开兜底 | 在 display 上补挂松开事件 | 补挂的事件推迟到下一帧处理，修饰键（Shift / Alt）用键盘事件记下的状态兜底 | 避免和地图控件自己的松开事件重复处理、丢失修饰键 |
 | 地图放哪一层 | 地图直接放在 `controls` 下（不能进 controls group） | 两个界面的地图都放在 `controlsBackground`（同样不是 group） | 0.1.0 实测：地图控件获得焦点后画到同层其他控件上面，盖住了工具栏（开始 / 结束简报按钮）、状态栏和标签输入框。原版主地图也是放在背景层。点完工具栏按钮后焦点还给地图，避免回车 / 空格再次触发按钮 |
+| 开场动画 | 收到开始事件后打开观看界面，播放 `open.ogg` | 开始简报时先播开场：三声沉闷拖长的「嘀……」+ 中心方块闪烁 + `DATA LINK...`，然后一道亮线从中心拉开、上下张开露出地图，标题淡入（`fn_viewerIntro`，音效 `intro.ogg`，时间轴在 `INTRO_*` 宏）。中途加入 / Ctrl+B 重新打开不播，仍用 `open.ogg` | 用户要求：「从中心铺开的感觉」 |
+| 地名、房屋、图例 | 暗色地图沿用原版绘制 | 自己在 Draw 事件里画（`fn_renderOverlay`）：地名按缩放分级显示（等宽字体 `EtelkaMonospacePro`、全大写、青色）；放大到 1 像素 < 1.6 米时画房屋（`nearestTerrainObjects` 查询并缓存，包围盒画成半透明块）；右下角画比例尺 | 0.1.x 实测：原版地名和房屋是深色的，在暗色底图上看不见，原版图例也没有了 |
 | 测试入口 | 调试控制台一行代码 | `[] call BRF_fnc_demo`（只能单机 / 编辑器） | M1 验收用 |
 | HEMTT lint | — | `.hemtt/project.toml` 里忽略 `addPublicVariableEventHandler` 的 broken 提示 | wiki 把它归到 Broken Commands 是因为**替代语法**不能用，本模组只用主语法 |

@@ -148,3 +148,41 @@ place(buf, blip(1568), 0.085, 0.4)
 place(buf, blip(784), 0.0, 0.15)
 save('ring', finish(reverb(buf, 0.18, 0.15, 0.006), 0.65))
 print('ok')
+
+# ---- intro：开始简报——3 声沉闷、拖长、很轻的「嘀……」（数据链建立）→ 展开：从中间向两边散开的数据流 ----
+# 时间轴和 script_component.hpp 的 INTRO_* 一致：嘀 0.00 / 0.50 / 1.00（每声 0.30 秒），展开 1.55
+BEEP_INTERVAL, BEEPS, BEEP_LEN, UNFOLD = 0.5, 3, 0.30, 1.55
+
+def soft_beep(f, d):
+    """沉闷的长「嘀」：近似正弦，柔和起音，持续后慢慢收，低通让它发闷。"""
+    t = t_of(d + 0.25)
+    tone = np.sin(2 * np.pi * f * t) + 0.18 * np.sin(2 * np.pi * 2 * f * t)
+    a = np.clip(t / 0.018, 0, 1)
+    rel = np.where(t < d, 1.0, np.exp(-(t - d) / 0.08))
+    sus = 1 - 0.25 * np.clip(t / d, 0, 1)
+    return filt(tone * a * rel * sus, 'lowpass', 1800)
+
+buf = sound(2.8)
+for i in range(BEEPS):
+    place(buf, soft_beep(1046.5, BEEP_LEN), BEEP_INTERVAL * i, 0.30)
+# 展开：极短的「嗒」越来越密、越来越宽地散向左右，表现「铺开」（没有低频「咚」）
+n = 46
+for i in range(n):
+    k = i / (n - 1)
+    at = UNFOLD + 0.02 + 0.42 * k ** 1.4
+    side = 1 if i % 2 else -1
+    place(buf, filt(tick(3600 + 2200 * rng.random()), 'lowpass', 7000), at, 0.14 * (1 - 0.7 * k), side * min(1, 0.15 + 0.95 * k))
+# 很轻的「刷」，左右声道不相关、逐渐变宽
+m = int(0.36 * SR)
+tt = np.arange(m) / SR
+e = env_exp(m, 0.03, 0.10)
+nl = filt(rng.standard_normal(m), 'bandpass', [1800, 7000])
+nr = filt(rng.standard_normal(m), 'bandpass', [1800, 7000])
+width = np.clip(tt / 0.25, 0, 1)
+mid = (nl + nr) / 2
+i0 = int(UNFOLD * SR)
+buf[0, i0:i0 + m] += 0.08 * e * (mid * (1 - width) + nl * width)
+buf[1, i0:i0 + m] += 0.08 * e * (mid * (1 - width) + nr * width)
+# 展开那一下用同一个「嘀」音色轻轻收尾，和前面呼应
+place(buf, soft_beep(1046.5, 0.12), UNFOLD, 0.22)
+save('intro', finish(reverb(buf, 0.22, 0.14, 0.02), 0.6))

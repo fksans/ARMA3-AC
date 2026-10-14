@@ -81,7 +81,7 @@ switch (_type) do {
             if (_owner == clientOwner) then {
                 [false] call BRF_fnc_closeViewer;
             } else {
-                [] call BRF_fnc_openViewer;
+                [true] call BRF_fnc_openViewer;
             };
         } else {
             BRF_ptrTarget = [];

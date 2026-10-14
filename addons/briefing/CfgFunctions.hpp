@@ -39,6 +39,7 @@ class CfgFunctions {
             class viewerOnLoad {};
             class viewerOnUnload {};
             class viewerUpdate {};
+            class viewerIntro {};
             // 测试
             class demo {};
             // 渲染（主持端和观看端共用）
@@ -47,6 +48,7 @@ class CfgFunctions {
             class renderRing {};
             class renderArea {};
             class renderPreview {};
+            class renderOverlay {};
             class drawLine {};
             class drawPath {};
             class easeOutCubic {};

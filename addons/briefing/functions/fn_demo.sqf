@@ -23,7 +23,7 @@ _center params ["_x0", "_y0"];
 BRF_els = [];
 BRF_elMap = createHashMap;
 
-[] call BRF_fnc_openViewer;
+[true] call BRF_fnc_openViewer;
 
 private _fnc_pt = {
     params ["_dx", "_dy"];
@@ -50,6 +50,7 @@ private _elements = [
     _map ctrlMapAnimAdd [0, 0.08, _center];
     ctrlMapAnimCommit _map;
     {
-        [{["add", _this] call BRF_fnc_onEvent}, _x, 0.5 + _forEachIndex * 0.8] call CBA_fnc_waitAndExecute;
+        // 等开场动画播完（约 2.5 秒）再放
+        [{["add", _this] call BRF_fnc_onEvent}, _x, 3 + _forEachIndex * 0.8] call CBA_fnc_waitAndExecute;
     } forEach _elements;
 }, [_center, _elements], 5] call CBA_fnc_waitUntilAndExecute;

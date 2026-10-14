@@ -116,6 +116,11 @@
             <English>Press for the center, drag for the radius, release to place</English>
             <Chinesesimp>按下定圆心，拖动定半径，松开提交</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_IntroDataLink">
+            <Original>DATA LINK</Original>
+            <English>DATA LINK</English>
+            <Chinesesimp>DATA LINK</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_Keybind">
             <Original>简报：主持 / 观看</Original>
             <English>Briefing: host / watch</English>

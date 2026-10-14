@@ -39,6 +39,17 @@
 #define AREA_FILL_TIME 0.4
 #define VIEWER_FADE_TIME 1
 
+// 开场动画（只在开始简报时播放），和 intro.ogg 对齐（tools/make_sounds.py 里同名的常量）：
+// 0 – 1.5 秒三声拖长的「嘀……」→ 1.55 秒中线从中心拉开 → 上下张开露出地图 → 标题淡入
+#define INTRO_BEEP_INTERVAL 0.5
+#define INTRO_BEEP_LEN 0.3
+#define INTRO_BEEPS 3
+#define INTRO_UNFOLD_AT 1.55
+#define INTRO_LINE_TIME 0.22
+#define INTRO_OPEN_TIME 0.4
+#define INTRO_EDGE_FADE 0.6
+#define INTRO_TITLE_TIME 0.3
+
 // 固定屏幕尺寸（像素）
 #define LINE_WIDTH 3
 #define ARROW_PX 14
@@ -46,6 +57,12 @@
 #define HIT_PX 8
 #define MIN_STEP_PX 4
 #define SIMPLIFY_PX 3
+
+// 地图叠加（BRF_fnc_renderOverlay）
+#define HOUSE_MAX_MPP 1.6
+#define HOUSE_MAX_RADIUS 1500
+#define HOUSE_TYPES ["HOUSE", "BUILDING", "CHURCH", "CHAPEL", "FUELSTATION", "HOSPITAL", "BUNKER", "FORTRESS", "VIEW-TOWER", "LIGHTHOUSE", "WATERTOWER", "TRANSMITTER", "RUIN"]
+#define SCALE_BAR_PX 150
 
 // 工具序号（数字键 1-6）
 #define TOOL_LINE 1
@@ -57,6 +74,8 @@
 
 // 音效（playSoundUI 用文件路径时必须带扩展名）
 #define SOUND_OPEN "\z\brf\addons\briefing\sounds\open.ogg"
+// 开始简报时的开场：5 声「嘀」+ 展开（时间轴和 BRF_fnc_viewerIntro 一致）
+#define SOUND_INTRO "\z\brf\addons\briefing\sounds\intro.ogg"
 #define SOUND_CLOSE "\z\brf\addons\briefing\sounds\close.ogg"
 #define SOUND_DRAW "\z\brf\addons\briefing\sounds\draw_start.ogg"
 #define SOUND_PING "\z\brf\addons\briefing\sounds\ping.ogg"

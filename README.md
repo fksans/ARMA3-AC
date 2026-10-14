@@ -10,9 +10,17 @@ Zeus 在暗色战术地图上画线、标点，所有玩家全屏观看，同时
 ## 怎么用
 
 1. 导演任务开打前全队集合。Zeus 打开 Zeus 界面，按 **Ctrl+B**（或 ZEN 右键菜单「开简报主持」）打开主持界面。
-2. 点 **▶ 开始简报**：所有玩家弹出全屏观看界面，视角跟着 Zeus 走。可以在开始前先画好，开始后玩家直接看到画好的内容。
+2. 点 **▶ 开始简报**：所有玩家弹出全屏观看界面，先播开场（三声「嘀……」→ 画面从中心铺开），视角跟着 Zeus 走。可以在开始前先画好，开始后玩家直接看到画好的内容。
 3. 边讲边画。玩家按 **Space** 在「跟随 / 自由查看」之间切换，Esc 关掉，简报进行中按 **Ctrl+B** 重新打开。
 4. 讲完点 **■ 结束简报**，所有人的画面淡出关闭。需要的话点 **转标记**，把画过的内容转成普通地图标记，打的时候按 M 还能看。
+
+### 地图
+
+暗色战术地图上自己画了一层青色的底图信息（主持端和观看端一样）：
+
+- **地名**：首都、城市、村庄、小地名按缩放级别逐级出现
+- **房屋**：放大到街区级别（1 像素 < 1.6 米）时显示建筑轮廓块，看巷战、搜房用
+- **比例尺**：右下角，长度自动取整（100 M / 500 M / 1 KM ……）
 
 ### 主持界面
 
@@ -48,7 +56,7 @@ Zeus 在暗色战术地图上画线、标点，所有玩家全屏观看，同时
 │   ├── script_component.hpp         # 宏：元素下标、动画时长、上限、音效路径
 │   ├── ui_defines.hpp               # IDD / IDC / 布局
 │   ├── stringtable.xml              # 中文（默认）+ 英文
-│   ├── sounds/                      # draw_start / ping / ring / open / close .ogg
+│   ├── sounds/                      # intro / open / close / draw_start / ping / ring .ogg（tools/make_sounds.py 生成）
 │   └── functions/
 │       ├── fn_init.sqf              # 快捷键、ZEN 菜单、公共变量监听、中途加入
 │       ├── fn_onEvent.sqf           # add / del / clear / session / sync，按 id 去重
@@ -57,6 +65,8 @@ Zeus 在暗色战术地图上画线、标点，所有玩家全屏观看，同时
 │       ├── fn_render.sqf            # Draw 事件主体（主持端、观看端共用）
 │       ├── fn_drawLine.sqf          # 粗线 + 发光 + 进度截断 + 虚线 + 箭头
 │       ├── fn_renderIcon/Ring/Area/Preview.sqf
+│       ├── fn_renderOverlay.sqf     # 地名、房屋、比例尺
+│       ├── fn_viewerIntro.sqf       # 开始简报的开场动画
 │       ├── fn_input.sqf             # 主持端鼠标 / 键盘
 │       ├── fn_commit.sqf            # 修线（简化 + 平滑 + 取整）并发送
 │       ├── fn_simplify.sqf / fn_smooth.sqf / fn_triangulate.sqf / fn_hitTest.sqf / fn_segDist.sqf

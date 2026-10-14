@@ -41,7 +41,12 @@ BRF_follow = true;              // 观看端：跟随主持人视角
 BRF_ptrTarget = [];             // 激光笔目标位置（收到的）
 BRF_ptrPos = [];                // 激光笔显示位置（每帧向目标移动 30%）
 BRF_viewerFadeStart = -1;       // 观看界面淡出开始时间，-1 = 不在淡出
+BRF_viewerIntroPending = false; // 下一次打开观看界面时播放开场动画
+BRF_introStart = -1;            // 开场动画开始时间，-1 = 不在播放
+BRF_introTitleShown = false;
 BRF_hoverId = "";               // 主持端橡皮悬停的元素
+BRF_houseCache = [];            // 房屋缓存 [中心, 半径, 三角形, 查询时间]（BRF_fnc_renderOverlay）
+BRF_locCache = nil;             // 地名缓存，第一次渲染时查一次
 
 // ---- 主持端状态（跨多次打开主持界面保留） ----
 BRF_seq = 0;

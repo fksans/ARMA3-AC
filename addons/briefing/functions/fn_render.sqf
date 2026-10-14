@@ -35,6 +35,9 @@ if (!_presenter && {BRF_viewerFadeStart >= 0}) then {
     _globalAlpha = (1 - (_now - BRF_viewerFadeStart) / VIEWER_FADE_TIME) max 0;
 };
 
+// 底层：房屋、地名、比例尺（简报元素画在它上面）
+[_map, _mpp, _globalAlpha] call BRF_fnc_renderOverlay;
+
 private _purge = false;
 {
     _x params ["_id", "_type", "_colorIndex", "_data", "_t0", "_t1", "_cache"];

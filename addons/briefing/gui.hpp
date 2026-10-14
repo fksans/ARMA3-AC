@@ -91,6 +91,7 @@ class BRF_Viewer {
     class controls {
         // 上下两条暗边，像 AC 的简报画面
         class TopBar: ctrlStaticBackground {
+            idc = IDC_BRF_V_TOP_BAR;
             x = "safeZoneXAbs";
             y = "safeZoneY";
             w = "safeZoneWAbs";
@@ -98,6 +99,7 @@ class BRF_Viewer {
             colorBackground[] = {0, 0, 0, 0.55};
         };
         class BottomBar: TopBar {
+            idc = IDC_BRF_V_BOTTOM_BAR;
             y = QUOTE(safezoneY + safezoneH - 0.04 * safezoneH);
             h = QUOTE(0.04 * safezoneH);
         };
@@ -139,6 +141,56 @@ class BRF_Viewer {
             w = QUOTE(safezoneW);
             h = QUOTE(0.03 * safezoneH);
             colorText[] = {0.40, 0.90, 0.80, 0.6};
+        };
+
+        // ---- 开场动画（放在最上层；位置和颜色由 BRF_fnc_viewerIntro 每帧设置，不播开场时隐藏）----
+        class IntroTop: ctrlStaticBackground {
+            idc = IDC_BRF_V_INTRO_TOP;
+            x = "safeZoneXAbs";
+            y = "safeZoneY";
+            w = "safeZoneWAbs";
+            h = QUOTE(safezoneH / 2);
+            colorBackground[] = {0, 0, 0, 1};
+        };
+        class IntroBottom: IntroTop {
+            idc = IDC_BRF_V_INTRO_BOTTOM;
+            y = QUOTE(safezoneY + safezoneH / 2);
+        };
+        class IntroGlowA: ctrlStaticBackground {
+            idc = IDC_BRF_V_INTRO_GLOW_A;
+            x = 0;
+            y = 0;
+            w = 0;
+            h = 0;
+            colorBackground[] = {0.40, 0.90, 0.80, 0.15};
+        };
+        class IntroGlowB: IntroGlowA {
+            idc = IDC_BRF_V_INTRO_GLOW_B;
+        };
+        class IntroLineA: IntroGlowA {
+            idc = IDC_BRF_V_INTRO_LINE_A;
+            colorBackground[] = {0.63, 1, 0.92, 1};
+        };
+        class IntroLineB: IntroLineA {
+            idc = IDC_BRF_V_INTRO_LINE_B;
+        };
+        class IntroMark: ctrlStaticBackground {
+            idc = IDC_BRF_V_INTRO_MARK;
+            x = QUOTE(0.5 - 4 * pixelW);
+            y = QUOTE(0.5 - 4 * pixelH);
+            w = QUOTE(8 * pixelW);
+            h = QUOTE(8 * pixelH);
+            colorBackground[] = {0.63, 1, 0.92, 1};
+        };
+        class IntroText: BRF_RscText {
+            idc = IDC_BRF_V_INTRO_TEXT;
+            style = 2; // ST_CENTER
+            font = "EtelkaMonospacePro";
+            sizeEx = QUOTE(TXT_SIZE_SMALL);
+            x = QUOTE(0.5 - 0.15 * safezoneW);
+            y = QUOTE(0.5 + 16 * pixelH);
+            w = QUOTE(0.3 * safezoneW);
+            h = QUOTE(0.03 * safezoneH);
         };
     };
 };
