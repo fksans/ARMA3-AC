@@ -1,0 +1,15 @@
+# `hemtt launch`：开发构建并启动游戏（带 CBA）
+[default]
+workshop = [
+    "450814997",  # CBA_A3
+]
+parameters = [
+    "-showScriptErrors",
+]
+
+# `hemtt launch zen`：再加上 ZEN（Zeus 右键菜单入口）
+[zen]
+extends = "default"
+workshop = [
+    "1779063631", # ZEN (Zeus Enhanced)
+]

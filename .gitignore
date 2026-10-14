@@ -1,0 +1,9 @@
+# HEMTT
+.hemttout/
+releases/
+hemtt.exe
+hemtt
+
+# 私钥绝对不能进仓库
+*.hemttprivatekey
+*.biprivatekey

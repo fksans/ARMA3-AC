@@ -1,0 +1,91 @@
+name: Build
+
+# - 推到 main / 提 PR：只运行 hemtt check（检查配置、SQF、stringtable）
+# - 推 v* 标签（例如 v1.0.1）：hemtt release 构建 + 签名，并发布到 GitHub Releases
+# - 手动运行（Actions → Build → Run workflow）：按 script_version.hpp 的版本号
+#   自动创建 v<版本号> 标签和 Release，不用自己打标签
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    if: ${{ github.event_name != 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: arma-actions/hemtt@v1
+      - name: hemtt check
+        run: hemtt check
+
+  release:
+    if: ${{ github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: arma-actions/hemtt@v1
+
+      # 推标签发布：标签必须和 addons/briefing/script_version.hpp 的版本一致
+      # 手动运行：标签取 v<版本号>，这个标签已经存在时报错（避免覆盖已发布的版本）
+      - name: Resolve release tag
+        id: tag
+        run: |
+          version="$(hemtt value project.version.short)"
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            tag="v${version}"
+            if git ls-remote --exit-code --tags origin "refs/tags/${tag}" > /dev/null; then
+              echo "::error::标签 ${tag} 已经存在。发新版本前请先修改 addons/briefing/script_version.hpp 的版本号"
+              exit 1
+            fi
+          else
+            tag="${GITHUB_REF_NAME}"
+            if [ "${tag#v}" != "${version}" ]; then
+              echo "::error::标签 ${tag} 和 script_version.hpp 的版本 ${version} 不一致，请先改版本号再打标签"
+              exit 1
+            fi
+          fi
+          echo "script_version.hpp: ${version}  tag: ${tag}"
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+
+      # CI 里没有私钥文件：HEMTT 每次生成新 key，authority 为 brf_<版本号>
+      - name: hemtt release
+        run: hemtt release
+
+      - name: Collect release files
+        id: files
+        run: |
+          version="$(hemtt value project.version)"
+          zip="releases/brf-${version}.zip"
+          bikey="$(ls .hemttout/release/keys/*.bikey)"
+          test -f "${zip}"
+          # 确认 zip 里真的有签过名的 PBO
+          unzip -l "${zip}" | grep -q 'addons/brf_briefing.pbo$'
+          unzip -l "${zip}" | grep -q 'addons/brf_briefing.pbo\..*\.bisign$'
+          echo "zip=${zip}" >> "$GITHUB_OUTPUT"
+          echo "bikey=${bikey}" >> "$GITHUB_OUTPUT"
+          echo "bikey_name=$(basename "${bikey}")" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          files: |
+            ${{ steps.files.outputs.zip }}
+            ${{ steps.files.outputs.bikey }}
+          generate_release_notes: true
+          body: |
+            ## 下载
+
+            - **所有玩家（包括 Zeus）**：下载 `brf-*.zip`（不是下面的 Source code），解压得到 `@ac_briefing`，在 Arma 3 启动器里「添加本地模组」选这个文件夹后勾选（同时加载 CBA_A3）。没装的人看不到简报，但不会报错。
+            - **服务器腐竹**：下载 `${{ steps.files.outputs.bikey_name }}`，放进服务器根目录的 `keys/` 文件夹后重启服务器，服务器不需要加载本模组。详见 [docs/SERVER_KEY_INSTALL.md](https://github.com/${{ github.repository }}/blob/${{ steps.tag.outputs.tag }}/docs/SERVER_KEY_INSTALL.md)。
+
+            > 每个版本的 key 都不一样，更新版本后腐竹需要换上这个版本的 `.bikey`。

@@ -1,0 +1,40 @@
+name = "AC Briefing"
+author = "fksans"
+prefix = "brf"
+mainprefix = "z"
+
+[version]
+path = "addons/briefing/script_version.hpp"
+git_hash = 0
+
+[files]
+include = [
+    "mod.cpp",
+    "README.md",
+]
+
+[properties]
+author = "fksans"
+
+[hemtt.release]
+folder = "ac_briefing"
+
+# ---------------------------------------------------------------------------
+# 固定签名 key（推荐）
+#
+# 默认情况下 HEMTT 每次 `hemtt release` 都会生成一把新的 key，
+# authority 为 `brf_<版本号>`，也就是说每发一个新版本，服务器就要换一次 .bikey。
+#
+# 想让服务器只装一次 key：在仓库根目录执行一次 `hemtt keys generate`，
+# 按提示保存密码，然后把它输出的那一行 private_key_hash 填到下面并取消注释。
+# 之后每次 release 都会用同一把 key 签名，生成的 key 固定为 `brf.bikey`。
+# ---------------------------------------------------------------------------
+# [signing]
+# private_key_hash = "在这里粘贴 hemtt keys generate 输出的 hash"
+
+# addPublicVariableEventHandler 在 wiki 上被归到 Broken Commands 是因为它的「替代语法」
+# （对象变量）不能用；本模组只用主语法，它是不依赖服务器的关键（见 DESIGN.md「总体架构」）。
+[lints.sqf.banned_commands]
+options.ignore = [
+    "addPublicVariableEventHandler",
+]
