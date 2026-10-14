@@ -35,7 +35,7 @@ if (_blinkAge >= 0 && {_blinkAge < ICON_BLINK_TIME}) then {
     private _n = floor (_phase / 2);
     if (_n > _blinks) then {
         _cache set [2, _n];
-        playSoundUI [SOUND_PING, 0.6];
+        playSoundUI [SOUND_PING, SOUND_VOLUME_PING];
     };
 };
 

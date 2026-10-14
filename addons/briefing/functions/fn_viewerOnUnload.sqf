@@ -5,4 +5,4 @@
 
 uiNamespace setVariable ["BRF_viewer", displayNull];
 BRF_viewerFadeStart = -1;
-playSoundUI [SOUND_CLOSE, 0.8];
+playSoundUI [SOUND_CLOSE, SOUND_VOLUME];

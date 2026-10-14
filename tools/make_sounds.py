@@ -1,10 +1,12 @@
 """AC 风格简报音效生成脚本（立体声 44.1 kHz）。
 
+风格：低调、硬朗、科技感，全部以目标点的「哔」（ping）为基准，不用旋律、滑音、气流声。
 用法（需要 numpy、scipy、ffmpeg）：
     python3 tools/make_sounds.py <输出目录>
     for f in open close draw_start ping ring; do
         ffmpeg -y -i <输出目录>/$f.wav -c:a libvorbis -q:a 6 addons/briefing/sounds/$f.ogg
     done
+混响用随机脉冲生成，每次重新生成会有极细微的差别。播放音量在 script_component.hpp 的 SOUND_VOLUME* 里调。
 """
 import sys, numpy as np, wave
 from scipy.signal import butter, sosfilt, fftconvolve
@@ -78,79 +80,71 @@ def save(name, buf):
         w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR)
         w.writeframes(data.tobytes())
 
-def chatter(buf, start, end, count, gain):
-    # 数据流：随机的高频短 blip
-    for at in np.sort(rng.uniform(start, end, count)):
-        f = rng.choice([2637, 3136, 3520, 4186, 4699])
-        b = filt(square(f, 0.012, 4), 'lowpass', 7000) * env_exp(int(0.012 * SR), 0.001, 0.004)
-        place(buf, b, at, gain * rng.uniform(0.5, 1), rng.uniform(-0.7, 0.7))
+# ---------------------------------------------------------------------------
+# 统一的声音材料：全部以目标点的「哔」为基准，低调、干、硬
+# ---------------------------------------------------------------------------
+def blip(f, d=0.12):
+    """目标点同款 FM「哔」：短、亮、轻微下坠。"""
+    b = fm(f, d, 1.5, 2.5, 0.0008, 0.045, 0.02, glide=0.94)
+    sq = filt(square(f, 0.06, 5), 'lowpass', 6000) * env_exp(int(0.06 * SR), 0.0008, 0.02)
+    out = b * 0.7
+    out[: len(sq)] += sq * 0.18
+    return out
 
-def whoosh(d, f0, f1, gain=1.0):
-    # 带通噪声扫频
-    n = int(d * SR); x = rng.standard_normal(n); out = np.zeros(n)
-    edges = np.linspace(0, n, 25).astype(int)
-    for a, b in zip(edges[:-1], edges[1:]):
-        fc = f0 * (f1 / f0) ** (((a + b) / 2) / n)
-        seg = filt(x, 'bandpass', [fc / 1.5, min(fc * 1.5, SR / 2 - 100)])[a:b]
-        out[a:b] = seg
-    return out * np.sin(np.pi * np.arange(n) / n) ** 2 * gain
+def thump(f=80, decay=0.035, drive=2.5):
+    """很紧的低频「咚」，略微饱和，硬朗。"""
+    t = t_of(decay * 6)
+    x = np.sin(2 * np.pi * np.cumsum(f * (1 + 0.6 * np.exp(-t / 0.006))) / SR) * env_exp(len(t), 0.0008, decay)
+    x = np.tanh(drive * x) / np.tanh(drive)
+    click = filt(rng.standard_normal(int(0.003 * SR)), 'highpass', 2500) * env_exp(int(0.003 * SR), 0.0002, 0.0008)
+    x[: len(click)] += click * 0.35
+    return x
 
-# ---- open：系统启动——低频涌起 + 上扫气流 + 数据流 + 两声玻璃质感确认音 ----
-buf = np.zeros((2, int(1.6 * SR)))
-t = t_of(0.9)
-sub = np.sin(2 * np.pi * np.cumsum(np.linspace(48, 72, len(t))) / SR) * np.minimum(t / 0.3, 1) * np.exp(-np.maximum(t - 0.3, 0) / 0.25)
-place(buf, sub, 0, 0.9)
-place(buf, whoosh(0.42, 250, 4200), 0, 0.35)
-chatter(buf, 0.05, 0.36, 14, 0.18)
-place(buf, fm(1318.5, 0.9, 3.5, 2.2, 0.003, 0.32, 0.08), 0.34, 0.55, -0.25)
-place(buf, fm(1975.5, 1.0, 3.5, 2.2, 0.003, 0.40, 0.08), 0.46, 0.55, 0.25)
-place(buf, fm(659.3, 1.0, 2.0, 0.8, 0.005, 0.45), 0.34, 0.25)
-save('open', finish(reverb(buf, 0.45, 0.35), 0.85))
+def tick(f=4200):
+    """数据「嗒」：极短的带通噪声。"""
+    n = int(0.004 * SR)
+    return filt(rng.standard_normal(n), 'bandpass', [f * 0.75, min(f * 1.4, 20000)]) * env_exp(n, 0.0003, 0.0012)
 
-# ---- close：确认音下行 + 断电下沉 ----
-buf = np.zeros((2, int(1.3 * SR)))
-place(buf, fm(1975.5, 0.7, 3.5, 2.0, 0.003, 0.22, 0.06), 0.0, 0.45, 0.25)
-place(buf, fm(1318.5, 0.8, 3.5, 2.0, 0.003, 0.28, 0.06), 0.10, 0.45, -0.25)
-t = t_of(0.7)
-down = np.sin(2 * np.pi * np.cumsum(420 * np.exp(np.log(55 / 420) * t / 0.7)) / SR) * np.exp(-t / 0.22) * np.minimum(t / 0.01, 1)
-place(buf, filt(down, 'lowpass', 1200), 0.18, 0.7)
-place(buf, whoosh(0.45, 3500, 200), 0.12, 0.25)
-save('close', finish(reverb(buf, 0.4, 0.3), 0.75))
+def sound(length):
+    return np.zeros((2, int(length * SR)))
 
-# ---- draw_start：航线计算——加速的数字嘀嗒 + 很轻的上扬底音 ----
-buf = np.zeros((2, int(0.9 * SR)))
-at, gap, k = 0.0, 0.05, 0
-while at < 0.46:
-    f = 2600 * (1 + 0.6 * at / 0.46)
-    tick = filt(rng.standard_normal(int(0.006 * SR)), 'bandpass', [f * 0.8, f * 1.4]) * env_exp(int(0.006 * SR), 0.0005, 0.0015)
-    tone = np.sin(2 * np.pi * f * t_of(0.02)) * env_exp(int(0.02 * SR), 0.001, 0.006)
-    g = min(1, 0.4 + at * 2) * (1 if at < 0.38 else (0.46 - at) / 0.08)
-    pan = 0.35 * np.sin(k * 1.7)
-    place(buf, tick * 2.5, at, 0.5 * g, pan)
-    place(buf, tone * 0.5, at, 0.5 * g, pan)
-    at += gap; gap = max(0.016, gap * 0.86); k += 1
-t = t_of(0.5)
-glide = np.sin(2 * np.pi * np.cumsum(np.linspace(520, 1040, len(t))) / SR) * np.sin(np.pi * t / 0.5) ** 2
-place(buf, filt(glide, 'lowpass', 1500), 0, 0.18)
-save('draw_start', finish(reverb(buf, 0.2, 0.18), 0.8))
-
-# ---- ping：目标指定——清脆短促的数字「哔」 ----
-buf = np.zeros((2, int(0.5 * SR)))
-blip = fm(2093, 0.12, 1.5, 2.5, 0.0008, 0.045, 0.02, glide=0.94)
+# ---- ping：目标点（基准）----
+buf = sound(0.5)
+blip_ = fm(2093, 0.12, 1.5, 2.5, 0.0008, 0.045, 0.02, glide=0.94)
 sq = filt(square(2093, 0.06, 5), 'lowpass', 6000) * env_exp(int(0.06 * SR), 0.0008, 0.02)
-place(buf, blip, 0, 0.7)
+place(buf, blip_, 0, 0.7)
 place(buf, sq, 0, 0.18)
 place(buf, fm(1046.5, 0.1, 2.0, 0.5, 0.001, 0.03), 0, 0.3)
 save('ping', finish(reverb(buf, 0.12, 0.2, 0.006), 0.7))
 
-# ---- ring：威胁圈——声纳般的低沉「嗡」 + 三下锁定警告 ----
-buf = np.zeros((2, int(1.6 * SR)))
-place(buf, fm(880, 1.2, 1.41, 1.6, 0.004, 0.42, 0.15, glide=0.93), 0, 0.55)
-t = t_of(0.35)
-thump = np.sin(2 * np.pi * np.cumsum(np.linspace(110, 60, len(t))) / SR) * env_exp(len(t), 0.002, 0.08)
-place(buf, thump, 0, 0.8)
-for i, at in enumerate([0.14, 0.24, 0.34]):
-    b = filt(square(1568, 0.055, 6), 'lowpass', 5000) * env_exp(int(0.055 * SR), 0.002, 0.05) * np.minimum(np.linspace(1, 0, int(0.055 * SR)) * 8, 1)
-    place(buf, b, at, 0.32 * (1 - 0.22 * i), 0.2 * (i - 1))
-save('ring', finish(reverb(buf, 0.5, 0.38), 0.8))
+# ---- open：系统接入——低频「咚」+ 同款「哔」（叠低八度加厚）+ 三下很轻的数据「嗒」----
+buf = sound(0.8)
+place(buf, thump(70, 0.05), 0, 0.75)
+place(buf, blip(2093), 0.05, 0.5)
+place(buf, blip(1046.5), 0.05, 0.22)
+for i, at in enumerate([0.15, 0.175, 0.20]):
+    place(buf, tick(4800), at, 0.12, 0.4 * (i - 1))
+save('open', finish(reverb(buf, 0.15, 0.15, 0.006), 0.7))
+
+# ---- close：断开——只有低八度的「哔」+ 更轻的「咚」----
+buf = sound(0.6)
+place(buf, thump(60, 0.045), 0, 0.55)
+place(buf, blip(1046.5), 0.02, 0.45)
+place(buf, blip(523.25), 0.02, 0.15)
+save('close', finish(reverb(buf, 0.15, 0.15, 0.006), 0.55))
+
+# ---- draw_start：画线——三下细碎的数据「嗒」+ 若有若无的「哔」----
+buf = sound(0.4)
+for i, at in enumerate([0, 0.022, 0.044]):
+    place(buf, tick(3800 + 400 * i), at, 0.35, 0.25 * (i - 1))
+place(buf, filt(blip(2093), 'lowpass', 3500), 0.0, 0.12)
+save('draw_start', finish(reverb(buf, 0.1, 0.12, 0.004), 0.45))
+
+# ---- ring：威胁圈——硬「咚」+ 同音高的两下「哔-哔」（比目标点低，更沉）----
+buf = sound(0.7)
+place(buf, thump(90, 0.04), 0, 0.65)
+place(buf, blip(1568), 0.0, 0.5)
+place(buf, blip(1568), 0.085, 0.4)
+place(buf, blip(784), 0.0, 0.15)
+save('ring', finish(reverb(buf, 0.18, 0.15, 0.006), 0.65))
 print('ok')

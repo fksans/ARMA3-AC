@@ -41,8 +41,8 @@ switch (_type) do {
         }) then {
             switch (_elType) do {
                 case "line";
-                case "area": {playSoundUI [SOUND_DRAW, 0.8]};
-                case "ring": {playSoundUI [SOUND_RING, 0.8]};
+                case "area": {playSoundUI [SOUND_DRAW, SOUND_VOLUME]};
+                case "ring": {playSoundUI [SOUND_RING, SOUND_VOLUME]};
             };
         };
 

@@ -61,5 +61,9 @@
 #define SOUND_DRAW "\z\brf\addons\briefing\sounds\draw_start.ogg"
 #define SOUND_PING "\z\brf\addons\briefing\sounds\ping.ogg"
 #define SOUND_RING "\z\brf\addons\briefing\sounds\ring.ogg"
+// 播放音量：比最初版本低 25%，在背景音乐里能听出来、又不抢音乐（playSoundUI 不受游戏音量滑块影响）
+#define SOUND_VOLUME 0.6
+// 目标点的「哔」每个图标会响 3 次，再低一点
+#define SOUND_VOLUME_PING 0.45
 
 #include "ui_defines.hpp"

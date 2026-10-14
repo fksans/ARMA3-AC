@@ -48,4 +48,4 @@ _display displayAddEventHandler ["KeyDown", {
 ["sync"] call BRF_fnc_onEvent;
 [] call BRF_fnc_viewerUpdate;
 
-playSoundUI [SOUND_OPEN, 0.8];
+playSoundUI [SOUND_OPEN, SOUND_VOLUME];
