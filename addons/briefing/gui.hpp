@@ -72,7 +72,6 @@ class BRF_RscButton: ctrlButton {
 
 // ---------------------------------------------------------------------------
 // 观看界面（所有玩家）
-// 地图控件不能放进 controls group，必须直接放在 controls 下。
 // ---------------------------------------------------------------------------
 class BRF_Viewer {
     idd = IDD_BRF_VIEWER;
@@ -81,11 +80,15 @@ class BRF_Viewer {
     onLoad = "call BRF_fnc_viewerOnLoad";
     onUnload = "call BRF_fnc_viewerOnUnload";
 
-    class controlsBackground {};
-    class controls {
+    // 地图放在 controlsBackground：地图控件获得焦点（点一下）时会画到同一层其他控件上面，
+    // 放在背景层才能保证标题、工具栏、输入框始终在地图上面（原版主地图也是这样放的）。
+    // 地图控件不能放进 controls group，背景层不是 group，可以。
+    class controlsBackground {
         class Map: BRF_RscMap {
             idc = IDC_BRF_MAP;
         };
+    };
+    class controls {
         // 上下两条暗边，像 AC 的简报画面
         class TopBar: ctrlStaticBackground {
             x = "safeZoneXAbs";
@@ -151,12 +154,13 @@ class BRF_Presenter {
     onLoad = "call BRF_fnc_presenterOnLoad";
     onUnload = "call BRF_fnc_presenterOnUnload";
 
-    class controlsBackground {};
-    class controls {
+    // 地图放在 controlsBackground，原因见 BRF_Viewer
+    class controlsBackground {
         class Map: BRF_RscMap {
             idc = IDC_BRF_MAP;
         };
-
+    };
+    class controls {
         // ---- 顶部工具栏 ----
         class ToolbarBg: ctrlStaticBackground {
             x = "safeZoneXAbs";

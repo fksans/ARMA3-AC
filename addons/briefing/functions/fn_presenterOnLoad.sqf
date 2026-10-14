@@ -75,6 +75,11 @@ _label ctrlAddEventHandler ["KeyDown", {["key", _this] call BRF_fnc_input}];
     _ctrl ctrlAddEventHandler ["ButtonClick", {
         params ["_ctrl"];
         (_ctrl getVariable "BRF_action") call BRF_fnc_presenterAction;
+        // 焦点还给地图：否则之后按回车 / 空格会再次触发刚点过的按钮（例如开始 / 结束简报）
+        private _display = uiNamespace getVariable ["BRF_presenter", displayNull];
+        if (!isNull _display) then {
+            ctrlSetFocus (_display displayCtrl IDC_BRF_MAP);
+        };
     }];
 } forEach [
     [IDC_BRF_P_TOOL + TOOL_LINE, "tool", TOOL_LINE],
@@ -119,6 +124,7 @@ if (lbCurSel _bgm < 0) then {_bgm lbSetCurSel 0};
 _bgm ctrlAddEventHandler ["LBSelChanged", {
     params ["_ctrl", "_index"];
     profileNamespace setVariable ["BRF_bgm", _ctrl lbData _index];
+    ctrlSetFocus ((ctrlParent _ctrl) displayCtrl IDC_BRF_MAP);
 }];
 
 // 已有元素补齐（不播动画）

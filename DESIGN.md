@@ -609,5 +609,6 @@ Claude Code
 | 清屏确认 | 二次确认 | 3 秒内再按一次 | 不弹对话框，不打断讲解 |
 | 转标记 | — | 线的末端额外放一个 `mil_arrow2` 箭头标记；另有「清标记」按钮 | 折线标记本身没有箭头 |
 | 鼠标松开兜底 | 在 display 上补挂松开事件 | 补挂的事件推迟到下一帧处理，修饰键（Shift / Alt）用键盘事件记下的状态兜底 | 避免和地图控件自己的松开事件重复处理、丢失修饰键 |
+| 地图放哪一层 | 地图直接放在 `controls` 下（不能进 controls group） | 两个界面的地图都放在 `controlsBackground`（同样不是 group） | 0.1.0 实测：地图控件获得焦点后画到同层其他控件上面，盖住了工具栏（开始 / 结束简报按钮）、状态栏和标签输入框。原版主地图也是放在背景层。点完工具栏按钮后焦点还给地图，避免回车 / 空格再次触发按钮 |
 | 测试入口 | 调试控制台一行代码 | `[] call BRF_fnc_demo`（只能单机 / 编辑器） | M1 验收用 |
 | HEMTT lint | — | `.hemtt/project.toml` 里忽略 `addPublicVariableEventHandler` 的 broken 提示 | wiki 把它归到 Broken Commands 是因为**替代语法**不能用，本模组只用主语法 |
