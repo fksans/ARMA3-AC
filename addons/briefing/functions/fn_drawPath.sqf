@@ -20,12 +20,19 @@ if (_closed) then {_pts pushBack (_pts select 0)};
 
 private _glowCol = +_col;
 _glowCol set [3, 0.25 * (_col select 3)];
+private _glowW = _w * 3;
+if (BRF_lightMap) then {
+    // 原版白底地图：一律加深色描边
+    _glow = true;
+    _glowCol = [0, 0, 0, 0.6 * (_col select 3)];
+    _glowW = _w + 3;
+};
 
 for "_i" from 1 to (count _pts - 1) do {
     private _a = _pts select (_i - 1);
     private _b = _pts select _i;
     if (_glow) then {
-        _map drawLine [_a, _b, _glowCol, _w * 3];
+        _map drawLine [_a, _b, _glowCol, _glowW];
     };
     _map drawLine [_a, _b, _col, _w];
 };

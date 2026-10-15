@@ -44,6 +44,14 @@ if (_blinkAge >= 0 && {_blinkAge < ICON_BLINK_TIME}) then {
 private _h = _s / 2;
 (BRF_iconDefs getOrDefault [_kind, []]) params ["", "", "", ["_texture", ""], "", "", "", ["_shape", "diamond"]];
 if (_texture != "") then {
+    if (BRF_lightMap) then {
+        // 原版白底地图：先用深色在上下左右各偏 1.5 像素画 4 遍，形成描边
+        private _outline = [0, 0, 0, 0.6 * (_c select 3)];
+        private _o = 1.5 * _mpp;
+        {
+            _map drawIcon [_texture, _outline, _pos vectorAdd _x, _s * 1.4, _s * 1.4, 0];
+        } forEach [[_o, 0, 0], [-_o, 0, 0], [0, _o, 0], [0, -_o, 0]];
+    };
     _map drawIcon [_texture, _c, _pos, _s * 1.4, _s * 1.4, 0];
 } else {
 switch (_shape) do {
@@ -63,7 +71,10 @@ switch (_shape) do {
         _map drawIcon [BRF_texWhite, _c, _pos, _s * 0.2, _s * 0.2, 45];
     };
     default {
-        // tgt：实心菱形
+        // tgt：实心菱形（原版白底地图上先垫一个大一圈的深色菱形当描边）
+        if (BRF_lightMap) then {
+            _map drawIcon [BRF_texWhite, [0, 0, 0, 0.6 * (_c select 3)], _pos, _s * 0.7 + 4, _s * 0.7 + 4, 45];
+        };
         _map drawIcon [BRF_texWhite, _c, _pos, _s * 0.7, _s * 0.7, 45];
     };
 };

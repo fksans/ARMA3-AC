@@ -23,6 +23,7 @@ if (_r <= 0) exitWith {};
 
 private _glow = +_col;
 _glow set [3, 0.25 * (_col select 3)];
+if (BRF_lightMap) then {_glow = [0, 0, 0, 0.6 * (_col select 3)]}; // 原版白底地图：深色描边
 
 private _fnc_circle = {
     params ["_rad", "_c", "_w", "_g"];
@@ -32,7 +33,7 @@ private _fnc_circle = {
     private _prev = _center vectorAdd [0, _rad, 0];
     for "_i" from 1 to _segments do {
         private _p = _center vectorAdd [_rad * sin (_i * _step), _rad * cos (_i * _step), 0];
-        if (_g) then {_map drawLine [_prev, _p, _glow, _w * 3]};
+        if (_g || BRF_lightMap) then {_map drawLine [_prev, _p, _glow, [_w * 3, _w + 3] select BRF_lightMap]};
         _map drawLine [_prev, _p, _c, _w];
         _prev = _p;
     };

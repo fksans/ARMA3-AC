@@ -23,6 +23,14 @@ BRF_palette = [
     [0.40, 1.00, 0.60, 1]
 ];
 // 转地图标记时对应的 CfgMarkerColors
+// 原版地图（白底）上用的深色版本 + 深色描边，见 BRF_fnc_mapDraw；简报界面的暗色地图仍用上面的亮色
+BRF_paletteLight = [
+    [0.00, 0.33, 0.95, 1],
+    [0.90, 0.00, 0.00, 1],
+    [0.95, 0.52, 0.00, 1],
+    [0.00, 0.58, 0.15, 1]
+];
+BRF_lightMap = false;           // 正在原版地图上画（BRF_fnc_mapDraw 期间为 true）
 BRF_markerColors = ["ColorBLUFOR", "ColorOPFOR", "ColorYellow", "ColorGreen"];
 // ---- 图标库：从配置 BRF_Icons 读取（CfgIcons.hpp），没有合法原版标记映射的不注册 ----
 // 每项：[id, 显示名, 缩写, 贴图, 原版标记类型, 分组, 原版标记颜色, 基础图形, 音效]
