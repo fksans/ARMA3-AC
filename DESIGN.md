@@ -622,4 +622,3 @@ Claude Code
 | 原版地图原样式 | — | 装了模组的客户端每秒检查一次：给 M 地图（display 12）、Zeus 地图（312）、`IGUI_displays` / `RscCustomInfoMiniMap` 里的地图控件挂 Draw 事件画静态原样式（`fn_mapDraw`），ACE MicroDAGR 通过 `ace_microdagr_miniMapDrawHandlers` 挂；同时 `setMarkerAlphaLocal 0` 在本机隐藏对应的 `acb_` 标记 | 用户 v2 需求 R1.5。GPS 小地图控件的位置没有官方文档，按「找所有 CT_MAP_MAIN 控件」的方式挂，需要实测 |
 | 指挥官标注 | — | 观看界面按 D 进入（简报进行中、有权限）：同一个标注界面去掉激光笔、BGM、开始 / 结束、重建、权限、预案、一键清除，橡皮只擦自己的；Space 跟随 / 自由，Esc 回观看。权限：Zeus；小队长（队里不止一人）；编辑器变量 `BRF_canDraw`；Zeus 在「权限」面板授权（`BRF_drawGrants`）；禁止（`BRF_drawDenied`）优先于其他规则 | 用户 v2 需求 R2 |
 | 一键清除 | 清屏 | 「清屏」改名「一键清除」：3 秒内按两次，清掉所有元素（所有人画的）和所有 `acb_` / `BRF_mk_` 标记 | 用户 v2 需求 |
-| 权限检查（0.3.1） | — | 不再以界面身份 `BRF_role` 作为权限依据：`fn_send` 统一把关（开关简报、清屏只有 Zeus；画 / 删只有 Zeus 或简报进行中有标注权限的人，非 Zeus 只能删自己画的，拒绝时写 RPT `[BRF] refused`）；主持界面打开时不是 Zeus 的人强制按指挥官标注处理，没有标注权限就立即关闭；工具栏 / 快捷键里的主持人操作、预案、视角同步、激光笔都要求本机是 Zeus | 0.3.0 实测：被授权标注的人拿到了主持人权限 |

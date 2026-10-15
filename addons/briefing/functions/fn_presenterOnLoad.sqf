@@ -12,15 +12,6 @@ params ["_display"];
 
 uiNamespace setVariable ["BRF_presenter", _display];
 
-// 身份以真实权限为准：不是 Zeus 的人一律按指挥官标注处理（只留画图工具）；
-// 连标注权限都没有（或简报没在进行）的话下一帧直接关掉
-if !(call BRF_fnc_canPresent) then {
-    BRF_role = "commander";
-    if !((BRF_session select 0) && {[player] call BRF_fnc_canDraw}) then {
-        [{(_this select 0) closeDisplay 2}, [_display]] call CBA_fnc_execNextFrame;
-    };
-};
-
 // ---- 输入状态 ----
 BRF_drawing = false;
 BRF_pts = [];

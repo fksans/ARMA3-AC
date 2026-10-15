@@ -18,8 +18,6 @@
 
 params [["_action", "", [""]], "_arg1", "_arg2"];
 
-if !(call BRF_fnc_canPresent) exitWith {}; // 预案只有 Zeus 能用
-
 private _display = uiNamespace getVariable ["BRF_presenter", displayNull];
 private _map = _display displayCtrl IDC_BRF_MAP;
 private _now = diag_tickTime;

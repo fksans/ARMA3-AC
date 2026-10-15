@@ -31,7 +31,6 @@ if (_mode == "set") exitWith {
 if (BRF_ptrWanted isEqualTo [] || {BRF_ptrWanted isEqualTo BRF_ptrSent}) exitWith {};
 if (diag_tickTime - BRF_ptrLastTime < PTR_INTERVAL) exitWith {};
 if !(call BRF_fnc_isHost) exitWith {};
-if !(call BRF_fnc_canPresent) exitWith {};
 
 BRF_ptrLastTime = diag_tickTime;
 BRF_ptrSent = +BRF_ptrWanted;

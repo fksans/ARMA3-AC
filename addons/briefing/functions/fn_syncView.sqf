@@ -11,7 +11,6 @@
 params ["_map", ["_force", false]];
 
 if !(call BRF_fnc_isHost) exitWith {};
-if !(call BRF_fnc_canPresent) exitWith {};
 if (!_force && {diag_tickTime < BRF_viewSyncPauseUntil}) exitWith {};
 
 ctrlPosition _map params ["_x0", "_y0", "_w", "_h"];

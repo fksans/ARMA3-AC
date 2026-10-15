@@ -3,8 +3,6 @@
  * 主持端：清屏（Ctrl+Shift+Del 或工具栏按钮）。3 秒内再按一次才真正清空。
  */
 
-if !(call BRF_fnc_canPresent) exitWith {};
-
 private _now = diag_tickTime;
 if (_now - (missionNamespace getVariable ["BRF_clearArmed", -10]) > 3) exitWith {
     BRF_clearArmed = _now;
