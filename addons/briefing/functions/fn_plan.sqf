@@ -206,7 +206,7 @@ switch (_action) do {
                 if !(_token in BRF_planTokens) exitWith {};
                 _evt call BRF_fnc_send;
                 [] call BRF_fnc_presenterUpdate;
-            }, [_token, ["add", [_id, _type, _color, _data]]], _delay + _forEachIndex * PLAN_ELEMENT_GAP] call CBA_fnc_waitAndExecute;
+            }, [_token, ["add", [_id, _type, _color, _data, getPlayerUID player]]], _delay + _forEachIndex * PLAN_ELEMENT_GAP] call CBA_fnc_waitAndExecute;
         } forEach _records;
         BRF_planPlayed pushBack _ids;
         BRF_planTokens pushBack _token;

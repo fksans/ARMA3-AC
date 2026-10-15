@@ -5,11 +5,15 @@
  * Arguments:
  * 0: 操作 <STRING>
  *    "tool" 1-6 / "color" ±1 / "iconKind" / "arrow" / "focus" / "undo" / "clear"
- *    "session" / "toMarkers" / "clearMarkers" / "close" / "takeover" / "watch" / "plan"（编排模式开关）
- * 1: 参数 <NUMBER>（tool：工具序号；color：方向）
+ *    "session" / "rebuild" / "access"（权限面板开关）/ "accessCycle" UID / "close" / "takeover" / "watch"
+ *    "plan"（编排模式开关）/ "follow"（指挥官：跟随 / 自由）
+ * 1: 参数 <NUMBER>（tool：工具序号；color：方向）/ <STRING>（accessCycle：玩家 UID）
  */
 
-params [["_action", "", [""]], ["_arg", 0, [0]]];
+params [["_action", "", [""]], ["_arg", 0, [0, ""]]];
+
+// 指挥官标注只能用画图相关的操作
+if (BRF_role == "commander" && {!(_action in ["tool", "color", "iconKind", "arrow", "undo", "close", "follow"])}) exitWith {};
 
 private _display = uiNamespace getVariable ["BRF_presenter", displayNull];
 if (isNull _display) exitWith {};
@@ -17,6 +21,7 @@ private _map = _display displayCtrl IDC_BRF_MAP;
 
 switch (_action) do {
     case "tool": {
+        if (BRF_role == "commander" && {_arg == TOOL_POINTER}) exitWith {};
         BRF_tool = _arg max TOOL_LINE min TOOL_ERASER;
         BRF_drawing = false;
         BRF_pts = [];
@@ -75,13 +80,37 @@ switch (_action) do {
         _display closeDisplay 2;
         [] call BRF_fnc_openViewer;
     };
-    case "toMarkers": {
-        private _count = ["create"] call BRF_fnc_toMarkers;
-        [format [localize "STR_BRF_MsgMarkers", _count], [0.55, 1, 0.9, 1]] call BRF_fnc_presenterMessage;
+    case "rebuild": {
+        ["sync"] call BRF_fnc_onEvent;
+        private _count = ["rebuild"] call BRF_fnc_mirror;
+        [format [localize "STR_BRF_MsgRebuilt", _count], [0.55, 1, 0.9, 1]] call BRF_fnc_presenterMessage;
     };
-    case "clearMarkers": {
-        ["clear"] call BRF_fnc_toMarkers;
-        [localize "STR_BRF_MsgMarkersCleared", [0.55, 1, 0.9, 1]] call BRF_fnc_presenterMessage;
+    case "access": {
+        BRF_accessOpen = !BRF_accessOpen;
+        if (BRF_accessOpen) then {[] call BRF_fnc_presenterAccess};
+    };
+    case "accessCycle": {
+        // 自动 → 授权 → 禁止 → 自动
+        private _uid = _arg;
+        private _state = if (_uid in BRF_drawGrants) then {1} else {[0, 2] select (_uid in BRF_drawDenied)};
+        BRF_drawGrants = BRF_drawGrants - [_uid];
+        BRF_drawDenied = BRF_drawDenied - [_uid];
+        switch (_state) do {
+            case 0: {BRF_drawGrants pushBack _uid};
+            case 1: {BRF_drawDenied pushBack _uid};
+        };
+        publicVariable "BRF_drawGrants";
+        publicVariable "BRF_drawDenied";
+        [] call BRF_fnc_presenterAccess;
+    };
+    case "follow": {
+        BRF_follow = !BRF_follow;
+        if (BRF_follow && {BRF_view isNotEqualTo []}) then {
+            BRF_view params ["_cx", "_cy", "_scale"];
+            ctrlMapAnimClear _map;
+            _map ctrlMapAnimAdd [0.3, _scale, [_cx, _cy]];
+            ctrlMapAnimCommit _map;
+        };
     };
     case "close": {
         _display closeDisplay 2;

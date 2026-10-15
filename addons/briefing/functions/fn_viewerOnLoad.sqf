@@ -1,7 +1,8 @@
 #include "..\script_component.hpp"
 /*
  * 观看界面 onLoad：挂 Draw 事件，跳到主持人当前视角，补齐当前状态。
- * Space 切换「跟随 / 自由」；Esc 关闭（简报还在进行时按 Ctrl+B 重新打开）。
+ * Space 切换「跟随 / 自由」；Esc 关闭（简报还在进行时按 Ctrl+B 重新打开）；
+ * 有标注权限的人（见 BRF_fnc_canDraw）按 D 进入指挥官标注。
  *
  * Arguments:
  * 0: Display <DISPLAY>
@@ -33,6 +34,14 @@ _display displayAddEventHandler ["KeyDown", {
     params ["_display", "_key"];
     if (_key == 0x01) exitWith { // DIK_ESCAPE
         _display closeDisplay 2;
+        true
+    };
+    if (_key == 0x20) exitWith { // DIK_D
+        if ([player] call BRF_fnc_canDraw) then {
+            ["commander"] call BRF_fnc_openPresenter;
+        } else {
+            systemChat localize "STR_BRF_NoDrawAccess";
+        };
         true
     };
     if (_key != 0x39) exitWith {false}; // DIK_SPACE

@@ -25,18 +25,19 @@ Arma 3 Server/
 | 变量 | 内容 |
 | --- | --- |
 | `BRF_evt` | 最近一个简报事件 |
-| `BRF_state` | 当前全部简报元素 |
+| `BRF_el_<id>` | 每个简报元素一个变量（名字是动态的，例如 `BRF_el_3_48213_7`），删除后为 `[]` |
 | `BRF_session` | 简报是否进行中、主持人 |
 | `BRF_view` | 主持人的地图视角（最多每秒 5 次） |
 | `BRF_ptr` | 激光笔位置（最多每秒 10 次） |
+| `BRF_drawGrants` / `BRF_drawDenied` | Zeus 授权 / 禁止标注的玩家 |
 
-如果服务器的 BattlEye 目录里有 `publicvariable.txt` 并且第一行是踢人 / 记录的规则（例如 `5 ""`），在那一行末尾加上例外：
+因为元素变量的名字是动态的，例外要按**前缀**放行。如果服务器的 BattlEye 目录里有 `publicvariable.txt` 并且第一行是踢人 / 记录的规则（例如 `5 ""`），在那一行末尾加上：
 
 ```
-5 "" !="BRF_evt" !="BRF_state" !="BRF_session" !="BRF_view" !="BRF_ptr"
+5 "" !"BRF_"
 ```
 
-（如果已经有 `!="..."` 例外，接在后面即可。）没有 `publicvariable.txt` 就什么都不用做。
+（`!"..."` 是「包含这段文字就放行」；如果已经有别的例外，接在后面即可。）没有 `publicvariable.txt` 就什么都不用做。
 
 ## 3. 验证
 

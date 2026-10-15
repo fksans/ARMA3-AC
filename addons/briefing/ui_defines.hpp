@@ -31,8 +31,8 @@
 #define IDC_BRF_P_CLEAR 1213
 #define IDC_BRF_P_BGM 1214
 #define IDC_BRF_P_SESSION 1215
-#define IDC_BRF_P_MARKERS 1216
-#define IDC_BRF_P_CLEAR_MARKERS 1217
+#define IDC_BRF_P_REBUILD 1216
+#define IDC_BRF_P_ACCESS 1217
 #define IDC_BRF_P_CLOSE 1218
 #define IDC_BRF_P_PLAN 1219
 #define IDC_BRF_P_STATUS 1220
@@ -41,6 +41,9 @@
 // 图标面板（目标点工具时显示在左侧）
 #define IDC_BRF_P_ICON_TITLE 1250
 #define IDC_BRF_P_ICON_LIST 1251
+// 标注权限面板（Zeus 点「权限」时显示在右侧）
+#define IDC_BRF_P_ACCESS_TITLE 1270
+#define IDC_BRF_P_ACCESS_LIST 1271
 // 预案状态条（工具栏下方居中）
 #define IDC_BRF_P_PLAN_BANNER 1260
 // 主持权被别人占用时的遮罩

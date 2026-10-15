@@ -10,7 +10,8 @@ BRF_session params ["_active", "_hostName", "_hostOwner"];
 private _isHost = _active && {_hostOwner == clientOwner};
 
 // ---- 主持权：同一时间只有一个主持人。别人在主持时显示「接管 / 只看」 ----
-BRF_locked = _active && {!_isHost};
+private _commander = BRF_role == "commander";
+BRF_locked = !_commander && {_active} && {!_isHost};
 {
     (_display displayCtrl _x) ctrlShow BRF_locked;
 } forEach [IDC_BRF_P_LOCK_BG, IDC_BRF_P_LOCK_TEXT, IDC_BRF_P_TAKEOVER, IDC_BRF_P_WATCH];
@@ -42,6 +43,12 @@ if (_showIcons) then {
         _iconList lbSetPictureColorSelected [_y, _tint];
     } forEach BRF_iconRows;
 };
+
+// ---- 标注权限面板（只有主持界面有）----
+private _showAccess = BRF_accessOpen && {!_commander} && {!BRF_locked};
+(_display displayCtrl IDC_BRF_P_ACCESS_LIST) ctrlShow _showAccess;
+(_display displayCtrl IDC_BRF_P_ACCESS_TITLE) ctrlShow _showAccess;
+(_display displayCtrl IDC_BRF_P_ACCESS) ctrlSetBackgroundColor ([[0.05, 0.16, 0.17, 0.9], [0.15, 0.55, 0.50, 1]] select _showAccess);
 
 // ---- 工具按钮：当前工具高亮 ----
 for "_tool" from TOOL_LINE to TOOL_ERASER do {
@@ -106,7 +113,7 @@ if (BRF_planEdit) then {
         _banner ctrlSetBackgroundColor [0, 0.03, 0.04, 0.85];
     };
 };
-if (BRF_locked) then {_banner ctrlShow false};
+if (BRF_locked || _commander) then {_banner ctrlShow false};
 
 // ---- 状态栏 ----
 private _toolNames = [
@@ -125,12 +132,17 @@ private _toolHints = [
     "STR_BRF_HintPointer",
     "STR_BRF_HintEraser"
 ] apply {localize _x};
-private _kindName = localize ((BRF_iconTable select BRF_iconKind) select 1);
+private _kindName = (BRF_iconTable select (BRF_iconKind min (count BRF_iconTable - 1))) select 1;
 
-private _sessionText = if (_active) then {
-    format [localize "STR_BRF_StatusRunning", _hostName]
-} else {
-    localize "STR_BRF_StatusIdle"
+if (_commander) then {
+    _toolHints set [TOOL_ERASER - 1, localize "STR_BRF_HintEraserOwn"];
+};
+private _sessionText = switch (true) do {
+    case (_commander): {
+        format [localize "STR_BRF_StatusCommander", _hostName, localize (["STR_BRF_ViewerFree", "STR_BRF_ViewerFollow"] select BRF_follow)]
+    };
+    case (_active): {format [localize "STR_BRF_StatusRunning", _hostName]};
+    default {localize "STR_BRF_StatusIdle"};
 };
 
 (_display displayCtrl IDC_BRF_P_STATUS) ctrlSetText format [

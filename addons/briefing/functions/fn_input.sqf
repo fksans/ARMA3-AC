@@ -26,6 +26,15 @@ if (BRF_locked) exitWith {
     };
 };
 
+// 指挥官标注：橡皮只能擦自己画的
+private _commander = BRF_role == "commander";
+private _erasable = if (_commander) then {
+    private _uid = getPlayerUID player;
+    BRF_els select {(_x param [E_AUTHOR, ""]) == _uid}
+} else {
+    BRF_els
+};
+
 private _fnc_world = {
     params ["_mx", "_my"];
     (_map ctrlMapScreenToWorld [_mx, _my]) + [0]
@@ -114,7 +123,7 @@ switch (_event) do {
                     private _id = [_map, _mx, _my, (BRF_plan select BRF_planEditStep) select 0] call BRF_fnc_hitTest;
                     if (_id != "") then {["erase", _id] call BRF_fnc_plan};
                 };
-                private _id = [_map, _mx, _my] call BRF_fnc_hitTest;
+                private _id = [_map, _mx, _my, _erasable] call BRF_fnc_hitTest;
                 if (_id != "") then {
                     ["del", _id] call BRF_fnc_send;
                     [] call BRF_fnc_presenterUpdate;
@@ -149,7 +158,7 @@ switch (_event) do {
                 BRF_hoverId = if (BRF_planEdit) then {
                     [_map, _mx, _my, (BRF_plan select BRF_planEditStep) select 0] call BRF_fnc_hitTest
                 } else {
-                    [_map, _mx, _my] call BRF_fnc_hitTest
+                    [_map, _mx, _my, _erasable] call BRF_fnc_hitTest
                 };
             };
         };
@@ -224,6 +233,9 @@ switch (_event) do {
             };
         } else {
             switch (true) do {
+                // 指挥官标注：Space 跟随 / 自由；主持人专用的键（激光笔、F、预案、清屏）不响应
+                case (_commander && {_key == 0x39}): {["follow"] call BRF_fnc_presenterAction};
+                case (_commander && {_key in [0x06, 0x21, 0x19, 0xCD, 0xD1, 0x1B, 0xCB, 0xC9, 0x1A, 0xC7, 0xD3]}): {};
                 // 1-6：切换工具
                 case (_key >= 0x02 && {_key <= 0x07} && {!_ctrl} && {!_alt}): {
                     call _fnc_cancel;

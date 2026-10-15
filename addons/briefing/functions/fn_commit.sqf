@@ -64,6 +64,7 @@ switch (_type) do {
     };
     case "icon": {
         _raw params ["_pos", ["_kind", "tgt"], ["_label", ""]];
+        if (_label == "" && {((BRF_iconDefs getOrDefault [_kind, []]) param [7, ""]) == "none"}) exitWith {}; // 纯文字图标必须有文字
         _data = [[round (_pos select 0), round (_pos select 1)], _kind, _label];
     };
     case "ring": {
@@ -97,7 +98,7 @@ if ({(_x select E_T1) < 0} count BRF_els >= MAX_ELEMENTS) exitWith {
 
 private _id = [] call BRF_fnc_newId;
 
-["add", [_id, _type, BRF_color, _data]] call BRF_fnc_send;
+["add", [_id, _type, BRF_color, _data, getPlayerUID player]] call BRF_fnc_send;
 BRF_undoStack pushBack _id;
 [] call BRF_fnc_presenterUpdate;
 

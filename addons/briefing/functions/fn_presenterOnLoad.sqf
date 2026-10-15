@@ -2,6 +2,7 @@
 /*
  * 主持界面 onLoad：挂鼠标 / 键盘 / 按钮事件，初始化输入状态。
  * 左键画，右键拖动平移，滚轮缩放，数字键切换工具。
+ * 指挥官标注（BRF_role == "commander"）时隐藏只有主持人能用的按钮。
  *
  * Arguments:
  * 0: Display <DISPLAY>
@@ -93,8 +94,8 @@ _label ctrlAddEventHandler ["KeyDown", {["key", _this] call BRF_fnc_input}];
     [IDC_BRF_P_UNDO, "undo"],
     [IDC_BRF_P_CLEAR, "clear"],
     [IDC_BRF_P_SESSION, "session"],
-    [IDC_BRF_P_MARKERS, "toMarkers"],
-    [IDC_BRF_P_CLEAR_MARKERS, "clearMarkers"],
+    [IDC_BRF_P_REBUILD, "rebuild"],
+    [IDC_BRF_P_ACCESS, "access"],
     [IDC_BRF_P_PLAN, "plan"],
     [IDC_BRF_P_CLOSE, "close"],
     [IDC_BRF_P_TAKEOVER, "takeover"],
@@ -137,9 +138,9 @@ BRF_iconRows = createHashMap;
     _iconList lbSetValue [_header, -1];
     _iconList lbSetColor [_header, [0.40, 0.90, 0.80, 0.6]];
     {
-        _x params ["_kind", "_nameKey", "_abbr", "_texture", "", "_cat"];
+        _x params ["_kind", "_name", "_abbr", "_texture", "", "_cat"];
         if (_cat != _category) then {continue};
-        private _row = _iconList lbAdd format ["%1  %2", localize _nameKey, _abbr];
+        private _row = _iconList lbAdd format ["%1  %2", _name, _abbr];
         _iconList lbSetValue [_row, _forEachIndex];
         if (_texture != "") then {
             _iconList lbSetPicture [_row, _texture];
@@ -158,18 +159,49 @@ _iconList ctrlAddEventHandler ["LBSelChanged", {
     ctrlSetFocus ((ctrlParent _ctrl) displayCtrl IDC_BRF_MAP);
 }];
 
+// ---- 标注权限面板：每行 lbData = UID；点一下切换 自动 → 授权 → 禁止 ----
+private _accessList = _display displayCtrl IDC_BRF_P_ACCESS_LIST;
+_accessList ctrlAddEventHandler ["LBSelChanged", {
+    params ["_ctrl", "_row"];
+    if (uiNamespace getVariable ["BRF_suppressAccessSel", false]) exitWith {};
+    private _uid = _ctrl lbData _row;
+    if (_uid != "") then {["accessCycle", _uid] call BRF_fnc_presenterAction};
+    ctrlSetFocus ((ctrlParent _ctrl) displayCtrl IDC_BRF_MAP);
+}];
+
+// ---- 指挥官标注：只留画图工具、橡皮、颜色、箭头、撤销、关闭 ----
+if (BRF_role == "commander") then {
+    {
+        (_display displayCtrl _x) ctrlShow false;
+    } forEach [
+        IDC_BRF_P_TOOL + TOOL_POINTER, IDC_BRF_P_CLEAR, IDC_BRF_P_BGM, IDC_BRF_P_SESSION,
+        IDC_BRF_P_REBUILD, IDC_BRF_P_ACCESS, IDC_BRF_P_PLAN, IDC_BRF_P_PLAN_BANNER
+    ];
+    BRF_accessOpen = false;
+    BRF_planEdit = false;
+    if (BRF_tool == TOOL_POINTER) then {BRF_tool = TOOL_LINE};
+    // 进来是为了画，先停在当前位置；Space 可以重新跟随主持人
+    BRF_follow = false;
+    [localize "STR_BRF_MsgCommanderOn", [0.55, 1, 0.9, 1]] call BRF_fnc_presenterMessage;
+};
+
 // 已有元素补齐（不播动画）
 ["sync"] call BRF_fnc_onEvent;
 [] call BRF_fnc_presenterUpdate;
 
-// 打开期间失去 curator 身份（被收回 Zeus）则关闭
+// 打开期间失去资格（被收回 Zeus / 被取消标注权限）则关闭
 [{
     params ["", "_handle"];
     private _display = uiNamespace getVariable ["BRF_presenter", displayNull];
     if (isNull _display) exitWith {
         [_handle] call CBA_fnc_removePerFrameHandler;
     };
-    if !(call BRF_fnc_canPresent) exitWith {
+    private _allowed = if (BRF_role == "commander") then {
+        (BRF_session select 0) && {[player] call BRF_fnc_canDraw}
+    } else {
+        call BRF_fnc_canPresent
+    };
+    if (!_allowed) exitWith {
         _display closeDisplay 2;
         [_handle] call CBA_fnc_removePerFrameHandler;
     };

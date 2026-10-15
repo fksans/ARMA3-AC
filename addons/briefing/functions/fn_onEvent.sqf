@@ -2,14 +2,14 @@
 /*
  * 处理一个简报事件（主持端和观看端共用）。动画时钟以本机收到事件的 diag_tickTime 为起点，
  * 不需要跨机器对时。按 id 去重：重复收到、乱序收到都不会出错。
- * 每次 add / del / clear 都同步更新 BRF_state，但只有主持端会把它发出去（见 BRF_fnc_send）。
+ * 每次 add / del / clear 都同步更新 BRF_state（本机的当前元素表，和各个 BRF_el_<id> 公共变量对应，见 BRF_fnc_send）。
  *
  * Arguments（_this 就是事件数组）:
- * ["add", 元素, 立即(可选，默认 false)]  元素 = [id, 类型, 颜色序号, 数据]；立即 = 不播动画、不出声
+ * ["add", 元素, 立即(可选，默认 false)]  元素 = [id, 类型, 颜色序号, 数据, 作者 UID]；立即 = 不播动画、不出声
  * ["del", id]
  * ["clear"]
  * ["session", 开关, 主持人名字, 主持人 clientOwner]
- * ["sync"]   本机专用：把本地元素表对齐到 BRF_state（中途加入 / 重新打开界面）
+ * ["sync"]   本机专用：从公共变量重新收集 BRF_state，再把本地元素表对齐过去（中途加入 / 重新打开界面）
  */
 
 params [["_type", "", [""]]];
@@ -19,20 +19,30 @@ private _now = diag_tickTime;
 switch (_type) do {
     case "add": {
         params ["", ["_el", [], [[]]], ["_instant", false, [false]]];
-        _el params [["_id", "", [""]], ["_elType", "", [""]], ["_color", 0, [0]], ["_data", [], [[]]]];
-        if (_id == "" || {_id in BRF_elMap}) exitWith {};
+        _el params [["_id", "", [""]], ["_elType", "", [""]], ["_color", 0, [0]], ["_data", [], [[]]], ["_author", "", [""]]];
+        if (_id == "") exitWith {};
+        private _old = BRF_elMap getOrDefault [_id, []];
+        if (_old isNotEqualTo [] && {(_old select E_T1) < 0}) exitWith {};
+        if (_old isNotEqualTo []) then {
+            // 同一个 id 删掉后又被用上（很少见）：旧记录直接丢掉
+            BRF_els deleteAt (BRF_els find _old);
+            BRF_elMap deleteAt _id;
+        };
 
         private _cache = [_elType, _data] call BRF_fnc_buildCache;
         if (_cache isEqualTo []) exitWith {}; // 数据不合法
 
         _color = (round _color) max 0 min (count BRF_palette - 1);
-        private _record = [_id, _elType, _color, _data, [_now, -1e6] select _instant, -1, _cache];
+        private _record = [_id, _elType, _color, _data, [_now, -1e6] select _instant, -1, _cache, _author];
         BRF_els pushBack _record;
         BRF_elMap set [_id, _record];
 
         if (BRF_state findIf {(_x select 0) == _id} == -1) then {
-            BRF_state pushBack [_id, _elType, _color, _data];
+            BRF_state pushBack [_id, _elType, _color, _data, _author];
         };
+
+        // 原版标记由本机画原样式代替：标记已经到了的话立即隐藏（还没到的由 BRF_fnc_mirrorSweep 补）
+        ["hide", _id] call BRF_fnc_mirror;
 
         // 音效只在界面打开时播放（图标的「滴滴」在 BRF_fnc_renderIcon 里随闪烁播放）
         if (!_instant && {
@@ -86,6 +96,10 @@ switch (_type) do {
         } else {
             BRF_ptrTarget = [];
             [true] call BRF_fnc_closeViewer;
+            // 指挥官的标注界面跟着关
+            if (BRF_role == "commander") then {
+                (uiNamespace getVariable ["BRF_presenter", displayNull]) closeDisplay 2;
+            };
         };
 
         [] call BRF_fnc_viewerUpdate;
@@ -93,6 +107,7 @@ switch (_type) do {
     };
 
     case "sync": {
+        BRF_state = [] call BRF_fnc_collectState;
         // 本地有、BRF_state 里没有的：立即移除（不播淡出）
         private _ids = createHashMapFromArray (BRF_state apply {[_x select 0, true]});
         {

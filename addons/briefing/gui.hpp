@@ -294,16 +294,16 @@ class BRF_Presenter {
             x = QUOTE(BTN_X(12));
             colorBackground[] = {0.10, 0.30, 0.15, 0.95};
         };
-        class Markers: BRF_RscButton {
-            idc = IDC_BRF_P_MARKERS;
-            text = "$STR_BRF_ToMarkers";
-            tooltip = "$STR_BRF_ToMarkersTooltip";
+        class Rebuild: BRF_RscButton {
+            idc = IDC_BRF_P_REBUILD;
+            text = "$STR_BRF_Rebuild";
+            tooltip = "$STR_BRF_RebuildTooltip";
             x = QUOTE(BTN_X(13));
         };
-        class ClearMarkers: BRF_RscButton {
-            idc = IDC_BRF_P_CLEAR_MARKERS;
-            text = "$STR_BRF_ClearMarkers";
-            tooltip = "$STR_BRF_ClearMarkersTooltip";
+        class Access: BRF_RscButton {
+            idc = IDC_BRF_P_ACCESS;
+            text = "$STR_BRF_Access";
+            tooltip = "$STR_BRF_AccessTooltip";
             x = QUOTE(BTN_X(14));
         };
         class Plan: BRF_RscButton {
@@ -376,6 +376,20 @@ class BRF_Presenter {
             colorBackground[] = {0, 0.03, 0.04, 0.85};
             colorSelectBackground[] = {0.12, 0.38, 0.36, 1};
             colorSelectBackground2[] = {0.12, 0.38, 0.36, 1};
+        };
+
+        // ---- 标注权限面板：Zeus 点「权限」时显示在右侧，点一行切换 自动 → 授权 → 禁止 ----
+        class AccessTitle: IconTitle {
+            idc = IDC_BRF_P_ACCESS_TITLE;
+            text = "$STR_BRF_AccessPanel";
+            x = QUOTE(safezoneX + safezoneW - 0.226 * safezoneW);
+            w = QUOTE(0.22 * safezoneW);
+        };
+        class AccessList: IconList {
+            idc = IDC_BRF_P_ACCESS_LIST;
+            x = QUOTE(safezoneX + safezoneW - 0.226 * safezoneW);
+            w = QUOTE(0.22 * safezoneW);
+            h = QUOTE(0.5 * safezoneH);
         };
 
         // ---- 目标点标签输入框（放点时出现在鼠标旁边） ----

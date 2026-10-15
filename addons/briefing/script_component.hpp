@@ -18,6 +18,13 @@
 #define E_T0 4
 #define E_T1 5
 #define E_CACHE 6
+#define E_AUTHOR 7
+
+// 原版标记镜像：名字前缀（只动这个前缀的标记）、旧版「转标记」的前缀、补建间隔
+#define MARKER_PREFIX "acb_"
+#define MARKER_PREFIX_OLD "brf_mk_"
+#define MIRROR_SWEEP_INTERVAL 1
+#define MIRROR_HEAL_TICKS 10
 
 // 上限（DESIGN.md「性能」）
 #define MAX_ELEMENTS 60

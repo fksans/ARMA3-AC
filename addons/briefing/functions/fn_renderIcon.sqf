@@ -36,27 +36,28 @@ if (_blinkAge >= 0 && {_blinkAge < ICON_BLINK_TIME}) then {
     private _n = floor (_phase / 2);
     if (_n > _blinks) then {
         _cache set [2, _n];
-        playSoundUI [SOUND_PING, SOUND_VOLUME_PING];
+        playSoundUI [(BRF_iconDefs getOrDefault [_kind, []]) param [8, SOUND_PING], SOUND_VOLUME_PING];
     };
 };
 
 // 图形（像素偏移，y 向上）
 private _h = _s / 2;
-private _texture = (BRF_iconDefs getOrDefault [_kind, ["", "", "", ""]]) select 3;
+(BRF_iconDefs getOrDefault [_kind, []]) params ["", "", "", ["_texture", ""], "", "", "", ["_shape", "diamond"]];
 if (_texture != "") then {
     _map drawIcon [_texture, _c, _pos, _s * 1.4, _s * 1.4, 0];
 } else {
-switch (_kind) do {
-    case "lz": {
+switch (_shape) do {
+    case "none": {};
+    case "box": {
         // 空心方框 + 中心点
         [_map, _pos, [[-_h, -_h], [_h, -_h], [_h, _h], [-_h, _h]], true, _c, 2, _mpp, true] call BRF_fnc_drawPath;
         _map drawIcon [BRF_texWhite, _c, _pos, _s * 0.25, _s * 0.25, 0];
     };
-    case "ip": {
+    case "triangle": {
         // 空心三角
         [_map, _pos, [[0, _h], [_h * 0.9, -_h * 0.6], [-_h * 0.9, -_h * 0.6]], true, _c, 2, _mpp, true] call BRF_fnc_drawPath;
     };
-    case "wp": {
+    case "hollowDiamond": {
         // 空心菱形 + 中心点
         [_map, _pos, [[0, _h], [_h, 0], [0, -_h], [-_h, 0]], true, _c, 2, _mpp, true] call BRF_fnc_drawPath;
         _map drawIcon [BRF_texWhite, _c, _pos, _s * 0.2, _s * 0.2, 45];
@@ -70,19 +71,21 @@ switch (_kind) do {
 
 if (_age < ICON_DROP_TIME) exitWith {};
 
-// 常驻：外圈 4 个角括号缓慢呼吸（透明度 0.5 到 1，周期 2 秒）
-private _b = +_col;
-_b set [3, (_col select 3) * (0.75 + 0.25 * sin (_age * 180))];
+// 常驻：外圈 4 个角括号缓慢呼吸（透明度 0.5 到 1，周期 2 秒；纯文字图标没有）
 private _r = ICON_PX * 0.95;
-private _k = ICON_PX * 0.35;
-{
-    _x params ["_sx", "_sy"];
-    [_map, _pos, [[_sx * (_r - _k), _sy * _r], [_sx * _r, _sy * _r], [_sx * _r, _sy * (_r - _k)]], false, _b, 2, _mpp] call BRF_fnc_drawPath;
-} forEach [[1, 1], [1, -1], [-1, -1], [-1, 1]];
+if (_shape != "none") then {
+    private _b = +_col;
+    _b set [3, (_col select 3) * (0.75 + 0.25 * sin (_age * 180))];
+    private _k = ICON_PX * 0.35;
+    {
+        _x params ["_sx", "_sy"];
+        [_map, _pos, [[_sx * (_r - _k), _sy * _r], [_sx * _r, _sy * _r], [_sx * _r, _sy * (_r - _k)]], false, _b, 2, _mpp] call BRF_fnc_drawPath;
+    } forEach [[1, 1], [1, -1], [-1, -1], [-1, 1]];
+};
 
 // 标签打字：每字 0.04 秒
 private _count = floor (_blinkAge / ICON_CHAR_TIME);
 if (_count <= 0) exitWith {};
 private _text = toString (_chars select [0, _count min count _chars]);
-private _textPos = _pos vectorAdd [(_r + 4) * _mpp, 0, 0];
-_map drawIcon [BRF_texClear, _col, _textPos, 1, 1, 0, _text, 2, 0.045, "PuristaMedium", "right"];
+private _textPos = [_pos vectorAdd [(_r + 4) * _mpp, 0, 0], _pos] select (_shape == "none");
+_map drawIcon [BRF_texClear, _col, _textPos, 1, 1, 0, _text, 2, 0.045, "PuristaMedium", ["right", "center"] select (_shape == "none")];
