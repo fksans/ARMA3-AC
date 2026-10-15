@@ -18,6 +18,23 @@
 private _evt = _this;
 if (!(_evt isEqualType []) || {_evt isEqualTo []} || {!((_evt select 0) isEqualType "")}) exitWith {};
 
+// 权限按本机真实身份判断，不看界面身份（BRF_role）：
+// 开关简报、清屏只有 Zeus；画 / 删只有 Zeus 或简报进行中有标注权限的人，而且非 Zeus 只能删自己画的
+private _isZeus = call BRF_fnc_canPresent;
+private _canDraw = _isZeus || {(BRF_session select 0) && {[player] call BRF_fnc_canDraw}};
+private _allowed = switch (_evt select 0) do {
+    case "session";
+    case "clear": {_isZeus};
+    case "add": {_canDraw};
+    case "del": {
+        _isZeus || {_canDraw && {((BRF_elMap getOrDefault [_evt param [1, ""], []]) param [E_AUTHOR, ""]) == getPlayerUID player}}
+    };
+    default {false};
+};
+if (!_allowed) exitWith {
+    diag_log text format ["[BRF] refused %1: no permission", _evt select 0];
+};
+
 private _fnc_publish = {
     params ["_id", "_value"];
     private _var = "BRF_el_" + _id;

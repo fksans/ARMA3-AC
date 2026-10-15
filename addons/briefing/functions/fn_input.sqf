@@ -27,7 +27,7 @@ if (BRF_locked) exitWith {
 };
 
 // 指挥官标注：橡皮只能擦自己画的
-private _commander = BRF_role == "commander";
+private _commander = BRF_role == "commander" || {!(call BRF_fnc_canPresent)};
 private _erasable = if (_commander) then {
     private _uid = getPlayerUID player;
     BRF_els select {(_x param [E_AUTHOR, ""]) == _uid}

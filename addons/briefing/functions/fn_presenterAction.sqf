@@ -12,8 +12,11 @@
 
 params [["_action", "", [""]], ["_arg", 0, [0, ""]]];
 
-// 指挥官标注只能用画图相关的操作
-if (BRF_role == "commander" && {!(_action in ["tool", "color", "iconKind", "arrow", "undo", "close", "follow"])}) exitWith {};
+// 指挥官标注只能用画图相关的操作；其余操作（开关简报、清屏、预案、权限、重建标记、接管……）必须是 Zeus 本人
+if (
+    !(_action in ["tool", "color", "iconKind", "arrow", "undo", "close", "follow"])
+    && {BRF_role == "commander" || {!(call BRF_fnc_canPresent)}}
+) exitWith {};
 
 private _display = uiNamespace getVariable ["BRF_presenter", displayNull];
 if (isNull _display) exitWith {};
