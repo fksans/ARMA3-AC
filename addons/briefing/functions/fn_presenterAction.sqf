@@ -5,7 +5,7 @@
  * Arguments:
  * 0: 操作 <STRING>
  *    "tool" 1-6 / "color" ±1 / "iconKind" / "arrow" / "focus" / "undo" / "clear"
- *    "session" / "toMarkers" / "clearMarkers" / "close" / "takeover" / "watch"
+ *    "session" / "toMarkers" / "clearMarkers" / "close" / "takeover" / "watch" / "plan"（编排模式开关）
  * 1: 参数 <NUMBER>（tool：工具序号；color：方向）
  */
 
@@ -44,10 +44,13 @@ switch (_action) do {
         };
     };
     case "undo": {
-        [] call BRF_fnc_undo;
+        if (BRF_planEdit) then {["undo"] call BRF_fnc_plan} else {[] call BRF_fnc_undo};
     };
     case "clear": {
-        [] call BRF_fnc_clear;
+        if (BRF_planEdit) then {["clear"] call BRF_fnc_plan} else {[] call BRF_fnc_clear};
+    };
+    case "plan": {
+        ["toggleEdit"] call BRF_fnc_plan;
     };
     case "session": {
         if (call BRF_fnc_isHost) then {

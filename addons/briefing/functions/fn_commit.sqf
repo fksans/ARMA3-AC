@@ -12,6 +12,8 @@
  *    ring: [圆心, 半径米]
  *    area: [顶点(3D)]
  *
+ * 编排模式下不发送，而是放进预案的当前步（见 BRF_fnc_plan）。
+ *
  * Return Value:
  * 发出的元素 id <STRING>，没有发出时为 ""
  */
@@ -82,17 +84,18 @@ switch (_type) do {
 
 if (_data isEqualTo []) exitWith {""};
 
+// 编排模式：放进预案的当前步，不发给任何人
+if (BRF_planEdit) exitWith {
+    ["add", _type, _data] call BRF_fnc_plan;
+    ""
+};
+
 if ({(_x select E_T1) < 0} count BRF_els >= MAX_ELEMENTS) exitWith {
     [format [localize "STR_BRF_MsgTooMany", MAX_ELEMENTS], [1, 0.4, 0.4, 1]] call BRF_fnc_presenterMessage;
     ""
 };
 
-// id = clientOwner_序号；带上 clientOwner 是为了换主持人时不撞号
-private _id = "";
-while {_id == "" || {_id in BRF_elMap}} do {
-    BRF_seq = BRF_seq + 1;
-    _id = format ["%1_%2", clientOwner, BRF_seq];
-};
+private _id = [] call BRF_fnc_newId;
 
 ["add", [_id, _type, BRF_color, _data]] call BRF_fnc_send;
 BRF_undoStack pushBack _id;

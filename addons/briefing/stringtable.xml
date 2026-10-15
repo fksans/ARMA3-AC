@@ -106,6 +106,11 @@
             <English>Drag to draw; release with Shift = straight, with Alt = dashed; A toggles the arrow</English>
             <Chinesesimp>拖拽画线；按住 Shift 松开 = 直线，按住 Alt 松开 = 虚线；A 切换箭头</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_HintPlanEdit">
+            <Original>编排：画的东西只有你看得到 · N 新一步 · [ ] 切换步骤 · V 记录视角 · C 镜头开关 · Del 删除本步 · P 退出</Original>
+            <English>Plan edit: only you see this · N new step · [ ] switch step · V record view · C camera on/off · Del delete step · P exit</English>
+            <Chinesesimp>编排：画的东西只有你看得到 · N 新一步 · [ ] 切换步骤 · V 记录视角 · C 镜头开关 · Del 删除本步 · P 退出</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_HintPointer">
             <Original>按住左键，所有人看到红点跟随</Original>
             <English>Hold the left button, everyone sees the red dot</English>
@@ -115,6 +120,186 @@
             <Original>按下定圆心，拖动定半径，松开提交</Original>
             <English>Press for the center, drag for the radius, release to place</English>
             <Chinesesimp>按下定圆心，拖动定半径，松开提交</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconAa">
+            <Original>防空</Original>
+            <English>Anti-air</English>
+            <Chinesesimp>防空</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconAirfield">
+            <Original>机场</Original>
+            <English>Airfield</English>
+            <Chinesesimp>机场</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconAmbush">
+            <Original>伏击点</Original>
+            <English>Ambush</English>
+            <Chinesesimp>伏击点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconArmor">
+            <Original>装甲</Original>
+            <English>Armor</English>
+            <Chinesesimp>装甲</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconArt">
+            <Original>炮兵</Original>
+            <English>Artillery</English>
+            <Chinesesimp>炮兵</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconBridge">
+            <Original>桥梁</Original>
+            <English>Bridge</English>
+            <Chinesesimp>桥梁</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatAirSea">
+            <Original>空中 / 海上</Original>
+            <English>Air / sea</English>
+            <Chinesesimp>空中 / 海上</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatBasic">
+            <Original>基础</Original>
+            <English>Basic</English>
+            <Chinesesimp>基础</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatFacility">
+            <Original>设施</Original>
+            <English>Facilities</English>
+            <Chinesesimp>设施</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatGround">
+            <Original>地面单位</Original>
+            <English>Ground units</English>
+            <Chinesesimp>地面单位</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatTactical">
+            <Original>战术标记</Original>
+            <English>Tactical</English>
+            <Chinesesimp>战术标记</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCheckpoint">
+            <Original>检查站</Original>
+            <English>Checkpoint</English>
+            <Chinesesimp>检查站</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconComms">
+            <Original>通信站</Original>
+            <English>Comms</English>
+            <Chinesesimp>通信站</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconDanger">
+            <Original>雷区 / 危险</Original>
+            <English>Danger / mines</English>
+            <Chinesesimp>雷区 / 危险</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconExtract">
+            <Original>撤离点</Original>
+            <English>Extraction</English>
+            <Chinesesimp>撤离点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconFuel">
+            <Original>油库</Original>
+            <English>Fuel</English>
+            <Chinesesimp>油库</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconHeli">
+            <Original>直升机</Original>
+            <English>Helicopter</English>
+            <Chinesesimp>直升机</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconHq">
+            <Original>指挥部</Original>
+            <English>HQ</English>
+            <Chinesesimp>指挥部</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconIed">
+            <Original>IED</Original>
+            <English>IED</English>
+            <Chinesesimp>IED</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconInf">
+            <Original>步兵</Original>
+            <English>Infantry</English>
+            <Chinesesimp>步兵</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconLanding">
+            <Original>登陆艇</Original>
+            <English>Landing craft</English>
+            <Chinesesimp>登陆艇</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconMech">
+            <Original>机械化步兵</Original>
+            <English>Mechanized</English>
+            <Chinesesimp>机械化步兵</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconMed">
+            <Original>医疗点</Original>
+            <English>Medical</English>
+            <Chinesesimp>医疗点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconMortar">
+            <Original>迫击炮</Original>
+            <English>Mortar</English>
+            <Chinesesimp>迫击炮</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconMotor">
+            <Original>摩托化步兵</Original>
+            <English>Motorized</English>
+            <Chinesesimp>摩托化步兵</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconOp">
+            <Original>观察哨</Original>
+            <English>Observation post</English>
+            <Chinesesimp>观察哨</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconPanel">
+            <Original>图标库（Tab 循环）</Original>
+            <English>Icons (Tab cycles)</English>
+            <Chinesesimp>图标库（Tab 循环）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconPlane">
+            <Original>固定翼</Original>
+            <English>Fixed-wing</English>
+            <Chinesesimp>固定翼</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconRadar">
+            <Original>雷达站</Original>
+            <English>Radar</English>
+            <Chinesesimp>雷达站</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconRally">
+            <Original>集结点</Original>
+            <English>Rally point</English>
+            <Chinesesimp>集结点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconRecon">
+            <Original>侦察</Original>
+            <English>Recon</English>
+            <Chinesesimp>侦察</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconShip">
+            <Original>舰船</Original>
+            <English>Ship</English>
+            <Chinesesimp>舰船</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconSniper">
+            <Original>狙击手</Original>
+            <English>Sniper</English>
+            <Chinesesimp>狙击手</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconSupply">
+            <Original>补给点</Original>
+            <English>Supply</English>
+            <Chinesesimp>补给点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconUav">
+            <Original>无人机</Original>
+            <English>UAV</English>
+            <Chinesesimp>无人机</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconVip">
+            <Original>人质 / VIP</Original>
+            <English>Hostage / VIP</English>
+            <Chinesesimp>人质 / VIP</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_IntroDataLink">
             <Original>DATA LINK</Original>
@@ -206,6 +391,61 @@
             <English>Nothing to undo</English>
             <Chinesesimp>没有可以撤销的</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_MsgPlanAtStart">
+            <Original>还没有播放任何一步</Original>
+            <English>No step has been played yet</English>
+            <Chinesesimp>还没有播放任何一步</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanBack">
+            <Original>已撤回，当前 %1 / %2 步</Original>
+            <English>Stepped back, now %1 / %2</English>
+            <Chinesesimp>已撤回，当前 %1 / %2 步</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanClearConfirm">
+            <Original>3 秒内再按一次清空整个预案</Original>
+            <English>Press again within 3 s to clear the whole plan</English>
+            <Chinesesimp>3 秒内再按一次清空整个预案</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanCleared">
+            <Original>预案已清空</Original>
+            <English>Plan cleared</English>
+            <Chinesesimp>预案已清空</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanDeleteConfirm">
+            <Original>这一步有内容，3 秒内再按一次 Del 删除</Original>
+            <English>This step has content, press Del again within 3 s to delete it</English>
+            <Chinesesimp>这一步有内容，3 秒内再按一次 Del 删除</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanDone">
+            <Original>预案已经全部播完，按 ← 撤回</Original>
+            <English>Plan finished, press ← to step back</English>
+            <Chinesesimp>预案已经全部播完，按 ← 撤回</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanEditOff">
+            <Original>退出编排，预案共 %1 步，按 → 播放</Original>
+            <English>Plan saved with %1 steps, press → to play</English>
+            <Chinesesimp>退出编排，预案共 %1 步，按 → 播放</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanEditOn">
+            <Original>编排模式：画的东西只进预案，玩家看不到</Original>
+            <English>Plan edit: what you draw goes into the plan, players can't see it</English>
+            <Chinesesimp>编排模式：画的东西只进预案，玩家看不到</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanEmpty">
+            <Original>还没有预案，按 P 开始编排</Original>
+            <English>No plan yet, press P to start editing</English>
+            <Chinesesimp>还没有预案，按 P 开始编排</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanStep">
+            <Original>预案第 %1 / %2 步</Original>
+            <English>Plan step %1 / %2</English>
+            <Chinesesimp>预案第 %1 / %2 步</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanViewRecorded">
+            <Original>已把当前视角记为这一步的镜头</Original>
+            <English>Current view recorded for this step</English>
+            <Chinesesimp>已把当前视角记为这一步的镜头</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_MsgStarted">
             <Original>简报开始，所有玩家已打开观看界面</Original>
             <English>Briefing started, every player is watching</English>
@@ -240,6 +480,41 @@
             <Original>DATA LINK TERMINATED</Original>
             <English>DATA LINK TERMINATED</English>
             <Chinesesimp>DATA LINK TERMINATED</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_Plan">
+            <Original>预案 P</Original>
+            <English>Plan P</English>
+            <Chinesesimp>预案 P</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanBannerEdit">
+            <Original>编排模式 · 第 %1 / %2 步 · 本步 %3 个元素 · 镜头：%4</Original>
+            <English>PLAN EDIT · step %1 / %2 · %3 elements · camera: %4</English>
+            <Chinesesimp>编排模式 · 第 %1 / %2 步 · 本步 %3 个元素 · 镜头：%4</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanBannerPlay">
+            <Original>预案 %1 / %2 · → 下一步 · ← 撤回 · P 编排</Original>
+            <English>Plan %1 / %2 · → next · ← back · P edit</English>
+            <Chinesesimp>预案 %1 / %2 · → 下一步 · ← 撤回 · P 编排</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanCamOff">
+            <Original>不动</Original>
+            <English>stay</English>
+            <Chinesesimp>不动</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanCamOn">
+            <Original>飞过去</Original>
+            <English>fly</English>
+            <Chinesesimp>飞过去</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanEditing">
+            <Original>■ 编排中</Original>
+            <English>■ Editing</English>
+            <Chinesesimp>■ 编排中</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanTooltip">
+            <Original>编排预案（P）：把内容分步画好，讲的时候按 → 一步步展示，按 ← 撤回</Original>
+            <English>Edit the plan (P): draw your briefing in steps, then press → to reveal them one by one and ← to take a step back</English>
+            <Chinesesimp>编排预案（P）：把内容分步画好，讲的时候按 → 一步步展示，按 ← 撤回</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_SessionEnd">
             <Original>■ 结束简报</Original>

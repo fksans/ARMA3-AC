@@ -95,6 +95,7 @@ _label ctrlAddEventHandler ["KeyDown", {["key", _this] call BRF_fnc_input}];
     [IDC_BRF_P_SESSION, "session"],
     [IDC_BRF_P_MARKERS, "toMarkers"],
     [IDC_BRF_P_CLEAR_MARKERS, "clearMarkers"],
+    [IDC_BRF_P_PLAN, "plan"],
     [IDC_BRF_P_CLOSE, "close"],
     [IDC_BRF_P_TAKEOVER, "takeover"],
     [IDC_BRF_P_WATCH, "watch"]
@@ -124,6 +125,36 @@ if (lbCurSel _bgm < 0) then {_bgm lbSetCurSel 0};
 _bgm ctrlAddEventHandler ["LBSelChanged", {
     params ["_ctrl", "_index"];
     profileNamespace setVariable ["BRF_bgm", _ctrl lbData _index];
+    ctrlSetFocus ((ctrlParent _ctrl) displayCtrl IDC_BRF_MAP);
+}];
+
+// ---- 图标面板：类别标题行（值 -1，不能选）+ 图标行（值 = BRF_iconKinds 里的序号） ----
+private _iconList = _display displayCtrl IDC_BRF_P_ICON_LIST;
+BRF_iconRows = createHashMap;
+{
+    private _category = _forEachIndex;
+    private _header = _iconList lbAdd format ["— %1 —", localize _x];
+    _iconList lbSetValue [_header, -1];
+    _iconList lbSetColor [_header, [0.40, 0.90, 0.80, 0.6]];
+    {
+        _x params ["_kind", "_nameKey", "_abbr", "_texture", "", "_cat"];
+        if (_cat != _category) then {continue};
+        private _row = _iconList lbAdd format ["%1  %2", localize _nameKey, _abbr];
+        _iconList lbSetValue [_row, _forEachIndex];
+        if (_texture != "") then {
+            _iconList lbSetPicture [_row, _texture];
+        };
+        BRF_iconRows set [_forEachIndex, _row];
+    } forEach BRF_iconTable;
+} forEach BRF_iconCategories;
+_iconList ctrlAddEventHandler ["LBSelChanged", {
+    params ["_ctrl", "_row"];
+    if (uiNamespace getVariable ["BRF_suppressIconSel", false]) exitWith {};
+    private _index = _ctrl lbValue _row;
+    if (_index >= 0) then {
+        BRF_iconKind = _index;
+    };
+    [] call BRF_fnc_presenterUpdate;
     ctrlSetFocus ((ctrlParent _ctrl) displayCtrl IDC_BRF_MAP);
 }];
 

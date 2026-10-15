@@ -110,6 +110,10 @@ switch (_event) do {
                 ["set", _p] call BRF_fnc_pointer;
             };
             case TOOL_ERASER: {
+                if (BRF_planEdit) exitWith {
+                    private _id = [_map, _mx, _my, (BRF_plan select BRF_planEditStep) select 0] call BRF_fnc_hitTest;
+                    if (_id != "") then {["erase", _id] call BRF_fnc_plan};
+                };
                 private _id = [_map, _mx, _my] call BRF_fnc_hitTest;
                 if (_id != "") then {
                     ["del", _id] call BRF_fnc_send;
@@ -142,7 +146,11 @@ switch (_event) do {
                 ["set", _p] call BRF_fnc_pointer;
             };
             case TOOL_ERASER: {
-                BRF_hoverId = [_map, _mx, _my] call BRF_fnc_hitTest;
+                BRF_hoverId = if (BRF_planEdit) then {
+                    [_map, _mx, _my, (BRF_plan select BRF_planEditStep) select 0] call BRF_fnc_hitTest
+                } else {
+                    [_map, _mx, _my] call BRF_fnc_hitTest
+                };
             };
         };
     };
@@ -239,6 +247,20 @@ switch (_event) do {
                 case (_key == 0x21 && {!_ctrl}): {["focus"] call BRF_fnc_presenterAction};      // F
                 case (_key == 0x2C && {_ctrl}): {["undo"] call BRF_fnc_presenterAction};        // Ctrl+Z
                 case (_key == 0xD3 && {_ctrl} && {_shift}): {["clear"] call BRF_fnc_presenterAction}; // Ctrl+Shift+Del
+
+                // ---- 预案 ----
+                case (_key == 0x19 && {!_ctrl}): {["toggleEdit"] call BRF_fnc_plan};            // P
+                case (_key in [0xCD, 0xD1, 0x1B]): {                                            // → / PageDown / ]
+                    [["play", "nextStep"] select BRF_planEdit] call BRF_fnc_plan;
+                };
+                case (_key in [0xCB, 0xC9, 0x1A]): {                                            // ← / PageUp / [
+                    [["back", "prevStep"] select BRF_planEdit] call BRF_fnc_plan;
+                };
+                case (_key == 0xC7 && {!BRF_planEdit}): {["reset"] call BRF_fnc_plan};          // Home
+                case (BRF_planEdit && {_key == 0x31} && {!_ctrl}): {["newStep"] call BRF_fnc_plan};    // N
+                case (BRF_planEdit && {_key == 0x2F} && {!_ctrl}): {["recordView"] call BRF_fnc_plan}; // V
+                case (BRF_planEdit && {_key == 0x2E} && {!_ctrl}): {["toggleView"] call BRF_fnc_plan}; // C
+                case (BRF_planEdit && {_key == 0xD3}): {["deleteStep"] call BRF_fnc_plan};             // Delete
                 default {_handled = false};
             };
         };

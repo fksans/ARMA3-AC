@@ -7,7 +7,7 @@
  *   BRF_evt      最近一个事件            ["add", 元素] / ["del", id] / ["clear"] / ["session", 开关, 名字, clientOwner]
  *   BRF_state    当前全部元素             [[id, 类型, 颜色序号, 数据], ...]
  *   BRF_session  [是否进行中, 主持人名字, 主持人 clientOwner]
- *   BRF_view     [中心x, 中心y, 缩放]
+ *   BRF_view     [中心x, 中心y, 缩放, 补间秒数(可选)]
  *   BRF_ptr      激光笔 [x, y]，松开时为 []
  */
 
@@ -22,8 +22,49 @@ BRF_palette = [
 ];
 // 转地图标记时对应的 CfgMarkerColors
 BRF_markerColors = ["ColorBLUFOR", "ColorOPFOR", "ColorYellow", "ColorGreen"];
-// 图标种类
-BRF_iconKinds = ["tgt", "lz", "ip", "wp"];
+// ---- 图标库 ----
+// [种类, 名字的 stringtable 键, 缩写（标签留空时显示）, 贴图（"" = 程序绘制的基础图形）, 转地图标记的类型, 类别]
+// 标记类型以 b_ 开头时，转标记会按颜色换成 b_ / o_ / n_ 阵营前缀；游戏里没有的类型退回 mil_dot。
+private _iconTex = {format ["\z\brf\addons\briefing\ui\icons\%1_ca.paa", _this]};
+BRF_iconTable = [
+    ["tgt", "STR_BRF_KindTgt", "TGT", "", "mil_destroy", 0],
+    ["lz", "STR_BRF_KindLz", "LZ", "", "mil_pickup", 0],
+    ["ip", "STR_BRF_KindIp", "IP", "", "mil_start", 0],
+    ["wp", "STR_BRF_KindWp", "WP", "", "mil_dot", 0],
+    ["inf", "STR_BRF_IconInf", "INF", "inf" call _iconTex, "b_inf", 1],
+    ["armor", "STR_BRF_IconArmor", "ARMOR", "armor" call _iconTex, "b_armor", 1],
+    ["mech", "STR_BRF_IconMech", "MECH", "mech" call _iconTex, "b_mech_inf", 1],
+    ["motor", "STR_BRF_IconMotor", "MOTOR", "motor" call _iconTex, "b_motor_inf", 1],
+    ["art", "STR_BRF_IconArt", "ARTY", "art" call _iconTex, "b_art", 1],
+    ["mortar", "STR_BRF_IconMortar", "MORTAR", "mortar" call _iconTex, "b_mortar", 1],
+    ["aa", "STR_BRF_IconAa", "AA", "aa" call _iconTex, "b_antiair", 1],
+    ["recon", "STR_BRF_IconRecon", "RECON", "recon" call _iconTex, "b_recon", 1],
+    ["sniper", "STR_BRF_IconSniper", "SNIPER", "sniper" call _iconTex, "b_recon", 1],
+    ["heli", "STR_BRF_IconHeli", "HELO", "heli" call _iconTex, "b_air", 2],
+    ["plane", "STR_BRF_IconPlane", "AIR", "plane" call _iconTex, "b_plane", 2],
+    ["uav", "STR_BRF_IconUav", "UAV", "uav" call _iconTex, "b_uav", 2],
+    ["ship", "STR_BRF_IconShip", "SHIP", "ship" call _iconTex, "b_naval", 2],
+    ["landing", "STR_BRF_IconLanding", "LCU", "landing" call _iconTex, "b_naval", 2],
+    ["hq", "STR_BRF_IconHq", "HQ", "hq" call _iconTex, "b_hq", 3],
+    ["supply", "STR_BRF_IconSupply", "SUPPLY", "supply" call _iconTex, "b_support", 3],
+    ["med", "STR_BRF_IconMed", "MED", "med" call _iconTex, "b_med", 3],
+    ["radar", "STR_BRF_IconRadar", "RADAR", "radar" call _iconTex, "b_installation", 3],
+    ["bridge", "STR_BRF_IconBridge", "BRIDGE", "bridge" call _iconTex, "mil_box", 3],
+    ["airfield", "STR_BRF_IconAirfield", "AIRFIELD", "airfield" call _iconTex, "b_installation", 3],
+    ["fuel", "STR_BRF_IconFuel", "FUEL", "fuel" call _iconTex, "b_service", 3],
+    ["comms", "STR_BRF_IconComms", "COMMS", "comms" call _iconTex, "b_installation", 3],
+    ["rally", "STR_BRF_IconRally", "RP", "rally" call _iconTex, "mil_flag", 4],
+    ["extract", "STR_BRF_IconExtract", "EXFIL", "extract" call _iconTex, "mil_pickup", 4],
+    ["danger", "STR_BRF_IconDanger", "DANGER", "danger" call _iconTex, "mil_warning", 4],
+    ["op", "STR_BRF_IconOp", "OP", "op" call _iconTex, "mil_triangle", 4],
+    ["checkpoint", "STR_BRF_IconCheckpoint", "CP", "checkpoint" call _iconTex, "mil_box", 4],
+    ["vip", "STR_BRF_IconVip", "VIP", "vip" call _iconTex, "mil_objective", 4],
+    ["ied", "STR_BRF_IconIed", "IED", "ied" call _iconTex, "mil_warning", 4],
+    ["ambush", "STR_BRF_IconAmbush", "AMBUSH", "ambush" call _iconTex, "mil_ambush", 4]
+];
+BRF_iconKinds = BRF_iconTable apply {_x select 0};
+BRF_iconDefs = createHashMapFromArray (BRF_iconTable apply {[_x select 0, _x]});
+BRF_iconCategories = ["STR_BRF_IconCatBasic", "STR_BRF_IconCatGround", "STR_BRF_IconCatAirSea", "STR_BRF_IconCatFacility", "STR_BRF_IconCatTactical"];
 
 // 程序纹理（不需要贴图）
 BRF_texWhite = "#(rgb,8,8,3)color(1,1,1,1)";
@@ -63,10 +104,20 @@ BRF_ptrSent = [];
 BRF_ptrLastTime = 0;
 BRF_bgmPlaying = false;
 
+// ---- 预案（只在主持人本机、只在这一局有效，见 BRF_fnc_plan）----
+BRF_plan = [];                  // [[元素记录, 视角, 是否用镜头], ...]
+BRF_planEdit = false;           // 编排模式
+BRF_planEditStep = 0;           // 正在编辑的步
+BRF_planPlayed = [];            // 已播放的步：[[发出的 id...], ...]
+BRF_planTokens = [];            // 和 BRF_planPlayed 一一对应，撤回时作废还没出现的元素
+BRF_planSeq = 0;
+BRF_planTokenSeq = 0;
+BRF_viewSyncPauseUntil = 0;     // 预案镜头飞行期间不发中间视角
+
 // ---- 中途加入：公共变量的值在 init 之前就已经送达 ----
 if (isNil "BRF_state" || {!(BRF_state isEqualType [])}) then {BRF_state = []};
 if (isNil "BRF_session" || {!(BRF_session isEqualTypeArray [false, "", 0])}) then {BRF_session = [false, "", -1]};
-if (isNil "BRF_view" || {!(BRF_view isEqualTypeArray [0, 0, 0])}) then {BRF_view = []};
+if (isNil "BRF_view" || {!(BRF_view isEqualType [])} || {count BRF_view < 3}) then {BRF_view = []};
 
 // 已有元素直接设为「已播完」
 ["sync"] call BRF_fnc_onEvent;
@@ -81,14 +132,14 @@ if (isNil "BRF_view" || {!(BRF_view isEqualTypeArray [0, 0, 0])}) then {BRF_view
 
 "BRF_view" addPublicVariableEventHandler {
     private _view = _this select 1;
-    if !(_view isEqualTypeArray [0, 0, 0]) exitWith {};
+    if (!(_view isEqualType []) || {count _view < 3}) exitWith {};
     if (!BRF_follow) exitWith {};
     private _map = (uiNamespace getVariable ["BRF_viewer", displayNull]) displayCtrl IDC_BRF_MAP;
     if (isNull _map) exitWith {};
-    _view params ["_cx", "_cy", "_scale"];
-    // 0.3 秒的补间正好填平 0.2 秒一次的发送间隔
+    // 第 4 项是补间时长：平时 0.3 秒正好填平 0.2 秒一次的发送间隔；预案切换镜头时更长
+    _view params ["_cx", "_cy", "_scale", ["_duration", 0.3, [0]]];
     ctrlMapAnimClear _map;
-    _map ctrlMapAnimAdd [0.3, _scale, [_cx, _cy]];
+    _map ctrlMapAnimAdd [_duration, _scale, [_cx, _cy]];
     ctrlMapAnimCommit _map;
 };
 

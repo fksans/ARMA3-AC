@@ -11,6 +11,7 @@
 params ["_map", ["_force", false]];
 
 if !(call BRF_fnc_isHost) exitWith {};
+if (!_force && {diag_tickTime < BRF_viewSyncPauseUntil}) exitWith {};
 
 ctrlPosition _map params ["_x0", "_y0", "_w", "_h"];
 private _center = _map ctrlMapScreenToWorld [_x0 + _w / 2, _y0 + _h / 2];

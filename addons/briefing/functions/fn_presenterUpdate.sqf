@@ -24,6 +24,25 @@ if (BRF_locked) then {
     ];
 };
 
+// ---- 图标面板：只在目标点工具时显示；选中当前种类，图标按当前颜色着色 ----
+private _iconList = _display displayCtrl IDC_BRF_P_ICON_LIST;
+private _showIcons = BRF_tool == TOOL_ICON && {!BRF_locked};
+_iconList ctrlShow _showIcons;
+(_display displayCtrl IDC_BRF_P_ICON_TITLE) ctrlShow _showIcons;
+if (_showIcons) then {
+    private _row = BRF_iconRows getOrDefault [BRF_iconKind, -1];
+    if (_row >= 0 && {lbCurSel _iconList != _row}) then {
+        uiNamespace setVariable ["BRF_suppressIconSel", true];
+        _iconList lbSetCurSel _row;
+        uiNamespace setVariable ["BRF_suppressIconSel", false];
+    };
+    private _tint = BRF_palette select BRF_color;
+    {
+        _iconList lbSetPictureColor [_y, _tint];
+        _iconList lbSetPictureColorSelected [_y, _tint];
+    } forEach BRF_iconRows;
+};
+
 // ---- 工具按钮：当前工具高亮 ----
 for "_tool" from TOOL_LINE to TOOL_ERASER do {
     private _ctrl = _display displayCtrl (IDC_BRF_P_TOOL + _tool);
@@ -59,6 +78,36 @@ if (_isHost) then {
     _ctrlSession ctrlSetBackgroundColor [0.10, 0.30, 0.15, 0.95];
 };
 
+// ---- 预案：按钮、状态条 ----
+private _ctrlPlan = _display displayCtrl IDC_BRF_P_PLAN;
+private _banner = _display displayCtrl IDC_BRF_P_PLAN_BANNER;
+if (BRF_planEdit) then {
+    _ctrlPlan ctrlSetText localize "STR_BRF_PlanEditing";
+    _ctrlPlan ctrlSetBackgroundColor [0.55, 0.35, 0.05, 0.95];
+    (BRF_plan select BRF_planEditStep) params ["_records", "_view", "_useView"];
+    _banner ctrlSetText format [
+        localize "STR_BRF_PlanBannerEdit",
+        BRF_planEditStep + 1,
+        count BRF_plan,
+        count _records,
+        localize (["STR_BRF_PlanCamOff", "STR_BRF_PlanCamOn"] select (_useView && {_view isNotEqualTo []}))
+    ];
+    _banner ctrlSetTextColor [1, 0.8, 0.4, 1];
+    _banner ctrlSetBackgroundColor [0.25, 0.15, 0, 0.9];
+    _banner ctrlShow true;
+} else {
+    _ctrlPlan ctrlSetText localize "STR_BRF_Plan";
+    _ctrlPlan ctrlSetBackgroundColor [0.05, 0.16, 0.17, 0.9];
+    private _steps = {(_x select 0) isNotEqualTo []} count BRF_plan;
+    _banner ctrlShow (_steps > 0);
+    if (_steps > 0) then {
+        _banner ctrlSetText format [localize "STR_BRF_PlanBannerPlay", count BRF_planPlayed min count BRF_plan, count BRF_plan];
+        _banner ctrlSetTextColor [0.55, 1, 0.9, 1];
+        _banner ctrlSetBackgroundColor [0, 0.03, 0.04, 0.85];
+    };
+};
+if (BRF_locked) then {_banner ctrlShow false};
+
 // ---- 状态栏 ----
 private _toolNames = [
     "STR_BRF_ToolLine",
@@ -76,12 +125,7 @@ private _toolHints = [
     "STR_BRF_HintPointer",
     "STR_BRF_HintEraser"
 ] apply {localize _x};
-private _kindNames = [
-    "STR_BRF_KindTgt",
-    "STR_BRF_KindLz",
-    "STR_BRF_KindIp",
-    "STR_BRF_KindWp"
-] apply {localize _x};
+private _kindName = localize ((BRF_iconTable select BRF_iconKind) select 1);
 
 private _sessionText = if (_active) then {
     format [localize "STR_BRF_StatusRunning", _hostName]
@@ -93,9 +137,9 @@ private _sessionText = if (_active) then {
     localize "STR_BRF_StatusFormat",
     _toolNames select (BRF_tool - 1),
     _colorName,
-    _kindNames select BRF_iconKind,
+    _kindName,
     _sessionText,
     {(_x select E_T1) < 0} count BRF_els,
     MAX_ELEMENTS,
-    _toolHints select (BRF_tool - 1)
+    [_toolHints select (BRF_tool - 1), localize "STR_BRF_HintPlanEdit"] select BRF_planEdit
 ];

@@ -21,6 +21,7 @@ class CfgFunctions {
             class presenterMessage {};
             class input {};
             class commit {};
+            class newId {};
             class simplify {};
             class smooth {};
             class segDist {};
@@ -41,10 +42,13 @@ class CfgFunctions {
             class viewerUpdate {};
             class viewerIntro {};
             class viewerOutro {};
+            // 预案
+            class plan {};
             // 测试
             class demo {};
             // 渲染（主持端和观看端共用）
             class render {};
+            class renderElement {};
             class renderIcon {};
             class renderRing {};
             class renderArea {};

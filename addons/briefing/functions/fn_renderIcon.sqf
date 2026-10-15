@@ -1,7 +1,8 @@
 #include "..\script_component.hpp"
 /*
  * 画图标元素：落下（3 倍缩到 1 倍）→ 闪烁 3 次（每次「滴」一声）→ 标签逐字打出 → 外圈角括号缓慢呼吸。
- * 全部用程序纹理和 drawLine 画，不需要贴图；drawIcon 的尺寸不随地图缩放变化。
+ * 基础的 4 种（目标 / 着陆区 / 起始点 / 航点）用程序纹理和 drawLine 画；图标库里的用 ui\icons 里的白色贴图，
+ * 按元素颜色着色。drawIcon 的尺寸不随地图缩放变化。
  *
  * Arguments:
  * 0: 地图控件 <CONTROL>
@@ -41,6 +42,10 @@ if (_blinkAge >= 0 && {_blinkAge < ICON_BLINK_TIME}) then {
 
 // 图形（像素偏移，y 向上）
 private _h = _s / 2;
+private _texture = (BRF_iconDefs getOrDefault [_kind, ["", "", "", ""]]) select 3;
+if (_texture != "") then {
+    _map drawIcon [_texture, _c, _pos, _s * 1.4, _s * 1.4, 0];
+} else {
 switch (_kind) do {
     case "lz": {
         // 空心方框 + 中心点
@@ -60,6 +65,7 @@ switch (_kind) do {
         // tgt：实心菱形
         _map drawIcon [BRF_texWhite, _c, _pos, _s * 0.7, _s * 0.7, 45];
     };
+};
 };
 
 if (_age < ICON_DROP_TIME) exitWith {};

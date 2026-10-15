@@ -25,12 +25,8 @@ if (_mode == "clear") exitWith {0};
 
 BRF_markerBatch = (missionNamespace getVariable ["BRF_markerBatch", 0]) + 1;
 
-private _iconTypes = createHashMapFromArray [
-    ["tgt", "mil_destroy"],
-    ["lz", "mil_pickup"],
-    ["ip", "mil_start"],
-    ["wp", "mil_dot"]
-];
+// b_ 开头的北约兵种标记按颜色换阵营：友军 b_、敌军 o_、注意 / 目标 n_
+private _sidePrefix = ["b_", "o_", "n_", "n_"];
 
 private _count = 0;
 {
@@ -75,8 +71,14 @@ private _count = 0;
             _data params ["_pos", "_kind", "_label"];
             private _m = createMarker [_name, _pos];
             if (_m == "") exitWith {};
-            _m setMarkerTypeLocal (_iconTypes getOrDefault [_kind, "mil_dot"]);
-            _m setMarkerTextLocal ([_label, toUpper _kind] select (_label == ""));
+            private _def = BRF_iconDefs getOrDefault [_kind, ["", "", toUpper _kind, "", "mil_dot"]];
+            private _type = _def select 4;
+            if (_type select [0, 2] == "b_") then {
+                _type = (_sidePrefix select _colorIndex) + (_type select [2]);
+            };
+            if !(isClass (configFile >> "CfgMarkers" >> _type)) then {_type = "mil_dot"};
+            _m setMarkerTypeLocal _type;
+            _m setMarkerTextLocal ([_label, _def select 2] select (_label == ""));
             _m setMarkerColorLocal _color;
             _m setMarkerAlpha 1;
             _count = _count + 1;

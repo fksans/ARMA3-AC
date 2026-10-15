@@ -68,6 +68,10 @@
 #define MIN_STEP_PX 4
 #define SIMPLIFY_PX 3
 
+// 预案播放：镜头飞行时间、同一步里元素之间的间隔（秒）
+#define PLAN_FLY_TIME 0.8
+#define PLAN_ELEMENT_GAP 0.15
+
 // 地图叠加（BRF_fnc_renderOverlay）
 #define HOUSE_MAX_MPP 1.6
 #define HOUSE_MAX_RADIUS 1500

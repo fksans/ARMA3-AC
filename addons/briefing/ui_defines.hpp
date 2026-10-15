@@ -34,9 +34,15 @@
 #define IDC_BRF_P_MARKERS 1216
 #define IDC_BRF_P_CLEAR_MARKERS 1217
 #define IDC_BRF_P_CLOSE 1218
+#define IDC_BRF_P_PLAN 1219
 #define IDC_BRF_P_STATUS 1220
 #define IDC_BRF_P_MESSAGE 1221
 #define IDC_BRF_P_LABEL 1230
+// 图标面板（目标点工具时显示在左侧）
+#define IDC_BRF_P_ICON_TITLE 1250
+#define IDC_BRF_P_ICON_LIST 1251
+// 预案状态条（工具栏下方居中）
+#define IDC_BRF_P_PLAN_BANNER 1260
 // 主持权被别人占用时的遮罩
 #define IDC_BRF_P_LOCK_BG 1240
 #define IDC_BRF_P_LOCK_TEXT 1241

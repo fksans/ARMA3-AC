@@ -8,6 +8,7 @@ class ctrlStructuredText;
 class ctrlButton;
 class ctrlEdit;
 class ctrlCombo;
+class ctrlListbox;
 
 // ---------------------------------------------------------------------------
 // 暗色地图：颜色全部压暗并换成青绿单色调，关掉卫星图和任务标记。
@@ -305,12 +306,29 @@ class BRF_Presenter {
             tooltip = "$STR_BRF_ClearMarkersTooltip";
             x = QUOTE(BTN_X(14));
         };
+        class Plan: BRF_RscButton {
+            idc = IDC_BRF_P_PLAN;
+            tooltip = "$STR_BRF_PlanTooltip";
+            x = QUOTE(BTN_X(15));
+        };
         class Close: BRF_RscButton {
             idc = IDC_BRF_P_CLOSE;
             text = "X";
             tooltip = "$STR_BRF_CloseTooltip";
-            x = QUOTE(BTN_X(15));
+            x = QUOTE(BTN_X(16));
             w = QUOTE(BTN_W * 0.5);
+        };
+
+        // ---- 预案状态条：编排模式（橙色）/ 有预案时的播放进度（青色）----
+        class PlanBanner: BRF_RscText {
+            idc = IDC_BRF_P_PLAN_BANNER;
+            style = 2; // ST_CENTER
+            sizeEx = QUOTE(TXT_SIZE_SMALL);
+            x = QUOTE(safezoneX + 0.25 * safezoneW);
+            y = QUOTE(safezoneY + BAR_H + 0.008 * safezoneH);
+            w = QUOTE(0.5 * safezoneW);
+            h = QUOTE(0.032 * safezoneH);
+            colorBackground[] = {0, 0.03, 0.04, 0.85};
         };
 
         // ---- 底部状态栏 ----
@@ -334,6 +352,30 @@ class BRF_Presenter {
             w = QUOTE(0.344 * safezoneW);
             h = QUOTE(0.03 * safezoneH);
             colorText[] = {1, 0.85, 0.4, 1};
+        };
+
+        // ---- 图标面板：目标点工具时显示，按类别列出全部图标 ----
+        class IconTitle: BRF_RscText {
+            idc = IDC_BRF_P_ICON_TITLE;
+            text = "$STR_BRF_IconPanel";
+            sizeEx = QUOTE(TXT_SIZE_SMALL);
+            x = QUOTE(safezoneX + 0.006 * safezoneW);
+            y = QUOTE(safezoneY + BAR_H + 0.008 * safezoneH);
+            w = QUOTE(0.15 * safezoneW);
+            h = QUOTE(0.03 * safezoneH);
+            colorBackground[] = {0, 0.03, 0.04, 0.85};
+        };
+        class IconList: ctrlListbox {
+            idc = IDC_BRF_P_ICON_LIST;
+            sizeEx = QUOTE(TXT_SIZE_SMALL);
+            rowHeight = QUOTE(0.034 * safezoneH);
+            x = QUOTE(safezoneX + 0.006 * safezoneW);
+            y = QUOTE(safezoneY + BAR_H + 0.038 * safezoneH);
+            w = QUOTE(0.15 * safezoneW);
+            h = QUOTE(0.62 * safezoneH);
+            colorBackground[] = {0, 0.03, 0.04, 0.85};
+            colorSelectBackground[] = {0.12, 0.38, 0.36, 1};
+            colorSelectBackground2[] = {0.12, 0.38, 0.36, 1};
         };
 
         // ---- 目标点标签输入框（放点时出现在鼠标旁边） ----
