@@ -37,7 +37,6 @@
 #define RING_PULSE_PERIOD 2
 #define AREA_STROKE_TIME 0.6
 #define AREA_FILL_TIME 0.4
-#define VIEWER_FADE_TIME 1
 
 // 开场动画（只在开始简报时播放），和 intro.ogg 对齐（tools/make_sounds.py 里同名的常量）：
 // 0 – 1.5 秒三声拖长的「嘀……」→ 1.55 秒中线从中心拉开 → 上下张开露出地图 → 标题淡入
@@ -49,6 +48,17 @@
 #define INTRO_OPEN_TIME 0.4
 #define INTRO_EDGE_FADE 0.6
 #define INTRO_TITLE_TIME 0.3
+
+// 结束动画（结束简报时播放），和 outro.ogg 对齐（tools/make_sounds.py 里的 CLOSE_START / CLOSE_AT / TAIL_BEEPS）：
+// 标题淡出 → 0.1 – 0.5 秒黑幕从上下合拢 → 亮线收向中心 → DATA LINK TERMINATED + 两声「嘀……」→ 关闭
+#define OUTRO_FADE_TIME 0.3
+#define OUTRO_CLOSE_START 0.1
+#define OUTRO_CLOSE_TIME 0.4
+#define OUTRO_LINE_TIME 0.22
+#define OUTRO_BEEP_1 0.8
+#define OUTRO_BEEP_2 1.3
+#define OUTRO_BEEP_LEN 0.3
+#define OUTRO_END 1.9
 
 // 固定屏幕尺寸（像素）
 #define LINE_WIDTH 3
@@ -76,6 +86,8 @@
 #define SOUND_OPEN "\z\brf\addons\briefing\sounds\open.ogg"
 // 开始简报时的开场：5 声「嘀」+ 展开（时间轴和 BRF_fnc_viewerIntro 一致）
 #define SOUND_INTRO "\z\brf\addons\briefing\sounds\intro.ogg"
+// 结束简报时的结束动画音效（和开场成对）
+#define SOUND_OUTRO "\z\brf\addons\briefing\sounds\outro.ogg"
 #define SOUND_CLOSE "\z\brf\addons\briefing\sounds\close.ogg"
 #define SOUND_DRAW "\z\brf\addons\briefing\sounds\draw_start.ogg"
 #define SOUND_PING "\z\brf\addons\briefing\sounds\ping.ogg"

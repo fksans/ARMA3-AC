@@ -10,7 +10,7 @@
 params ["_display"];
 
 uiNamespace setVariable ["BRF_viewer", _display];
-BRF_viewerFadeStart = -1;
+BRF_outroStart = -1;
 
 private _map = _display displayCtrl IDC_BRF_MAP;
 // 动态创建的地图控件第一次动画时目标位置可能偏移，先执行一次
@@ -19,6 +19,7 @@ _map ctrlAddEventHandler ["Draw", {
     params ["_map"];
     [_map, false] call BRF_fnc_render;
     [ctrlParent _map] call BRF_fnc_viewerIntro;
+    [ctrlParent _map] call BRF_fnc_viewerOutro;
 }];
 
 // 直接跳到主持人当前视角

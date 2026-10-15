@@ -40,7 +40,8 @@ BRF_viewBox = [0, 0, 0, 0];     // 当前可见范围 [minX, minY, maxX, maxY]
 BRF_follow = true;              // 观看端：跟随主持人视角
 BRF_ptrTarget = [];             // 激光笔目标位置（收到的）
 BRF_ptrPos = [];                // 激光笔显示位置（每帧向目标移动 30%）
-BRF_viewerFadeStart = -1;       // 观看界面淡出开始时间，-1 = 不在淡出
+BRF_outroStart = -1;            // 结束动画开始时间，-1 = 不在播放
+BRF_outroFaded = false;
 BRF_viewerIntroPending = false; // 下一次打开观看界面时播放开场动画
 BRF_introStart = -1;            // 开场动画开始时间，-1 = 不在播放
 BRF_introTitleShown = false;

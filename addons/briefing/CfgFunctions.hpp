@@ -40,6 +40,7 @@ class CfgFunctions {
             class viewerOnUnload {};
             class viewerUpdate {};
             class viewerIntro {};
+            class viewerOutro {};
             // 测试
             class demo {};
             // 渲染（主持端和观看端共用）

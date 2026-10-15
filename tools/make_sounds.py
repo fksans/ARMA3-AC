@@ -186,3 +186,29 @@ buf[1, i0:i0 + m] += 0.08 * e * (mid * (1 - width) + nr * width)
 # 展开那一下用同一个「嘀」音色轻轻收尾，和前面呼应
 place(buf, soft_beep(1046.5, 0.12), UNFOLD, 0.22)
 save('intro', finish(reverb(buf, 0.22, 0.14, 0.02), 0.6))
+
+# ---- outro：结束简报——和开场成对：数据流从两边向中间收拢 → 合上时一声闷「嘀」→ 两声渐弱的「嘀……」----
+# 时间轴和 script_component.hpp 的 OUTRO_* 一致：黑幕 0.10 – 0.50 合拢，0.50 合上，嘀 0.80 / 1.30
+CLOSE_START, CLOSE_AT, TAIL_BEEPS = 0.10, 0.50, (0.80, 1.30)
+buf = sound(2.6)
+n = 40
+for i in range(n):
+    k = i / (n - 1)
+    at = CLOSE_START + (CLOSE_AT - CLOSE_START - 0.02) * k ** 0.8
+    side = 1 if i % 2 else -1
+    place(buf, filt(tick(3600 + 2200 * rng.random()), 'lowpass', 7000), at, 0.08 + 0.08 * k, side * max(0.05, 1 - 0.95 * k))
+# 很轻的「刷」，从宽到窄（和开场相反）
+m = int((CLOSE_AT - CLOSE_START + 0.05) * SR)
+tt = np.arange(m) / SR
+e = np.clip(tt / (m / SR), 0, 1) ** 2 * np.exp(-np.maximum(tt - (m / SR - 0.05), 0) / 0.03)
+nl = filt(rng.standard_normal(m), 'bandpass', [1800, 7000])
+nr = filt(rng.standard_normal(m), 'bandpass', [1800, 7000])
+width = 1 - np.clip(tt / (m / SR), 0, 1)
+mid = (nl + nr) / 2
+i0 = int(CLOSE_START * SR)
+buf[0, i0:i0 + m] += 0.07 * e * (mid * (1 - width) + nl * width)
+buf[1, i0:i0 + m] += 0.07 * e * (mid * (1 - width) + nr * width)
+place(buf, soft_beep(1046.5, 0.12), CLOSE_AT, 0.26)
+for j, at in enumerate(TAIL_BEEPS):
+    place(buf, soft_beep(1046.5, 0.30), at, 0.24 * (1 - 0.45 * j))
+save('outro', finish(reverb(buf, 0.22, 0.14, 0.02), 0.55))

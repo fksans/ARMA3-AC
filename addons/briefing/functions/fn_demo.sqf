@@ -1,7 +1,7 @@
 #include "..\script_component.hpp"
 /*
- * 测试用（M1 渲染原型）：在本机打开观看界面，放一组写死的元素（线、虚线、图标、威胁圈、区域各一个），
- * 依次播放出场动画。只在本机，不发网络；会改动本机的 BRF_state，所以只能在单机 / 编辑器里用。
+ * 测试用（M1 渲染原型）：在本机打开观看界面（播开场动画），放一组写死的元素（线、虚线、图标、威胁圈、区域各一个），
+ * 依次播放出场动画，最后播结束动画并关闭。只在本机，不发网络；会改动本机的 BRF_state，所以只能在单机 / 编辑器里用。
  *
  * Arguments:
  * 0: 中心位置 <ARRAY> (default: 玩家位置)
@@ -53,4 +53,6 @@ private _elements = [
         // 等开场动画播完（约 2.5 秒）再放
         [{["add", _this] call BRF_fnc_onEvent}, _x, 3 + _forEachIndex * 0.8] call CBA_fnc_waitAndExecute;
     } forEach _elements;
+    // 最后演示结束动画
+    [{[true] call BRF_fnc_closeViewer}, [], 3 + count _elements * 0.8 + 3] call CBA_fnc_waitAndExecute;
 }, [_center, _elements], 5] call CBA_fnc_waitUntilAndExecute;

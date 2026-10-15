@@ -236,6 +236,11 @@
             <English>on</English>
             <Chinesesimp>开</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_OutroText">
+            <Original>DATA LINK TERMINATED</Original>
+            <English>DATA LINK TERMINATED</English>
+            <Chinesesimp>DATA LINK TERMINATED</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_SessionEnd">
             <Original>■ 结束简报</Original>
             <English>■ End briefing</English>

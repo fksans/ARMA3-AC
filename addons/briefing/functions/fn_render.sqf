@@ -29,11 +29,8 @@ BRF_viewBox = [
     ((_tl select 1) max (_br select 1)) + _pad
 ];
 
-// 观看界面关闭前淡出 1 秒
+// 整体透明度（目前恒为 1；结束简报时由结束动画的黑幕盖住画面，不再淡出地图内容）
 private _globalAlpha = 1;
-if (!_presenter && {BRF_viewerFadeStart >= 0}) then {
-    _globalAlpha = (1 - (_now - BRF_viewerFadeStart) / VIEWER_FADE_TIME) max 0;
-};
 
 // 底层：房屋、地名、比例尺（简报元素画在它上面）
 [_map, _mpp, _globalAlpha] call BRF_fnc_renderOverlay;
