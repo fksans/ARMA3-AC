@@ -17,9 +17,54 @@ _faint set [3, 0.5];
 
 switch (BRF_tool) do {
     case TOOL_LINE: {
-        if (!BRF_drawing) exitWith {};
-        for "_i" from 1 to (count BRF_pts - 1) do {
-            _map drawLine [BRF_pts select (_i - 1), BRF_pts select _i, _faint, 2];
+        if (!BRF_drawing || {count BRF_pts == 0}) exitWith {};
+        private _cursor = BRF_cursor;
+        if (_cursor isEqualTo []) then {
+            _cursor = BRF_pts select (count BRF_pts - 1);
+        };
+        private _path = BRF_pts;
+        if (BRF_modShift) then {
+            // Shift：松开时只保留首尾，预览也画成直线
+            _path = [BRF_pts select 0, _cursor];
+        };
+        if (!BRF_modAlt) then {
+            for "_i" from 1 to (count _path - 1) do {
+                _map drawLine [_path select (_i - 1), _path select _i, _faint, 2];
+            };
+        } else {
+            // Alt：虚线（画 10 像素、空 6 像素）
+            private _dash = 10 * _mpp;
+            private _gap = 6 * _mpp;
+            private _period = _dash + _gap;
+            private _acc = 0;
+            for "_i" from 1 to (count _path - 1) do {
+                private _a = _path select (_i - 1);
+                private _b = _path select _i;
+                private _segLen = _a distance2D _b;
+                if (_segLen > 0) then {
+                    private _dir = (_b vectorDiff _a) vectorMultiply (1 / _segLen);
+                    private _t = 0;
+                    private _phase = 0;
+                    private _len = 0;
+                    private _p = [];
+                    private _q = [];
+                    while {_t < _segLen} do {
+                        _phase = (_acc + _t) mod _period;
+                        if (_phase < _dash) then {
+                            // 画这一段虚线
+                            _len = (_dash - _phase) min (_segLen - _t);
+                            _p = _a vectorAdd (_dir vectorMultiply _t);
+                            _q = _a vectorAdd (_dir vectorMultiply (_t + _len));
+                            _map drawLine [_p, _q, _faint, 2];
+                            _t = _t + _len;
+                        } else {
+                            // 跳过空隙
+                            _t = _t + ((_period - _phase) min (_segLen - _t));
+                        };
+                    };
+                };
+                _acc = _acc + _segLen;
+            };
         };
     };
     case TOOL_RING: {

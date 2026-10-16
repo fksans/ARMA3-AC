@@ -27,7 +27,7 @@
 #define MIRROR_HEAL_TICKS 10
 
 // 上限（DESIGN.md「性能」）
-#define MAX_ELEMENTS 60
+#define MAX_ELEMENTS 120
 #define MAX_LINE_POINTS 200
 
 // 网络节流（秒）

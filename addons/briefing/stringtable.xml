@@ -587,9 +587,9 @@
             <Chinesesimp>指挥官标注 · 主持：%1 · %2</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_StatusFormat">
-            <Original>%1 · %2 · 图标：%3 · %4 · 元素 %5/%6 · %7</Original>
-            <English>%1 · %2 · Icon: %3 · %4 · Elements %5/%6 · %7</English>
-            <Chinesesimp>%1 · %2 · 图标：%3 · %4 · 元素 %5/%6 · %7</Chinesesimp>
+            <Original>当前工具：%1 · 当前颜色：%2 · 当前图标：%3 · 当前状态：%4 · 元素 %5/%6 · %7</Original>
+            <English>Current tool: %1 · Current color: %2 · Current icon: %3 · Current status: %4 · Elements %5/%6 · %7</English>
+            <Chinesesimp>当前工具：%1 · 当前颜色：%2 · 当前图标：%3 · 当前状态：%4 · 元素 %5/%6 · %7</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_StatusIdle">
             <Original>简报未开始</Original>
@@ -677,14 +677,14 @@
             <Chinesesimp>删除自己最后一个元素（Ctrl+Z）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ViewerFollow">
-            <Original>跟随主持人视角  [Space]</Original>
-            <English>Following the host  [Space]</English>
-            <Chinesesimp>跟随主持人视角  [Space]</Chinesesimp>
+            <Original>当前：跟随主持人视角  [Space]</Original>
+            <English>Current: following the host  [Space]</English>
+            <Chinesesimp>当前：跟随主持人视角  [Space]</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ViewerFree">
-            <Original>自由查看  [Space]</Original>
-            <English>Free look  [Space]</English>
-            <Chinesesimp>自由查看  [Space]</Chinesesimp>
+            <Original>当前：自由查看  [Space]</Original>
+            <English>Current: free look  [Space]</English>
+            <Chinesesimp>当前：自由查看  [Space]</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ViewerHint">
             <Original>Space 跟随 / 自由查看 · 右键拖动平移 · 滚轮缩放 · Esc 关闭（Ctrl+B 重新打开）</Original>
