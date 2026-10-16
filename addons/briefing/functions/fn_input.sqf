@@ -47,6 +47,8 @@ private _fnc_cancel = {
     BRF_pts = [];
     BRF_ringRadius = 0;
     BRF_areaPts = [];
+    BRF_rulerA = [];
+    BRF_rulerB = [];
     if (BRF_iconPending isNotEqualTo []) then {
         BRF_iconPending = [];
         (_display displayCtrl IDC_BRF_P_LABEL) ctrlShow false;
@@ -135,6 +137,12 @@ switch (_event) do {
                 BRF_drawing = true;
                 ["set", _p] call BRF_fnc_pointer;
             };
+            case TOOL_RULER: {
+                // 按下定起点，拖动看距离和方位；松开后结果留着，下次测量或 Esc 清掉
+                BRF_drawing = true;
+                BRF_rulerA = _p;
+                BRF_rulerB = _p;
+            };
             case TOOL_ERASER: {
                 if (BRF_planEdit) exitWith {
                     private _id = [_map, _mx, _my, (BRF_plan select BRF_planEditStep) select 0] call BRF_fnc_hitTest;
@@ -171,6 +179,10 @@ switch (_event) do {
             case TOOL_POINTER: {
                 if (!BRF_drawing) exitWith {};
                 ["set", _p] call BRF_fnc_pointer;
+            };
+            case TOOL_RULER: {
+                if (!BRF_drawing) exitWith {};
+                BRF_rulerB = _p;
             };
             case TOOL_ERASER: {
                 BRF_hoverId = if (BRF_planEdit) then {
@@ -268,14 +280,14 @@ switch (_event) do {
                 // 指挥官标注：Space 跟随 / 自由；主持人专用的键（激光笔、F、预案、清屏）不响应
                 case (_commander && {_key == 0x39}): {["follow"] call BRF_fnc_presenterAction};
                 case (_commander && {_key in [0x06, 0x21, 0x19, 0xCD, 0xD1, 0x1B, 0xCB, 0xC9, 0x1A, 0xC7] || {_key == 0xD3 && {_ctrl && _shift}}}): {};
-                // 1-6：切换工具
-                case (_key >= 0x02 && {_key <= 0x07} && {!_ctrl} && {!_alt}): {
+                // 1-7：切换工具
+                case (_key >= 0x02 && {_key <= 0x08} && {!_ctrl} && {!_alt}): {
                     call _fnc_cancel;
                     ["tool", _key - 1] call BRF_fnc_presenterAction;
                 };
                 // Esc：先取消正在进行的操作，没有的话关闭界面
                 case (_key == 0x01): {
-                    if (BRF_drawing || {BRF_areaPts isNotEqualTo []}) then {
+                    if (BRF_drawing || {BRF_areaPts isNotEqualTo []} || {BRF_rulerA isNotEqualTo []}) then {
                         call _fnc_cancel;
                     } else {
                         _display closeDisplay 2;

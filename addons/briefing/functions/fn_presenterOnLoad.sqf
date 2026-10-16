@@ -91,6 +91,7 @@ _label ctrlAddEventHandler ["KeyDown", {["key", _this] call BRF_fnc_input}];
     [IDC_BRF_P_TOOL + TOOL_AREA, "tool", TOOL_AREA],
     [IDC_BRF_P_TOOL + TOOL_POINTER, "tool", TOOL_POINTER],
     [IDC_BRF_P_TOOL + TOOL_ERASER, "tool", TOOL_ERASER],
+    [IDC_BRF_P_TOOL + TOOL_RULER, "tool", TOOL_RULER],
     [IDC_BRF_P_ARROW, "arrow"],
     [IDC_BRF_P_UNDO, "undo"],
     [IDC_BRF_P_CLEAR, "clear"],

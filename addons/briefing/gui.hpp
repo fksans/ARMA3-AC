@@ -259,11 +259,17 @@ class BRF_Presenter {
             tooltip = "$STR_BRF_ToolEraserTooltip";
             x = QUOTE(BTN_X(5));
         };
+        class Tool7: BRF_RscButton {
+            idc = 1207; // IDC_BRF_P_TOOL + 7
+            text = "$STR_BRF_ToolRuler";
+            tooltip = "$STR_BRF_ToolRulerTooltip";
+            x = QUOTE(BTN_X(6));
+        };
         class Color: ctrlCombo {
             idc = IDC_BRF_P_COLOR;
             tooltip = "$STR_BRF_ColorTooltip";
             sizeEx = QUOTE(TXT_SIZE_SMALL);
-            x = QUOTE(BTN_X(6));
+            x = QUOTE(BTN_X(7));
             y = QUOTE(BTN_Y);
             w = QUOTE(BTN_W);
             h = QUOTE(BTN_H);
@@ -271,56 +277,56 @@ class BRF_Presenter {
         class Arrow: BRF_RscButton {
             idc = IDC_BRF_P_ARROW;
             tooltip = "$STR_BRF_ArrowTooltip";
-            x = QUOTE(BTN_X(7));
+            x = QUOTE(BTN_X(8));
         };
         class Undo: BRF_RscButton {
             idc = IDC_BRF_P_UNDO;
             text = "$STR_BRF_Undo";
             tooltip = "$STR_BRF_UndoTooltip";
-            x = QUOTE(BTN_X(8));
+            x = QUOTE(BTN_X(9));
         };
         class Clear: BRF_RscButton {
             idc = IDC_BRF_P_CLEAR;
             text = "$STR_BRF_Clear";
             tooltip = "$STR_BRF_ClearTooltip";
-            x = QUOTE(BTN_X(9));
+            x = QUOTE(BTN_X(10));
         };
         class Bgm: ctrlCombo {
             idc = IDC_BRF_P_BGM;
             tooltip = "$STR_BRF_BgmTooltip";
             sizeEx = QUOTE(TXT_SIZE_SMALL);
-            x = QUOTE(BTN_X(10));
+            x = QUOTE(BTN_X(11));
             y = QUOTE(BTN_Y);
             w = QUOTE(BTN_W * 2 + 0.004 * safezoneW);
             h = QUOTE(BTN_H);
         };
         class Session: BRF_RscButton {
             idc = IDC_BRF_P_SESSION;
-            x = QUOTE(BTN_X(12));
+            x = QUOTE(BTN_X(13));
             colorBackground[] = {0.10, 0.30, 0.15, 0.95};
         };
         class Rebuild: BRF_RscButton {
             idc = IDC_BRF_P_REBUILD;
             text = "$STR_BRF_Rebuild";
             tooltip = "$STR_BRF_RebuildTooltip";
-            x = QUOTE(BTN_X(13));
+            x = QUOTE(BTN_X(14));
         };
         class Access: BRF_RscButton {
             idc = IDC_BRF_P_ACCESS;
             text = "$STR_BRF_Access";
             tooltip = "$STR_BRF_AccessTooltip";
-            x = QUOTE(BTN_X(14));
+            x = QUOTE(BTN_X(15));
         };
         class Plan: BRF_RscButton {
             idc = IDC_BRF_P_PLAN;
             tooltip = "$STR_BRF_PlanTooltip";
-            x = QUOTE(BTN_X(15));
+            x = QUOTE(BTN_X(16));
         };
         class Close: BRF_RscButton {
             idc = IDC_BRF_P_CLOSE;
             text = "X";
             tooltip = "$STR_BRF_CloseTooltip";
-            x = QUOTE(BTN_X(16));
+            x = QUOTE(BTN_X(17));
             w = QUOTE(BTN_W * 0.5);
         };
 

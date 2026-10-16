@@ -101,3 +101,62 @@ if (BRF_iconPending isNotEqualTo []) then {
     private _kind = BRF_iconKinds select (BRF_iconKind min (count BRF_iconKinds - 1));
     [_map, [BRF_iconPending, _kind, ""], [BRF_iconPending, [], 99], _faint, -1e6, _now, _mpp] call BRF_fnc_renderIcon;
 };
+
+// 测量尺（工具 7）：只在本机显示，不广播；距离 + 方位角（度 / 密位），每隔一个整数步长画刻度
+if (BRF_rulerA isNotEqualTo [] && {BRF_rulerB isNotEqualTo []}) then {
+    private _d = BRF_rulerA distance2D BRF_rulerB;
+    if (_d / _mpp < 2) exitWith {};
+    private _col = [1, 1, 1, 0.95];
+    private _shadow = [0, 0, 0, 0.6];
+    // 主线：先阴影后本体
+    _map drawLine [BRF_rulerA, BRF_rulerB, _shadow, 5];
+    _map drawLine [BRF_rulerA, BRF_rulerB, _col, 2];
+    // 方向与垂直法线
+    private _dir = (BRF_rulerB vectorDiff BRF_rulerA) vectorMultiply (1 / _d);
+    private _n = [-(_dir select 1), _dir select 0, 0];
+    private _capOff = _n vectorMultiply (6 * _mpp);
+    // 两端封口短刻度
+    {
+        private _p0 = _x vectorAdd _capOff;
+        private _p1 = _x vectorDiff _capOff;
+        _map drawLine [_p0, _p1, _shadow, 5];
+        _map drawLine [_p0, _p1, _col, 2];
+    } forEach [BRF_rulerA, BRF_rulerB];
+    // 选择合适步长（不少于 40 屏幕像素）
+    private _steps = [10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000];
+    private _step = _steps select (count _steps - 1);
+    {
+        if (_x / _mpp >= 40) exitWith { _step = _x; };
+    } forEach _steps;
+    private _minorCol = [_col select 0, _col select 1, _col select 2, 0.7];
+    private _k = 1;
+    while {_k * _step < _d && {_k <= 200}} do {
+        private _p = BRF_rulerA vectorAdd (_dir vectorMultiply (_k * _step));
+        private _off = _n vectorMultiply (4 * _mpp);
+        private _p0 = _p vectorAdd _off;
+        private _p1 = _p vectorDiff _off;
+        _map drawLine [_p0, _p1, _shadow, 4];
+        _map drawLine [_p0, _p1, _minorCol, 1.5];
+        _k = _k + 1;
+    };
+    // 方位角与密位
+    private _deg = BRF_rulerA getDir BRF_rulerB;
+    private _mil = round (_deg * 6400 / 360) mod 6400;
+    private _distText = if (_d < 1000) then {
+        format ["%1 m", round _d]
+    } else {
+        format ["%1 km", (_d / 1000) toFixed 2]
+    };
+    // 补零：度数 3 位、密位 4 位
+    private _degStr = str ((round _deg) mod 360);
+    while {count _degStr < 3} do { _degStr = "0" + _degStr; };
+    private _milStr = str _mil;
+    while {count _milStr < 4} do { _milStr = "0" + _milStr; };
+    private _text = format ["%1  ·  %2°  ·  %3 mil", _distText, _degStr, _milStr];
+    // 标签：阴影 + 本体
+    private _lblPos = BRF_rulerB vectorAdd [14 * _mpp, 14 * _mpp, 0];
+    _map drawIcon [BRF_texClear, _shadow, _lblPos vectorAdd [1 * _mpp, -1 * _mpp, 0], 1, 1, 0, _text, 2, 0.045, "PuristaMedium", "right"];
+    _map drawIcon [BRF_texClear, _col, _lblPos, 1, 1, 0, _text, 2, 0.045, "PuristaMedium", "right"];
+    // A 点方块标记
+    _map drawIcon [BRF_texWhite, _col, BRF_rulerA, 6, 6, 45];
+};

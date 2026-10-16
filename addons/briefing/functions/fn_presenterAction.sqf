@@ -22,10 +22,12 @@ private _map = _display displayCtrl IDC_BRF_MAP;
 switch (_action) do {
     case "tool": {
         if (BRF_role == "commander" && {_arg == TOOL_POINTER}) exitWith {};
-        BRF_tool = _arg max TOOL_LINE min TOOL_ERASER;
+        BRF_tool = _arg max TOOL_LINE min TOOL_RULER;
         BRF_drawing = false;
         BRF_pts = [];
         BRF_areaPts = [];
+        BRF_rulerA = [];
+        BRF_rulerB = [];
         BRF_hoverId = "";
         ["set", []] call BRF_fnc_pointer;
     };

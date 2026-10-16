@@ -85,13 +85,14 @@
 #define HOUSE_TYPES ["HOUSE", "BUILDING", "CHURCH", "CHAPEL", "FUELSTATION", "HOSPITAL", "BUNKER", "FORTRESS", "VIEW-TOWER", "LIGHTHOUSE", "WATERTOWER", "TRANSMITTER", "RUIN"]
 #define SCALE_BAR_PX 150
 
-// 工具序号（数字键 1-6）
+// 工具序号（数字键 1-7）
 #define TOOL_LINE 1
 #define TOOL_ICON 2
 #define TOOL_RING 3
 #define TOOL_AREA 4
 #define TOOL_POINTER 5
 #define TOOL_ERASER 6
+#define TOOL_RULER 7
 
 // 音效（playSoundUI 用文件路径时必须带扩展名）
 #define SOUND_OPEN "\z\brf\addons\briefing\sounds\open.ogg"

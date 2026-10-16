@@ -23,7 +23,7 @@
 #define IDC_BRF_V_INTRO_MARK 1116
 #define IDC_BRF_V_INTRO_TEXT 1117
 
-// ---- 主持端：工具栏按钮，基础 IDC + 工具序号（1-6） ----
+// ---- 主持端：工具栏按钮，基础 IDC + 工具序号（1-7） ----
 #define IDC_BRF_P_TOOL 1200
 #define IDC_BRF_P_COLOR 1210
 #define IDC_BRF_P_ARROW 1211
@@ -57,8 +57,8 @@
 #define BAR_H (0.042 * safezoneH)
 #define BTN_Y (safezoneY + 0.005 * safezoneH)
 #define BTN_H (0.032 * safezoneH)
-#define BTN_W (0.0545 * safezoneW)
-#define BTN_X(N) (safezoneX + 0.006 * safezoneW + (N) * 0.0585 * safezoneW)
+#define BTN_W (0.051 * safezoneW)
+#define BTN_X(N) (safezoneX + 0.006 * safezoneW + (N) * 0.0548 * safezoneW)
 #define STATUS_Y (safezoneY + safezoneH - BAR_H)
 
 #define TXT_SIZE (0.024 * safezoneH)

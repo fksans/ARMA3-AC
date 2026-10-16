@@ -196,6 +196,11 @@
             <English>Press for the center, drag for the radius, release to place</English>
             <Chinesesimp>按下定圆心，拖动定半径，松开提交</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_HintRuler">
+            <Original>按住左键拖动测量距离和方位（度 / 密位），只有自己看得到；Esc 清除</Original>
+            <English>Drag to measure distance and bearing (degrees / mils), only you see it; Esc clears</English>
+            <Chinesesimp>按住左键拖动测量距离和方位（度 / 密位），只有自己看得到；Esc 清除</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_IconAa">
             <Original>防空</Original>
             <English>Anti-air</English>
@@ -785,6 +790,16 @@
             <Original>SAM、防空、炮兵射程：按下定圆心，拖动定半径</Original>
             <English>SAM / AA / artillery range: press for the center, drag for the radius</English>
             <Chinesesimp>SAM、防空、炮兵射程：按下定圆心，拖动定半径</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ToolRuler">
+            <Original>7 测量尺</Original>
+            <English>7 Ruler</English>
+            <Chinesesimp>7 测量尺</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ToolRulerTooltip">
+            <Original>测量两点距离和方位：按住左键拖动（只有自己看得到）</Original>
+            <English>Measure distance and bearing: drag with the left button (only you see it)</English>
+            <Chinesesimp>测量两点距离和方位：按住左键拖动（只有自己看得到）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_Undo">
             <Original>撤销</Original>

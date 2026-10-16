@@ -59,7 +59,7 @@ private _showAccess = BRF_accessOpen && {!_commander} && {!BRF_locked};
 (_display displayCtrl IDC_BRF_P_ACCESS) ctrlSetBackgroundColor ([[0.05, 0.16, 0.17, 0.9], [0.15, 0.55, 0.50, 1]] select _showAccess);
 
 // ---- 工具按钮：当前工具高亮 ----
-for "_tool" from TOOL_LINE to TOOL_ERASER do {
+for "_tool" from TOOL_LINE to TOOL_RULER do {
     private _ctrl = _display displayCtrl (IDC_BRF_P_TOOL + _tool);
     if (_tool == BRF_tool) then {
         _ctrl ctrlSetBackgroundColor [0.15, 0.55, 0.50, 1];
@@ -128,7 +128,8 @@ private _toolNames = [
     "STR_BRF_ToolRing",
     "STR_BRF_ToolArea",
     "STR_BRF_ToolPointer",
-    "STR_BRF_ToolEraser"
+    "STR_BRF_ToolEraser",
+    "STR_BRF_ToolRuler"
 ] apply {localize _x};
 private _toolHints = [
     "STR_BRF_HintLine",
@@ -136,7 +137,8 @@ private _toolHints = [
     "STR_BRF_HintRing",
     "STR_BRF_HintArea",
     "STR_BRF_HintPointer",
-    "STR_BRF_HintEraser"
+    "STR_BRF_HintEraser",
+    "STR_BRF_HintRuler"
 ] apply {localize _x};
 private _kindName = (BRF_iconTable select (BRF_iconKind min (count BRF_iconTable - 1))) select 1;
 
