@@ -311,6 +311,14 @@ switch (_event) do {
                         [] call BRF_fnc_presenterUpdate;
                     };
                 };
+                case (_key == 0x2D && {!_ctrl} && {!BRF_planEdit}): {                         // X：摧毁 / 恢复鼠标下的元素
+                    getMousePosition params ["_mx", "_my"];
+                    private _id = [_map, _mx, _my, _erasable] call BRF_fnc_hitTest;
+                    if (_id != "") then {
+                        private _on = ((BRF_elMap get _id) param [E_DESTROYED, -1]) == -1;
+                        ["destroy", _id, _on] call BRF_fnc_send;
+                    };
+                };
 
                 // ---- 预案 ----
                 case (_key == 0x19 && {!_ctrl}): {["toggleEdit"] call BRF_fnc_plan};            // P

@@ -162,14 +162,14 @@
             <Chinesesimp>逐点单击，回车或双击闭合，Esc 取消</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintEraser">
-            <Original>单击元素删除（任何工具下鼠标悬停按 Del 也能删）</Original>
-            <English>Click an element to delete it (or hover and press Del with any tool)</English>
-            <Chinesesimp>单击元素删除（任何工具下鼠标悬停按 Del 也能删）</Chinesesimp>
+            <Original>单击元素删除（任何工具下鼠标悬停按 Del 也能删，按 X 摧毁 / 恢复）</Original>
+            <English>Click an element to delete it (or hover and press Del with any tool; X marks it destroyed / restores it)</English>
+            <Chinesesimp>单击元素删除（任何工具下鼠标悬停按 Del 也能删，按 X 摧毁 / 恢复）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintEraserOwn">
-            <Original>单击自己画的元素删除</Original>
-            <English>Click one of your own elements to delete it</English>
-            <Chinesesimp>单击自己画的元素删除</Chinesesimp>
+            <Original>单击自己画的元素删除（悬停按 Del 删除、按 X 摧毁 / 恢复，只限自己画的）</Original>
+            <English>Click one of your own elements to delete it (hover + Del deletes, X marks destroyed / restores; own elements only)</English>
+            <Chinesesimp>单击自己画的元素删除（悬停按 Del 删除、按 X 摧毁 / 恢复，只限自己画的）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintIcon">
             <Original>单击放点，输入标签后回车；Tab 切换图标种类（任何工具下双击地图也能放点）</Original>
@@ -511,6 +511,11 @@
             <English>&lt;t align='center' size='1.2'&gt;%1 is hosting the briefing&lt;/t&gt;&lt;br/&gt;&lt;t align='center' color='#99ffffff'&gt;Only one host at a time. Take over to keep drawing yourself, or just watch.&lt;/t&gt;</English>
             <Chinesesimp>&lt;t align='center' size='1.2'&gt;%1 正在主持简报&lt;/t&gt;&lt;br/&gt;&lt;t align='center' color='#99ffffff'&gt;同一时间只能有一个主持人。接管后由你继续画、继续讲；只看则打开观看界面。&lt;/t&gt;</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_MarkerDestroyed">
+            <Original>%1（已摧毁）</Original>
+            <English>%1 (destroyed)</English>
+            <Chinesesimp>%1（已摧毁）</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_MsgAreaPoints">
             <Original>区域至少要 3 个点</Original>
             <English>An area needs at least 3 points</English>
@@ -747,9 +752,9 @@
             <Chinesesimp>6 橡皮</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ToolEraserTooltip">
-            <Original>单击元素删除（任何工具下鼠标悬停按 Del 也能删）</Original>
-            <English>Click an element to delete it (or hover and press Del with any tool)</English>
-            <Chinesesimp>单击元素删除（任何工具下鼠标悬停按 Del 也能删）</Chinesesimp>
+            <Original>单击元素删除（任何工具下鼠标悬停按 Del 也能删，按 X 摧毁 / 恢复）</Original>
+            <English>Click an element to delete it (or hover and press Del with any tool; X marks it destroyed / restores it)</English>
+            <Chinesesimp>单击元素删除（任何工具下鼠标悬停按 Del 也能删，按 X 摧毁 / 恢复）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ToolIcon">
             <Original>2 目标点</Original>

@@ -9,8 +9,8 @@
 
 #define QUOTE(var) #var
 
-// 元素记录 BRF_els 的下标：[id, 类型, 颜色序号, 数据, t0, t1, 缓存]
-// 前 4 项就是网络上传的元素（见 DESIGN.md「数据模型」），后 3 项只在本机
+// 元素记录 BRF_els 的下标：[id, 类型, 颜色序号, 数据, t0, t1, 缓存, 作者 UID, 摧毁时刻]
+// 网络上传的元素是 [id, 类型, 颜色序号, 数据, 作者 UID, 已摧毁]（见 BRF_fnc_init）；t0 / t1 / 缓存 / 摧毁时刻只在本机
 #define E_ID 0
 #define E_TYPE 1
 #define E_COLOR 2
@@ -19,6 +19,8 @@
 #define E_T1 5
 #define E_CACHE 6
 #define E_AUTHOR 7
+// 摧毁时刻：-1 = 没摧毁；中途加入 / 静态绘制时为 -1e6（直接显示摧毁后的样子）
+#define E_DESTROYED 8
 
 // 原版标记镜像：名字前缀（只动这个前缀的标记）、旧版「转标记」的前缀、补建间隔
 #define MARKER_PREFIX "acb_"
@@ -44,6 +46,10 @@
 #define RING_PULSE_PERIOD 2
 #define AREA_STROKE_TIME 0.6
 #define AREA_FILL_TIME 0.4
+// 摧毁：闪两下 → 画叉 → 渐变成灰色（和 destroy.ogg 对齐，见 tools/make_sounds.py）
+#define DESTROY_BLINK_TIME 0.4
+#define DESTROY_CROSS_TIME 0.25
+#define DESTROY_GREY_TIME 0.4
 
 // 开场动画（只在开始简报时播放），和 intro.ogg 对齐（tools/make_sounds.py 里同名的常量）：
 // 0 – 1.5 秒三声拖长的「嘀……」→ 1.55 秒中线从中心拉开 → 上下张开露出地图 → 标题淡入
@@ -104,6 +110,7 @@
 #define SOUND_DRAW "\z\brf\addons\briefing\sounds\draw_start.ogg"
 #define SOUND_PING "\z\brf\addons\briefing\sounds\ping.ogg"
 #define SOUND_RING "\z\brf\addons\briefing\sounds\ring.ogg"
+#define SOUND_DESTROY "\z\brf\addons\briefing\sounds\destroy.ogg"
 // 播放音量：比最初版本低 25%，在背景音乐里能听出来、又不抢音乐（playSoundUI 不受游戏音量滑块影响）
 #define SOUND_VOLUME 0.6
 // 目标点的「哔」每个图标会响 3 次，再低一点

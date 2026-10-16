@@ -1,6 +1,7 @@
 #include "..\script_component.hpp"
 /*
  * 画一个元素记录（实时简报的元素和编排模式里预案的元素共用）。
+ * 摧毁：先闪两下，图标和威胁圈上画红叉，再渐变成灰色（见 BRF_fnc_onEvent 的 "destroy"）。
  *
  * Arguments:
  * 0: 地图控件 <CONTROL>
@@ -16,6 +17,9 @@
 
 params ["_map", "_record", "_alphaMul", "_presenter", "_now", "_mpp"];
 _record params ["_id", "_type", "_colorIndex", "_data", "_t0", "_t1", "_cache"];
+
+private _td = _record param [E_DESTROYED, -1];
+private _dd = _now - _td;
 
 private _purge = false;
 call {
@@ -38,6 +42,21 @@ call {
     };
 
     private _col = +(BRF_palette select _colorIndex);
+    if (_td != -1) then {
+        // 摧毁：前 0.4 秒闪两下，随后变灰
+        if (_dd < DESTROY_BLINK_TIME) then {
+            private _phase = floor (_dd / (DESTROY_BLINK_TIME / 4));
+            if (_phase mod 2 == 1) then {
+                _alpha = _alpha * 0.15;
+            };
+        };
+        private _g = (((_dd - DESTROY_BLINK_TIME - DESTROY_CROSS_TIME) / DESTROY_GREY_TIME) min 1) max 0;
+        private _grey = [[0.55, 0.58, 0.58, 1], [0.35, 0.35, 0.35, 1]] select BRF_lightMap;
+        _col set [0, ((_col select 0) + (((_grey select 0) - (_col select 0)) * _g))];
+        _col set [1, ((_col select 1) + (((_grey select 1) - (_col select 1)) * _g))];
+        _col set [2, ((_col select 2) + (((_grey select 2) - (_col select 2)) * _g))];
+        _col set [3, (_col select 3) * (1 - 0.25 * _g)];
+    };
     _col set [3, (_col select 3) * _alpha];
 
     switch (_type) do {
@@ -68,10 +87,36 @@ call {
             [_map, _data, _cache, _col, _t0, _now, _mpp] call BRF_fnc_renderIcon;
         };
         case "ring": {
-            [_map, _data, _cache, _col, _t0, _now, _mpp] call BRF_fnc_renderRing;
+            [_map, _data, _cache, _col, _t0, _now, _mpp, _td != -1] call BRF_fnc_renderRing;
         };
         case "area": {
             [_map, _cache, _col, _t0, _now, _mpp] call BRF_fnc_renderArea;
+        };
+    };
+
+    if (_td != -1 && {_dd >= DESTROY_BLINK_TIME} && {_type in ["icon", "ring"]}) then {
+        private _ctr = _cache select 0;
+        private _s = ICON_PX * 0.9;
+        private _k = (((_dd - DESTROY_BLINK_TIME) / DESTROY_CROSS_TIME) min 1) max 0;
+        private _xc = [[1, 0.25, 0.2, 1], [0.85, 0.05, 0.0, 1]] select BRF_lightMap;
+        _xc set [3, (_xc select 3) * _alpha];
+
+        // 摧毁叉：第一笔从左上到右下
+        private _p1 = ((_k / 0.5) min 1) max 0;
+        if (_p1 > 0) then {
+            private _e1 = _p1 call BRF_fnc_easeOutCubic;
+            private _x1 = (-_s) + (2 * _s * _e1);
+            private _y1 = _s - (2 * _s * _e1);
+            [_map, _ctr, [[-_s, _s], [_x1, _y1]], false, _xc, LINE_WIDTH, _mpp, true] call BRF_fnc_drawPath;
+        };
+
+        // 摧毁叉：第二笔从右上到左下
+        private _p2 = (((_k - 0.5) / 0.5) min 1) max 0;
+        if (_p2 > 0) then {
+            private _e2 = _p2 call BRF_fnc_easeOutCubic;
+            private _x2 = _s - (2 * _s * _e2);
+            private _y2 = _s - (2 * _s * _e2);
+            [_map, _ctr, [[_s, _s], [_x2, _y2]], false, _xc, LINE_WIDTH, _mpp, true] call BRF_fnc_drawPath;
         };
     };
 };

@@ -4,8 +4,8 @@
  * 服务器 / 无头客户端没有界面，直接退出——服务器上不需要任何简报代码。
  *
  * 公共变量（全部以 BRF_ 开头，方便 BattlEye 加白名单）：
- *   BRF_evt      最近一个事件            ["add", 元素] / ["del", id] / ["clear"] / ["session", 开关, 名字, clientOwner]
- *   BRF_el_<id>  一个元素                 [id, 类型, 颜色序号, 数据, 作者 UID]，删除后为 []（中途加入靠它）
+ *   BRF_evt      最近一个事件            ["add", 元素] / ["del", id] / ["destroy", id, 开关] / ["clear"] / ["session", 开关, 名字, clientOwner]
+ *   BRF_el_<id>  一个元素                 [id, 类型, 颜色序号, 数据, 作者 UID, 已摧毁]，删除后为 []（中途加入靠它）
  *   BRF_drawGrants / BRF_drawDenied  Zeus 授权 / 禁止标注的玩家 UID 列表（见 BRF_fnc_canDraw）
  *   BRF_session  [是否进行中, 主持人名字, 主持人 clientOwner]
  *   BRF_view     [中心x, 中心y, 缩放, 补间秒数(可选)]

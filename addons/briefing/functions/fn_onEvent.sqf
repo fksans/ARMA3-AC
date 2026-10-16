@@ -19,7 +19,7 @@ private _now = diag_tickTime;
 switch (_type) do {
     case "add": {
         params ["", ["_el", [], [[]]], ["_instant", false, [false]]];
-        _el params [["_id", "", [""]], ["_elType", "", [""]], ["_color", 0, [0]], ["_data", [], [[]]], ["_author", "", [""]]];
+        _el params [["_id", "", [""]], ["_elType", "", [""]], ["_color", 0, [0]], ["_data", [], [[]]], ["_author", "", [""]], ["_destroyed", false, [false]]];
         if (_id == "") exitWith {};
         private _old = BRF_elMap getOrDefault [_id, []];
         if (_old isNotEqualTo [] && {(_old select E_T1) < 0}) exitWith {};
@@ -33,12 +33,12 @@ switch (_type) do {
         if (_cache isEqualTo []) exitWith {}; // 数据不合法
 
         _color = (round _color) max 0 min (count BRF_palette - 1);
-        private _record = [_id, _elType, _color, _data, [_now, -1e6] select _instant, -1, _cache, _author];
+        private _record = [_id, _elType, _color, _data, [_now, -1e6] select _instant, -1, _cache, _author, [-1, -1e6] select _destroyed];
         BRF_els pushBack _record;
         BRF_elMap set [_id, _record];
 
         if (BRF_state findIf {(_x select 0) == _id} == -1) then {
-            BRF_state pushBack [_id, _elType, _color, _data, _author];
+            BRF_state pushBack [_id, _elType, _color, _data, _author, _destroyed];
         };
 
         // 原版标记由本机画原样式代替：标记已经到了的话立即隐藏（还没到的由 BRF_fnc_mirrorSweep 补）
@@ -73,6 +73,24 @@ switch (_type) do {
         if (BRF_hoverId == _id) then {BRF_hoverId = ""};
     };
 
+    case "destroy": {
+        // 摧毁 / 恢复：闪两下 → 画叉 → 变灰（见 BRF_fnc_renderElement）；恢复时直接回到原样
+        params ["", ["_id", "", [""]], ["_on", true, [true]]];
+        private _record = BRF_elMap getOrDefault [_id, []];
+        if (_record isEqualTo [] || {(_record select E_T1) >= 0}) exitWith {};
+        if (((_record param [E_DESTROYED, -1]) != -1) isEqualTo _on) exitWith {};
+        _record set [E_DESTROYED, [-1, _now] select _on];
+        private _index = BRF_state findIf {(_x select 0) == _id};
+        if (_index != -1) then {
+            (BRF_state select _index) set [5, _on];
+        };
+        if (_on && {
+            !isNull (uiNamespace getVariable ["BRF_viewer", displayNull])
+            || {!isNull (uiNamespace getVariable ["BRF_presenter", displayNull])}
+        }) then {
+            playSoundUI [SOUND_DESTROY, SOUND_VOLUME];
+        };
+    };
     case "clear": {
         {
             if ((_x select E_T1) < 0) then {
@@ -120,6 +138,12 @@ switch (_type) do {
         // BRF_state 里有、本地没有的：直接设为「已播完」
         {
             ["add", _x, true] call BRF_fnc_onEvent;
+            // 已经有的元素：摧毁状态对齐（不播动画）
+            private _record = BRF_elMap getOrDefault [_x select 0, []];
+            private _on = _x param [5, false];
+            if (_record isNotEqualTo [] && {((_record param [E_DESTROYED, -1]) != -1) isNotEqualTo _on}) then {
+                _record set [E_DESTROYED, [-1, -1e6] select _on];
+            };
         } forEach +BRF_state;
     };
 };

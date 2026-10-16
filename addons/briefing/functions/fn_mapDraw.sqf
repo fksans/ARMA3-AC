@@ -38,6 +38,7 @@ BRF_viewBox = [
         // 浅拷贝一份，把开始时间推到很久以前、当前时间固定为 0：所有动画都是「已播完」的静止状态
         private _record = _x select [0, count _x];
         _record set [E_T0, -1e6];
+        if ((_record param [E_DESTROYED, -1]) != -1) then {_record set [E_DESTROYED, -1e6]};
         [_map, _record, 1, false, 0, _mpp] call BRF_fnc_renderElement;
     };
 } forEach BRF_els;

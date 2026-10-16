@@ -36,12 +36,16 @@ private _fnc_hide = {
 
 private _fnc_add = {
     params [["_el", [], [[]]]];
-    _el params [["_id", "", [""]], ["_type", "", [""]], ["_colorIndex", 0, [0]], ["_data", [], [[]]]];
+    _el params [["_id", "", [""]], ["_type", "", [""]], ["_colorIndex", 0, [0]], ["_data", [], [[]]], ["", ""], ["_destroyed", false, [false]]];
     if (_id == "") exitWith {0};
     private _name = MARKER_PREFIX + _id;
     if (_name call _fnc_exists) exitWith {0};
     _colorIndex = (round _colorIndex) max 0 min (count BRF_markerColors - 1);
     private _color = BRF_markerColors select _colorIndex;
+    // 已摧毁：原版标记一律灰色（图标文字后面加「已摧毁」）
+    if (_destroyed) then {
+        _color = ["ColorBlack", "ColorGrey"] select isClass (configFile >> "CfgMarkerColors" >> "ColorGrey");
+    };
     private _made = 0;
 
     switch (_type) do {
@@ -92,13 +96,15 @@ private _fnc_add = {
                 if (isClass (configFile >> "CfgMarkers" >> _sided)) then {_markerType = _sided};
             };
             private _markerColor = _def select 6;
-            if (_markerColor == "palette") then {_markerColor = _color};
+            if (_markerColor == "palette" || _destroyed) then {_markerColor = _color};
 
             private _m = createMarker [_name, _pos];
             if (_m == "") exitWith {};
             _m setMarkerTypeLocal _markerType;
             // 和模组里显示的一样：有标签用标签，没有用缩写
-            _m setMarkerTextLocal ([_label, _def select 2] select (_label == ""));
+            private _text = [_label, _def select 2] select (_label == "");
+            if (_destroyed) then {_text = format [localize "STR_BRF_MarkerDestroyed", _text]};
+            _m setMarkerTextLocal _text;
             _m setMarkerColorLocal _markerColor;
             _m setMarkerAlpha 1;
             _made = 1;

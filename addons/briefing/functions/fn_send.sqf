@@ -43,6 +43,16 @@ switch (_evt select 0) do {
         [_evt select 1, []] call _fnc_publish;
         ["del", _evt select 1] call BRF_fnc_mirror;
     };
+    case "destroy": {
+        // 摧毁 / 恢复：元素变量带上新状态（中途加入的人直接看到灰色 + 叉），原版标记按新状态重建
+        private _id = _evt select 1;
+        private _index = BRF_state findIf {(_x select 0) == _id};
+        if (_index == -1) exitWith {};
+        private _el = BRF_state select _index;
+        [_id, +_el] call _fnc_publish;
+        ["del", _id] call BRF_fnc_mirror;
+        ["add", _el] call BRF_fnc_mirror;
+    };
     case "clear": {
         {[_x, []] call _fnc_publish} forEach _cleared;
         ["clearAll"] call BRF_fnc_mirror;

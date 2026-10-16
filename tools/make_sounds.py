@@ -3,7 +3,7 @@
 风格：低调、硬朗、科技感，全部以目标点的「哔」（ping）为基准，不用旋律、滑音、气流声。
 用法（需要 numpy、scipy、ffmpeg）：
     python3 tools/make_sounds.py <输出目录>
-    for f in open close draw_start ping ring; do
+    for f in open close draw_start ping ring destroy; do
         ffmpeg -y -i <输出目录>/$f.wav -c:a libvorbis -q:a 6 addons/briefing/sounds/$f.ogg
     done
 混响用随机脉冲生成，每次重新生成会有极细微的差别。播放音量在 script_component.hpp 的 SOUND_VOLUME* 里调。
@@ -212,3 +212,13 @@ place(buf, soft_beep(1046.5, 0.12), CLOSE_AT, 0.26)
 for j, at in enumerate(TAIL_BEEPS):
     place(buf, soft_beep(1046.5, 0.30), at, 0.24 * (1 - 0.45 * j))
 save('outro', finish(reverb(buf, 0.22, 0.14, 0.02), 0.55))
+
+# ---- destroy：摧毁——跟着画面闪两下的两声「哔」（0 / 0.2 秒），画叉时一记沉重的「咚」+ 短促的低频爆裂噪声 ----
+# 时间轴和 script_component.hpp 的 DESTROY_* 一致：闪烁 0 – 0.4 秒，画叉从 0.4 秒开始
+buf = sound(1.0)
+place(buf, blip(1046.5), 0.0, 0.35)
+place(buf, blip(1046.5), 0.2, 0.3)
+place(buf, thump(65, 0.07, 3.0), 0.4, 0.85)
+n = int(0.3 * SR)
+place(buf, filt(rng.standard_normal(n), 'lowpass', 900) * env_exp(n, 0.002, 0.07), 0.4, 0.4)
+save('destroy', finish(reverb(buf, 0.2, 0.15, 0.006), 0.65))
