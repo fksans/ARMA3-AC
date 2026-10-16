@@ -35,6 +35,24 @@ private _erasable = if (_commander) then {
     BRF_els
 };
 
+// 编排模式：当前步之前所有步的元素记录（后面的步可以摧毁 / 移除它们，见 BRF_fnc_plan 的 "toggleAction"）
+private _fnc_planEarlier = {
+    private _out = [];
+    for "_i" from 0 to (BRF_planEditStep - 1) do {
+        _out append ((BRF_plan select _i) select 0);
+    };
+    _out
+};
+// 编排模式：先找当前步的元素，没有再找前面步的
+private _fnc_planHit = {
+    params ["_mx", "_my"];
+    private _id = [_map, _mx, _my, (BRF_plan select BRF_planEditStep) select 0] call BRF_fnc_hitTest;
+    if (_id == "") then {
+        _id = [_map, _mx, _my, call _fnc_planEarlier] call BRF_fnc_hitTest;
+    };
+    _id
+};
+
 private _fnc_world = {
     params ["_mx", "_my"];
     (_map ctrlMapScreenToWorld [_mx, _my]) + [0]
@@ -145,8 +163,11 @@ switch (_event) do {
             };
             case TOOL_ERASER: {
                 if (BRF_planEdit) exitWith {
+                    // 当前步的元素：直接擦掉；前面步的元素：本步加 / 取消「移除它」
                     private _id = [_map, _mx, _my, (BRF_plan select BRF_planEditStep) select 0] call BRF_fnc_hitTest;
-                    if (_id != "") then {["erase", _id] call BRF_fnc_plan};
+                    if (_id != "") exitWith {["erase", _id] call BRF_fnc_plan};
+                    _id = [_map, _mx, _my, call _fnc_planEarlier] call BRF_fnc_hitTest;
+                    if (_id != "") then {["toggleAction", "remove", _id] call BRF_fnc_plan};
                 };
                 private _id = [_map, _mx, _my, _erasable] call BRF_fnc_hitTest;
                 if (_id != "") then {
@@ -186,7 +207,7 @@ switch (_event) do {
             };
             case TOOL_ERASER: {
                 BRF_hoverId = if (BRF_planEdit) then {
-                    [_map, _mx, _my, (BRF_plan select BRF_planEditStep) select 0] call BRF_fnc_hitTest
+                    [_mx, _my] call _fnc_planHit
                 } else {
                     [_map, _mx, _my, _erasable] call BRF_fnc_hitTest
                 };
@@ -310,6 +331,11 @@ switch (_event) do {
                         ["del", _id] call BRF_fnc_send;
                         [] call BRF_fnc_presenterUpdate;
                     };
+                };
+                case (_key == 0x2D && {!_ctrl} && {BRF_planEdit}): {                          // X（编排）：本步加 / 取消「摧毁」前面步的元素
+                    getMousePosition params ["_mx", "_my"];
+                    private _id = [_mx, _my] call _fnc_planHit;
+                    if (_id != "") then {["toggleAction", "destroy", _id] call BRF_fnc_plan};
                 };
                 case (_key == 0x2D && {!_ctrl} && {!BRF_planEdit}): {                         // X：摧毁 / 恢复鼠标下的元素
                     getMousePosition params ["_mx", "_my"];

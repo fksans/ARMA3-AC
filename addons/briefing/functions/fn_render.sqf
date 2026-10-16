@@ -44,12 +44,36 @@ private _purge = false;
 
 // ---- 主持端编排模式：预案里的元素（只有主持人自己看得到）----
 // 当前编辑的步亮显，前面的步淡淡显示，方便对位置；后面的步不画
+// 动作（后面的步摧毁 / 移除前面的元素）：前面步的动作直接按结果画（摧毁 = 灰色 + 叉，移除 = 不画）；
+// 当前步的动作目标画得亮一些（摧毁 = 灰色 + 叉，移除 = 很淡），方便看出这一步会动哪些元素
 if (_presenter && {BRF_planEdit}) then {
+    private _done = createHashMap;     // 前面步的动作：planId -> kind
+    private _current = createHashMap;  // 当前步的动作
+    {
+        private _target = [_done, _current] select (_forEachIndex == BRF_planEditStep);
+        {_target set [_x select 1, _x select 0]} forEach (_x param [3, []]);
+        if (_forEachIndex >= BRF_planEditStep) then {break};
+    } forEach BRF_plan;
     {
         private _stepIndex = _forEachIndex;
-        private _alpha = [0.22, 0.8] select (_stepIndex == BRF_planEditStep);
+        private _base = [0.22, 0.8] select (_stepIndex == BRF_planEditStep);
         {
-            [_map, _x, _alpha, true, _now, _mpp] call BRF_fnc_renderElement;
+            private _record = _x;
+            private _kind = _current getOrDefault [_x select E_ID, ""];
+            private _alpha = _base;
+            if (_kind != "") then {
+                _alpha = [0.25, 0.8] select (_kind == "destroy");
+            } else {
+                _kind = _done getOrDefault [_x select E_ID, ""];
+                if (_kind == "remove") then {continue}; // 前面的步已经移除了
+            };
+            if (_kind == "destroy") then {
+                // 浅拷贝，标成「已经摧毁」的静止样子
+                _record = _x select [0, count _x];
+                _record resize (E_DESTROYED + 1);
+                _record set [E_DESTROYED, -1e6];
+            };
+            [_map, _record, _alpha, true, _now, _mpp] call BRF_fnc_renderElement;
         } forEach (_x select 0);
         if (_stepIndex >= BRF_planEditStep) then {break};
     } forEach BRF_plan;

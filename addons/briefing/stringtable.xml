@@ -182,9 +182,9 @@
             <Chinesesimp>拖拽画线；按住 Shift 松开 = 直线，按住 Alt 松开 = 虚线；A 切换箭头（任何工具下 Ctrl+拖拽 也能画线，Ctrl+Shift = 直线）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintPlanEdit">
-            <Original>编排：画的东西只有你看得到 · N 新一步 · [ ] 切换步骤 · V 记录视角 · C 镜头开关 · Del 删除本步 · P 退出</Original>
-            <English>Plan edit: only you see this · N new step · [ ] switch step · V record view · C camera on/off · Del delete step · P exit</English>
-            <Chinesesimp>编排：画的东西只有你看得到 · N 新一步 · [ ] 切换步骤 · V 记录视角 · C 镜头开关 · Del 删除本步 · P 退出</Chinesesimp>
+            <Original>编排：画的东西只有你看得到 · N 新一步 · [ ] 切换步骤 · V 记录视角 · C 镜头开关 · Del 删除本步 · 悬停前面步的元素按 X = 本步摧毁它、橡皮点它 = 本步移除它 · P 退出</Original>
+            <English>Plan edit: only you see this · N new step · [ ] switch step · V record view · C camera on/off · Del delete step · hover an earlier step's element + X = this step destroys it, eraser = this step removes it · P exit</English>
+            <Chinesesimp>编排：画的东西只有你看得到 · N 新一步 · [ ] 切换步骤 · V 记录视角 · C 镜头开关 · Del 删除本步 · 悬停前面步的元素按 X = 本步摧毁它、橡皮点它 = 本步移除它 · P 退出</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintPointer">
             <Original>按住左键，所有人看到红点跟随</Original>
@@ -556,6 +556,26 @@
             <English>Nothing to undo</English>
             <Chinesesimp>没有可以撤销的</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_MsgPlanActionDestroy">
+            <Original>本步会摧毁这个元素（再按一次取消）</Original>
+            <English>This step will destroy that element (press again to undo)</English>
+            <Chinesesimp>本步会摧毁这个元素（再按一次取消）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanActionEarlier">
+            <Original>只能摧毁 / 移除前面步骤里的元素</Original>
+            <English>Only elements from earlier steps can be destroyed / removed</English>
+            <Chinesesimp>只能摧毁 / 移除前面步骤里的元素</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanActionOff">
+            <Original>已取消本步对这个元素的动作</Original>
+            <English>Action on that element removed from this step</English>
+            <Chinesesimp>已取消本步对这个元素的动作</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanActionRemove">
+            <Original>本步会移除这个元素（再点一次取消）</Original>
+            <English>This step will remove that element (click again to undo)</English>
+            <Chinesesimp>本步会移除这个元素（再点一次取消）</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_MsgPlanAtStart">
             <Original>还没有播放任何一步</Original>
             <English>No step has been played yet</English>
@@ -662,9 +682,9 @@
             <Chinesesimp>预案 P</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_PlanBannerEdit">
-            <Original>编排模式 · 第 %1 / %2 步 · 本步 %3 个元素 · 镜头：%4</Original>
-            <English>PLAN EDIT · step %1 / %2 · %3 elements · camera: %4</English>
-            <Chinesesimp>编排模式 · 第 %1 / %2 步 · 本步 %3 个元素 · 镜头：%4</Chinesesimp>
+            <Original>编排模式 · 第 %1 / %2 步 · 本步 %3 个元素、%4 个动作 · 镜头：%5</Original>
+            <English>PLAN EDIT · step %1 / %2 · %3 elements, %4 actions · camera: %5</English>
+            <Chinesesimp>编排模式 · 第 %1 / %2 步 · 本步 %3 个元素、%4 个动作 · 镜头：%5</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_PlanBannerPlay">
             <Original>预案 %1 / %2 · → 下一步 · ← 撤回 · P 编排</Original>

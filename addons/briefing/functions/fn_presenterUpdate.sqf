@@ -103,6 +103,7 @@ if (BRF_planEdit) then {
         BRF_planEditStep + 1,
         count BRF_plan,
         count _records,
+        count ((BRF_plan select BRF_planEditStep) param [3, []]),
         localize (["STR_BRF_PlanCamOff", "STR_BRF_PlanCamOn"] select (_useView && {_view isNotEqualTo []}))
     ];
     _banner ctrlSetTextColor [1, 0.8, 0.4, 1];
