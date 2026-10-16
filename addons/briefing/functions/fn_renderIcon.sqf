@@ -1,7 +1,7 @@
 #include "..\script_component.hpp"
 /*
  * 画图标元素：落下（3 倍缩到 1 倍）→ 闪烁 3 次（每次「滴」一声）→ 标签逐字打出 → 外圈角括号缓慢呼吸。
- * 基础的 4 种（目标 / 着陆区 / 起始点 / 航点）用程序纹理和 drawLine 画；图标库里的用 ui\icons 里的白色贴图，
+ * 程序图形（基础 4 种和通用标记）按形状表 BRF_shapeDefs 用程序纹理和 drawLine 画；图标库里的用 ui\icons 里的白色贴图，
  * 按元素颜色着色。drawIcon 的尺寸不随地图缩放变化。
  *
  * Arguments:
@@ -54,30 +54,21 @@ if (_texture != "") then {
     };
     _map drawIcon [_texture, _c, _pos, _s * 1.4, _s * 1.4, 0];
 } else {
-switch (_shape) do {
-    case "none": {};
-    case "box": {
-        // 空心方框 + 中心点
-        [_map, _pos, [[-_h, -_h], [_h, -_h], [_h, _h], [-_h, _h]], true, _c, 2, _mpp, true] call BRF_fnc_drawPath;
-        _map drawIcon [BRF_texWhite, _c, _pos, _s * 0.25, _s * 0.25, 0];
-    };
-    case "triangle": {
-        // 空心三角
-        [_map, _pos, [[0, _h], [_h * 0.9, -_h * 0.6], [-_h * 0.9, -_h * 0.6]], true, _c, 2, _mpp, true] call BRF_fnc_drawPath;
-    };
-    case "hollowDiamond": {
-        // 空心菱形 + 中心点
-        [_map, _pos, [[0, _h], [_h, 0], [0, -_h], [-_h, 0]], true, _c, 2, _mpp, true] call BRF_fnc_drawPath;
-        _map drawIcon [BRF_texWhite, _c, _pos, _s * 0.2, _s * 0.2, 45];
-    };
-    default {
-        // tgt：实心菱形（原版白底地图上先垫一个大一圈的深色菱形当描边）
+    // 程序图形：形状表 BRF_shapeDefs（CfgShapes.hpp），单位是半边长 _h
+    // 线段带发光（原版白底地图上是深色描边，见 BRF_fnc_drawPath）；实心块是旋转的方块，白底地图上先垫一个大一圈的深色块当描边
+    (BRF_shapeDefs getOrDefault [_shape, [[], []]]) params ["_lines", "_fills"];
+    {
+        _x params ["_closed", "_pts"];
+        [_map, _pos, _pts apply {[(_x select 0) * _h, (_x select 1) * _h]}, _closed, _c, 2, _mpp, true] call BRF_fnc_drawPath;
+    } forEach _lines;
+    {
+        _x params ["_fx", "_fy", "_size", "_angle"];
+        private _at = _pos vectorAdd [_fx * _h * _mpp, _fy * _h * _mpp, 0];
         if (BRF_lightMap) then {
-            _map drawIcon [BRF_texWhite, [0, 0, 0, 0.6 * (_c select 3)], _pos, _s * 0.7 + 4, _s * 0.7 + 4, 45];
+            _map drawIcon [BRF_texWhite, [0, 0, 0, 0.6 * (_c select 3)], _at, _size * _h + 4, _size * _h + 4, _angle];
         };
-        _map drawIcon [BRF_texWhite, _c, _pos, _s * 0.7, _s * 0.7, 45];
-    };
-};
+        _map drawIcon [BRF_texWhite, _c, _at, _size * _h, _size * _h, _angle];
+    } forEach _fills;
 };
 
 if (_age < ICON_DROP_TIME) exitWith {};

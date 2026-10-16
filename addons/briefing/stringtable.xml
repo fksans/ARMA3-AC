@@ -241,6 +241,11 @@
             <English>Facilities</English>
             <Chinesesimp>设施</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_IconCatGeneral">
+            <Original>通用标记</Original>
+            <English>General</English>
+            <Chinesesimp>通用标记</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_IconCatGround">
             <Original>地面单位</Original>
             <English>Ground units</English>
@@ -275,6 +280,81 @@
             <Original>油库</Original>
             <English>Fuel</English>
             <Chinesesimp>油库</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGAmbush">
+            <Original>伏击</Original>
+            <English>Ambush</English>
+            <Chinesesimp>伏击</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGBox">
+            <Original>方块</Original>
+            <English>Box</English>
+            <Chinesesimp>方块</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGCircle">
+            <Original>圆圈</Original>
+            <English>Circle</English>
+            <Chinesesimp>圆圈</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGCross">
+            <Original>叉</Original>
+            <English>Cross</English>
+            <Chinesesimp>叉</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGDot">
+            <Original>点</Original>
+            <English>Dot</English>
+            <Chinesesimp>点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGEnd">
+            <Original>终点</Original>
+            <English>End</English>
+            <Chinesesimp>终点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGFlag">
+            <Original>旗帜</Original>
+            <English>Flag</English>
+            <Chinesesimp>旗帜</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGJoin">
+            <Original>会合</Original>
+            <English>Join</English>
+            <Chinesesimp>会合</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGMarker">
+            <Original>标记</Original>
+            <English>Marker</English>
+            <Chinesesimp>标记</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGObjective">
+            <Original>目标圈</Original>
+            <English>Objective</English>
+            <Chinesesimp>目标圈</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGPickup">
+            <Original>接应</Original>
+            <English>Pickup</English>
+            <Chinesesimp>接应</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGStart">
+            <Original>起点</Original>
+            <English>Start</English>
+            <Chinesesimp>起点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGTriangle">
+            <Original>三角</Original>
+            <English>Triangle</English>
+            <Chinesesimp>三角</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGUnknown">
+            <Original>未知</Original>
+            <English>Unknown</English>
+            <Chinesesimp>未知</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGWarning">
+            <Original>警告</Original>
+            <English>Warning</English>
+            <Chinesesimp>警告</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_IconHeli">
             <Original>直升机</Original>

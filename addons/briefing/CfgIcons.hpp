@@ -365,4 +365,156 @@ class BRF_Icons {
         markerType = "mil_ambush";
         markerColor = "palette";
     };
+
+    // ---- 通用标记（原版 mil_* 对应，程序绘制，形状见 CfgShapes.hpp）----
+    class g_dot {
+        displayName = "$STR_BRF_IconGDot";
+        abbr = "";
+        texture = "";
+        shape = "dot";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_dot";
+        markerColor = "palette";
+    };
+    class g_circle {
+        displayName = "$STR_BRF_IconGCircle";
+        abbr = "";
+        texture = "";
+        shape = "circle";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_circle";
+        markerColor = "palette";
+    };
+    class g_cross {
+        displayName = "$STR_BRF_IconGCross";
+        abbr = "";
+        texture = "";
+        shape = "cross";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_destroy";
+        markerColor = "palette";
+    };
+    class g_flag {
+        displayName = "$STR_BRF_IconGFlag";
+        abbr = "";
+        texture = "";
+        shape = "flag";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_flag";
+        markerColor = "palette";
+    };
+    class g_objective {
+        displayName = "$STR_BRF_IconGObjective";
+        abbr = "";
+        texture = "";
+        shape = "objective";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_objective";
+        markerColor = "palette";
+    };
+    class g_triangle {
+        displayName = "$STR_BRF_IconGTriangle";
+        abbr = "";
+        texture = "";
+        shape = "triangleSolid";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_triangle";
+        markerColor = "palette";
+    };
+    class g_box {
+        displayName = "$STR_BRF_IconGBox";
+        abbr = "";
+        texture = "";
+        shape = "boxSolid";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_box";
+        markerColor = "palette";
+    };
+    class g_warning {
+        displayName = "$STR_BRF_IconGWarning";
+        abbr = "";
+        texture = "";
+        shape = "warning";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_warning";
+        markerColor = "palette";
+    };
+    class g_unknown {
+        displayName = "$STR_BRF_IconGUnknown";
+        abbr = "";
+        texture = "";
+        shape = "unknown";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_unknown";
+        markerColor = "palette";
+    };
+    class g_start {
+        displayName = "$STR_BRF_IconGStart";
+        abbr = "";
+        texture = "";
+        shape = "start";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_start";
+        markerColor = "palette";
+    };
+    class g_end {
+        displayName = "$STR_BRF_IconGEnd";
+        abbr = "";
+        texture = "";
+        shape = "end";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_end";
+        markerColor = "palette";
+    };
+    class g_pickup {
+        displayName = "$STR_BRF_IconGPickup";
+        abbr = "";
+        texture = "";
+        shape = "pickup";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_pickup";
+        markerColor = "palette";
+    };
+    class g_join {
+        displayName = "$STR_BRF_IconGJoin";
+        abbr = "";
+        texture = "";
+        shape = "join";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_join";
+        markerColor = "palette";
+    };
+    class g_ambush {
+        displayName = "$STR_BRF_IconGAmbush";
+        abbr = "";
+        texture = "";
+        shape = "ambush";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_ambush";
+        markerColor = "palette";
+    };
+    class g_marker {
+        displayName = "$STR_BRF_IconGMarker";
+        abbr = "";
+        texture = "";
+        shape = "marker";
+        category = 5;
+        sound = "\z\brf\addons\briefing\sounds\ping.ogg";
+        markerType = "mil_marker";
+        markerColor = "palette";
+    };
 };

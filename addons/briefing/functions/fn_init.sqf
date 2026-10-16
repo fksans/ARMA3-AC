@@ -45,8 +45,24 @@ BRF_markerColors = _colors apply {
     _name
 };
 BRF_lightMap = false;           // 正在原版地图上画（BRF_fnc_mapDraw 期间为 true）
+// ---- 程序图形：从配置 BRF_Shapes 读取（CfgShapes.hpp，由 tools/make_shapes.py 生成） ----
+// 形状名 -> [[[闭合, [[x, y], ...]], ...], [[x, y, 边长, 角度], ...]]，单位是图标半边长，y 向上（见 BRF_fnc_renderIcon）
+BRF_shapeDefs = createHashMap;
+{
+    private _lines = getArray (_x >> "lines") apply {
+        _x params ["_closed", "_flat"];
+        private _pts = [];
+        for "_i" from 0 to (count _flat - 2) step 2 do {
+            _pts pushBack [_flat select _i, _flat select (_i + 1)];
+        };
+        [_closed == 1, _pts]
+    };
+    BRF_shapeDefs set [configName _x, [_lines, getArray (_x >> "fills")]];
+} forEach ("true" configClasses (configFile >> "BRF_Shapes"));
+
 // ---- 图标库：从配置 BRF_Icons 读取（CfgIcons.hpp），没有合法原版标记映射的不注册 ----
-// 每项：[id, 显示名, 缩写, 贴图, 原版标记类型, 分组, 原版标记颜色, 基础图形, 音效]
+// 每项：[id, 显示名, 缩写, 贴图, 原版标记类型, 分组, 原版标记颜色, 基础图形, 音效, 缩略图]
+// 缩略图：有贴图用贴图；程序图形用 ui\shapes\<形状>_ca.paa（tools/make_shapes.py 生成）
 BRF_iconTable = [];
 {
     private _cfg = _x;
@@ -67,25 +83,36 @@ BRF_iconTable = [];
     if (_error == "" && _markerColor != "palette" && {!isClass (configFile >> "CfgMarkerColors" >> _markerColor)}) then {
         _error = format ["markerColor '%1' is not in CfgMarkerColors", _markerColor];
     };
+    private _texture = getText (_cfg >> "texture");
+    private _shape = getText (_cfg >> "shape");
+    if (_error == "" && {_texture == ""} && {_shape != "none"} && {!(_shape in BRF_shapeDefs)}) then {
+        _error = format ["shape '%1' is not in BRF_Shapes", _shape];
+    };
     if (_error != "") then {
         diag_log text format ["[BRF] icon '%1' NOT registered: %2", _id, _error];
         continue;
+    };
+    private _thumb = switch (true) do {
+        case (_texture != ""): {_texture};
+        case (_shape in BRF_shapeDefs): {format ["\z\brf\addons\briefing\ui\shapes\%1_ca.paa", _shape]};
+        default {""};
     };
     BRF_iconTable pushBack [
         _id,
         "displayName" call _fnc_text,
         getText (_cfg >> "abbr"),
-        getText (_cfg >> "texture"),
+        _texture,
         _markerType,
         getNumber (_cfg >> "category"),
         _markerColor,
-        getText (_cfg >> "shape"),
-        getText (_cfg >> "sound")
+        _shape,
+        getText (_cfg >> "sound"),
+        _thumb
     ];
 } forEach ("true" configClasses (configFile >> "BRF_Icons"));
 BRF_iconKinds = BRF_iconTable apply {_x select 0};
 BRF_iconDefs = createHashMapFromArray (BRF_iconTable apply {[_x select 0, _x]});
-BRF_iconCategories = ["STR_BRF_IconCatBasic", "STR_BRF_IconCatGround", "STR_BRF_IconCatAirSea", "STR_BRF_IconCatFacility", "STR_BRF_IconCatTactical"];
+BRF_iconCategories = ["STR_BRF_IconCatBasic", "STR_BRF_IconCatGround", "STR_BRF_IconCatAirSea", "STR_BRF_IconCatFacility", "STR_BRF_IconCatTactical", "STR_BRF_IconCatGeneral"];
 
 // 程序纹理（不需要贴图）
 BRF_texWhite = "#(rgb,8,8,3)color(1,1,1,1)";

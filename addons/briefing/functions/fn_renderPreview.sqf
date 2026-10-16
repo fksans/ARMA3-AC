@@ -95,7 +95,8 @@ switch (BRF_tool) do {
     };
 };
 
-// 放点后等待输入标签：先在原地显示一个半透明的图标
+// 放点后等待输入标签：先在原地显示半透明的当前图标（静态，t0 设成很久以前，不播动画、不出声）
 if (BRF_iconPending isNotEqualTo []) then {
-    _map drawIcon [BRF_texWhite, _faint, BRF_iconPending, ICON_PX * 0.7, ICON_PX * 0.7, 45];
+    private _kind = BRF_iconKinds select (BRF_iconKind min (count BRF_iconKinds - 1));
+    [_map, [BRF_iconPending, _kind, ""], [BRF_iconPending, [], 99], _faint, -1e6, _now, _mpp] call BRF_fnc_renderIcon;
 };

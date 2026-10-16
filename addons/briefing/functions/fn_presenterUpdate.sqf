@@ -19,6 +19,7 @@ if (BRF_locked) then {
     BRF_drawing = false;
     BRF_iconPending = [];
     (_display displayCtrl IDC_BRF_P_LABEL) ctrlShow false;
+    (_display displayCtrl IDC_BRF_P_LABEL_ICON) ctrlShow false;
     (_display displayCtrl IDC_BRF_P_LOCK_TEXT) ctrlSetStructuredText parseText format [
         localize "STR_BRF_LockText",
         _hostName
@@ -42,6 +43,13 @@ if (_showIcons) then {
         _iconList lbSetPictureColor [_y, _tint];
         _iconList lbSetPictureColorSelected [_y, _tint];
     } forEach BRF_iconRows;
+};
+
+// ---- 标签输入框旁的缩略图：当前图标种类 + 当前颜色（Tab / 换色时跟着变） ----
+private _labelIcon = _display displayCtrl IDC_BRF_P_LABEL_ICON;
+if (ctrlShown _labelIcon) then {
+    _labelIcon ctrlSetText ((BRF_iconTable select (BRF_iconKind min (count BRF_iconTable - 1))) select 9);
+    _labelIcon ctrlSetTextColor (BRF_palette select BRF_color);
 };
 
 // ---- 标注权限面板（只有主持界面有）----

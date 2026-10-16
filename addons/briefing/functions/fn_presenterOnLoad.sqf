@@ -66,6 +66,7 @@ _display displayAddEventHandler ["KeyDown", {["key", _this] call BRF_fnc_input}]
 _display displayAddEventHandler ["KeyUp", {["keyUp", _this] call BRF_fnc_input; false}];
 private _label = _display displayCtrl IDC_BRF_P_LABEL;
 _label ctrlShow false;
+(_display displayCtrl IDC_BRF_P_LABEL_ICON) ctrlShow false;
 _label ctrlAddEventHandler ["KeyDown", {["key", _this] call BRF_fnc_input}];
 
 // ---- 工具栏按钮 ----
@@ -155,12 +156,12 @@ BRF_iconRows = createHashMap;
     _iconList lbSetValue [_header, -1];
     _iconList lbSetColor [_header, [0.40, 0.90, 0.80, 0.6]];
     {
-        _x params ["_kind", "_name", "_abbr", "_texture", "", "_cat"];
+        _x params ["_kind", "_name", "_abbr", "", "", "_cat", "", "", "", "_thumb"];
         if (_cat != _category) then {continue};
         private _row = _iconList lbAdd format ["%1  %2", _name, _abbr];
         _iconList lbSetValue [_row, _forEachIndex];
-        if (_texture != "") then {
-            _iconList lbSetPicture [_row, _texture];
+        if (_thumb != "") then {
+            _iconList lbSetPicture [_row, _thumb];
         };
         BRF_iconRows set [_forEachIndex, _row];
     } forEach BRF_iconTable;

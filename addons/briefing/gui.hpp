@@ -7,6 +7,7 @@ class ctrlStaticBackground;
 class ctrlStructuredText;
 class ctrlButton;
 class ctrlEdit;
+class ctrlStaticPicture;
 class ctrlCombo;
 class ctrlListbox;
 
@@ -404,6 +405,14 @@ class BRF_Presenter {
             x = 0;
             y = 0;
             w = QUOTE(0.14 * safezoneW);
+            h = QUOTE(0.032 * safezoneH);
+        };
+        // 标签输入框左边的图标缩略图（按当前颜色着色，见 BRF_fnc_presenterUpdate）
+        class LabelIcon: ctrlStaticPicture {
+            idc = IDC_BRF_P_LABEL_ICON;
+            x = 0;
+            y = 0;
+            w = QUOTE(0.032 * safezoneH * pixelW / pixelH);
             h = QUOTE(0.032 * safezoneH);
         };
 

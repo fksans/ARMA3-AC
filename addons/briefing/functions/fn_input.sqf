@@ -49,6 +49,7 @@ private _fnc_cancel = {
     if (BRF_iconPending isNotEqualTo []) then {
         BRF_iconPending = [];
         (_display displayCtrl IDC_BRF_P_LABEL) ctrlShow false;
+        (_display displayCtrl IDC_BRF_P_LABEL_ICON) ctrlShow false;
         ctrlSetFocus _map;
     };
     ["set", []] call BRF_fnc_pointer;
@@ -60,7 +61,29 @@ private _fnc_confirmLabel = {
     ["icon", [BRF_iconPending, BRF_iconKinds select BRF_iconKind, _label]] call BRF_fnc_commit;
     BRF_iconPending = [];
     _ctrl ctrlShow false;
+    (_display displayCtrl IDC_BRF_P_LABEL_ICON) ctrlShow false;
     ctrlSetFocus _map;
+};
+
+private _fnc_askLabel = {
+    // 放点：弹出输入框填标签，回车确认；Tab 切换图标种类。输入框左边是当前图标的缩略图
+    params ["_p", "_mx", "_my"];
+    BRF_iconPending = _p;
+    private _ctrl = _display displayCtrl IDC_BRF_P_LABEL;
+    private _icon = _display displayCtrl IDC_BRF_P_LABEL_ICON;
+    (ctrlPosition _ctrl) params ["", "", "_w", "_h"];
+    (ctrlPosition _icon) params ["", "", "_iw"];
+    private _x0 = (_mx + 0.015) min (safeZoneX + safeZoneW - _w - _iw - 0.004);
+    private _y0 = (_my - _h / 2) max safeZoneY;
+    _icon ctrlSetPosition [_x0, _y0, _iw, _h];
+    _icon ctrlCommit 0;
+    _ctrl ctrlSetPosition [_x0 + _iw + 0.004, _y0, _w, _h];
+    _ctrl ctrlCommit 0;
+    _ctrl ctrlSetText "";
+    _ctrl ctrlShow true;
+    _icon ctrlShow true;
+    ctrlSetFocus _ctrl;
+    [] call BRF_fnc_presenterUpdate;
 };
 
 private _fnc_finishArea = {
@@ -88,20 +111,7 @@ switch (_event) do {
                 BRF_pts = [_p];
             };
             case TOOL_ICON: {
-                // 弹出输入框填标签，回车确认；Tab 切换图标种类
-                BRF_iconPending = _p;
-                private _ctrl = _display displayCtrl IDC_BRF_P_LABEL;
-                (ctrlPosition _ctrl) params ["", "", "_w", "_h"];
-                _ctrl ctrlSetPosition [
-                    (_mx + 0.015) min (safeZoneX + safeZoneW - _w),
-                    (_my - _h / 2) max safeZoneY,
-                    _w,
-                    _h
-                ];
-                _ctrl ctrlCommit 0;
-                _ctrl ctrlSetText "";
-                _ctrl ctrlShow true;
-                ctrlSetFocus _ctrl;
+                [_p, _mx, _my] call _fnc_askLabel;
             };
             case TOOL_RING: {
                 BRF_drawing = true;

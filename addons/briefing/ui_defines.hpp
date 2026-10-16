@@ -38,6 +38,7 @@
 #define IDC_BRF_P_STATUS 1220
 #define IDC_BRF_P_MESSAGE 1221
 #define IDC_BRF_P_LABEL 1230
+#define IDC_BRF_P_LABEL_ICON 1231
 // 图标面板（目标点工具时显示在左侧）
 #define IDC_BRF_P_ICON_TITLE 1250
 #define IDC_BRF_P_ICON_LIST 1251
