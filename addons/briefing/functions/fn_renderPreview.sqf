@@ -15,7 +15,8 @@ private _col = +(BRF_palette select BRF_color);
 private _faint = +_col;
 _faint set [3, 0.5];
 
-switch (BRF_tool) do {
+// Ctrl + 拖拽：不管当前工具，按航线预览（见 BRF_fnc_input）
+switch ([BRF_tool, TOOL_LINE] select BRF_ctrlLine) do {
     case TOOL_LINE: {
         if (!BRF_drawing || {count BRF_pts == 0}) exitWith {};
         private _cursor = BRF_cursor;

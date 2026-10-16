@@ -145,6 +145,7 @@ BRF_accessOpen = false;         // 主持端：权限面板开着
 BRF_seq = 0;
 BRF_undoStack = [];
 BRF_tool = TOOL_LINE;
+BRF_ctrlLine = false;
 BRF_color = 0;
 BRF_arrow = true;
 BRF_iconKind = 0;

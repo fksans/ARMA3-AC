@@ -43,6 +43,7 @@ private _fnc_world = {
 private _fnc_cancel = {
     // 取消正在进行的操作
     BRF_drawing = false;
+    BRF_ctrlLine = false;
     BRF_pts = [];
     BRF_ringRadius = 0;
     BRF_areaPts = [];
@@ -98,14 +99,20 @@ private _fnc_finishArea = {
 private _return = false;
 switch (_event) do {
     case "down": {
-        _args params ["", "_btn", "_mx", "_my"];
+        _args params ["", "_btn", "_mx", "_my", ["_shift", false], ["_ctrl", false], ["_alt", false]];
         if (_btn != 0) exitWith {};
 
         // 标签还没确认就点了别处：按当前输入确认
-        if (BRF_iconPending isNotEqualTo []) exitWith {call _fnc_confirmLabel};
+        if (BRF_iconPending isNotEqualTo []) exitWith {
+            // 双击的第二下落在刚放的点附近：不当成「点了别处」，留着输入框
+            private _near = (([_mx, _my] call _fnc_world) distance2D BRF_iconPending) < HIT_PX * BRF_mpp;
+            if (!_near) then {call _fnc_confirmLabel};
+        };
 
+        BRF_ctrlLine = _ctrl;
+        private _tool = [BRF_tool, TOOL_LINE] select BRF_ctrlLine;
         private _p = [_mx, _my] call _fnc_world;
-        switch (BRF_tool) do {
+        switch (_tool) do {
             case TOOL_LINE: {
                 BRF_drawing = true;
                 BRF_pts = [_p];
@@ -147,7 +154,8 @@ switch (_event) do {
         private _p = [_mx, _my] call _fnc_world;
         BRF_cursor = _p;
 
-        switch (BRF_tool) do {
+        private _tool = [BRF_tool, TOOL_LINE] select BRF_ctrlLine;
+        switch (_tool) do {
             case TOOL_LINE: {
                 if (!BRF_drawing) exitWith {};
                 // 每次缩放后屏幕 4 像素对应的米数都不同，BRF_mpp 每帧更新
@@ -176,13 +184,15 @@ switch (_event) do {
 
     case "up": {
         _args params ["", "_btn", "_mx", "_my", ["_shift", false], ["_ctrl", false], ["_alt", false]];
-        if (_btn != 0 || {!BRF_drawing}) exitWith {};
+        if (_btn != 0) exitWith {};
+        if (!BRF_drawing) exitWith {BRF_ctrlLine = false};
         BRF_drawing = false;
         // 界面上补挂的松开事件不带修饰键，用键盘事件记下的状态兜底
         _shift = _shift || BRF_modShift;
         _alt = _alt || BRF_modAlt;
 
-        switch (BRF_tool) do {
+        private _tool = [BRF_tool, TOOL_LINE] select BRF_ctrlLine;
+        switch (_tool) do {
             case TOOL_LINE: {
                 private _pts = BRF_pts;
                 BRF_pts = [];
@@ -203,13 +213,25 @@ switch (_event) do {
                 ["set", []] call BRF_fnc_pointer;
             };
         };
+        BRF_ctrlLine = false;
     };
 
     case "dbl": {
-        _args params ["", "_btn"];
-        if (_btn != 0 || {BRF_tool != TOOL_AREA}) exitWith {};
-        // 双击闭合区域（双击的第二下已经在 down 里去重了）
-        call _fnc_finishArea;
+        _args params ["", "_btn", "_mx", "_my"];
+        if (_btn != 0) exitWith {};
+        switch (true) do {
+            // 区域工具：双击闭合区域（双击的第二下已经在 down 里去重了）
+            case (BRF_tool == TOOL_AREA && {!BRF_ctrlLine}): {call _fnc_finishArea};
+            // 橡皮：不放标记（第一下可能已经删了东西）
+            case (BRF_tool == TOOL_ERASER): {};
+            // 已经在输入标签（目标点工具单击时就弹出了）：什么都不做
+            case (BRF_iconPending isNotEqualTo []): {};
+            default {
+                // 其他工具：和原版地图一样，双击放标记（当前图标种类），弹出标签输入框
+                call _fnc_cancel;
+                [[_mx, _my] call _fnc_world, _mx, _my] call _fnc_askLabel;
+            };
+        };
     };
 
     case "keyUp": {
@@ -245,7 +267,7 @@ switch (_event) do {
             switch (true) do {
                 // 指挥官标注：Space 跟随 / 自由；主持人专用的键（激光笔、F、预案、清屏）不响应
                 case (_commander && {_key == 0x39}): {["follow"] call BRF_fnc_presenterAction};
-                case (_commander && {_key in [0x06, 0x21, 0x19, 0xCD, 0xD1, 0x1B, 0xCB, 0xC9, 0x1A, 0xC7, 0xD3]}): {};
+                case (_commander && {_key in [0x06, 0x21, 0x19, 0xCD, 0xD1, 0x1B, 0xCB, 0xC9, 0x1A, 0xC7] || {_key == 0xD3 && {_ctrl && _shift}}}): {};
                 // 1-6：切换工具
                 case (_key >= 0x02 && {_key <= 0x07} && {!_ctrl} && {!_alt}): {
                     call _fnc_cancel;
@@ -269,6 +291,14 @@ switch (_event) do {
                 case (_key == 0x21 && {!_ctrl}): {["focus"] call BRF_fnc_presenterAction};      // F
                 case (_key == 0x2C && {_ctrl}): {["undo"] call BRF_fnc_presenterAction};        // Ctrl+Z
                 case (_key == 0xD3 && {_ctrl} && {_shift}): {["clear"] call BRF_fnc_presenterAction}; // Ctrl+Shift+Del
+                case (_key == 0xD3 && {!_ctrl} && {!BRF_planEdit}): {                         // Delete：删除鼠标下的元素
+                    getMousePosition params ["_mx", "_my"];
+                    private _id = [_map, _mx, _my, _erasable] call BRF_fnc_hitTest;
+                    if (_id != "") then {
+                        ["del", _id] call BRF_fnc_send;
+                        [] call BRF_fnc_presenterUpdate;
+                    };
+                };
 
                 // ---- 预案 ----
                 case (_key == 0x19 && {!_ctrl}): {["toggleEdit"] call BRF_fnc_plan};            // P

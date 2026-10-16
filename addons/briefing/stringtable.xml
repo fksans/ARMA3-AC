@@ -162,9 +162,9 @@
             <Chinesesimp>逐点单击，回车或双击闭合，Esc 取消</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintEraser">
-            <Original>单击元素删除</Original>
-            <English>Click an element to delete it</English>
-            <Chinesesimp>单击元素删除</Chinesesimp>
+            <Original>单击元素删除（任何工具下鼠标悬停按 Del 也能删）</Original>
+            <English>Click an element to delete it (or hover and press Del with any tool)</English>
+            <Chinesesimp>单击元素删除（任何工具下鼠标悬停按 Del 也能删）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintEraserOwn">
             <Original>单击自己画的元素删除</Original>
@@ -172,14 +172,14 @@
             <Chinesesimp>单击自己画的元素删除</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintIcon">
-            <Original>单击放点，输入标签后回车；Tab 切换图标种类</Original>
-            <English>Click to place, type a label and press Enter; Tab changes the icon</English>
-            <Chinesesimp>单击放点，输入标签后回车；Tab 切换图标种类</Chinesesimp>
+            <Original>单击放点，输入标签后回车；Tab 切换图标种类（任何工具下双击地图也能放点）</Original>
+            <English>Click to place, type a label and press Enter; Tab changes the icon (double-click the map to place with any tool)</English>
+            <Chinesesimp>单击放点，输入标签后回车；Tab 切换图标种类（任何工具下双击地图也能放点）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintLine">
-            <Original>拖拽画线；按住 Shift 松开 = 直线，按住 Alt 松开 = 虚线；A 切换箭头</Original>
-            <English>Drag to draw; release with Shift = straight, with Alt = dashed; A toggles the arrow</English>
-            <Chinesesimp>拖拽画线；按住 Shift 松开 = 直线，按住 Alt 松开 = 虚线；A 切换箭头</Chinesesimp>
+            <Original>拖拽画线；按住 Shift 松开 = 直线，按住 Alt 松开 = 虚线；A 切换箭头（任何工具下 Ctrl+拖拽 也能画线，Ctrl+Shift = 直线）</Original>
+            <English>Drag to draw; release with Shift = straight, with Alt = dashed; A toggles the arrow (Ctrl+drag draws a line with any tool, Ctrl+Shift = straight)</English>
+            <Chinesesimp>拖拽画线；按住 Shift 松开 = 直线，按住 Alt 松开 = 虚线；A 切换箭头（任何工具下 Ctrl+拖拽 也能画线，Ctrl+Shift = 直线）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintPlanEdit">
             <Original>编排：画的东西只有你看得到 · N 新一步 · [ ] 切换步骤 · V 记录视角 · C 镜头开关 · Del 删除本步 · P 退出</Original>
@@ -742,9 +742,9 @@
             <Chinesesimp>6 橡皮</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ToolEraserTooltip">
-            <Original>单击元素删除</Original>
-            <English>Click an element to delete it</English>
-            <Chinesesimp>单击元素删除</Chinesesimp>
+            <Original>单击元素删除（任何工具下鼠标悬停按 Del 也能删）</Original>
+            <English>Click an element to delete it (or hover and press Del with any tool)</English>
+            <Chinesesimp>单击元素删除（任何工具下鼠标悬停按 Del 也能删）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ToolIcon">
             <Original>2 目标点</Original>
