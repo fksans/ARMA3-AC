@@ -62,16 +62,14 @@ for "_tool" from TOOL_LINE to TOOL_ERASER do {
     };
 };
 
-private _colorNames = [
-    localize "STR_BRF_ColorFriendly",
-    localize "STR_BRF_ColorEnemy",
-    localize "STR_BRF_ColorNeutral",
-    localize "STR_BRF_ColorTarget"
-];
-private _colorName = _colorNames select BRF_color;
+private _colorName = BRF_colorNames select BRF_color;
 private _ctrlColor = _display displayCtrl IDC_BRF_P_COLOR;
-_ctrlColor ctrlSetText format ["■ %1", _colorName];
-_ctrlColor ctrlSetTextColor (BRF_palette select BRF_color);
+if (lbCurSel _ctrlColor != BRF_color) then {
+    // Q / E 换色时同步下拉框；不触发下拉框自己的选择事件
+    uiNamespace setVariable ["BRF_suppressColorSel", true];
+    _ctrlColor lbSetCurSel BRF_color;
+    uiNamespace setVariable ["BRF_suppressColorSel", false];
+};
 
 private _arrowText = localize (["STR_BRF_Off", "STR_BRF_On"] select BRF_arrow);
 (_display displayCtrl IDC_BRF_P_ARROW) ctrlSetText format [localize "STR_BRF_ArrowFormat", _arrowText];

@@ -258,10 +258,14 @@ class BRF_Presenter {
             tooltip = "$STR_BRF_ToolEraserTooltip";
             x = QUOTE(BTN_X(5));
         };
-        class Color: BRF_RscButton {
+        class Color: ctrlCombo {
             idc = IDC_BRF_P_COLOR;
             tooltip = "$STR_BRF_ColorTooltip";
+            sizeEx = QUOTE(TXT_SIZE_SMALL);
             x = QUOTE(BTN_X(6));
+            y = QUOTE(BTN_Y);
+            w = QUOTE(BTN_W);
+            h = QUOTE(BTN_H);
         };
         class Arrow: BRF_RscButton {
             idc = IDC_BRF_P_ARROW;

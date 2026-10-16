@@ -81,6 +81,16 @@
             <English>Close the presenter (Esc). The briefing keeps running, press Ctrl+B to come back</English>
             <Chinesesimp>关闭主持界面（Esc）。简报不会结束，按 Ctrl+B 回来</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_ColorBrown">
+            <Original>棕</Original>
+            <English>Brown</English>
+            <Chinesesimp>棕</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorCiv">
+            <Original>平民</Original>
+            <English>Civilian</English>
+            <Chinesesimp>平民</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_ColorEnemy">
             <Original>敌军</Original>
             <English>Enemy</English>
@@ -91,10 +101,35 @@
             <English>Friendly</English>
             <Chinesesimp>友军</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_ColorGrey">
+            <Original>灰</Original>
+            <English>Grey</English>
+            <Chinesesimp>灰</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorGuer">
+            <Original>独立</Original>
+            <English>Independent</English>
+            <Chinesesimp>独立</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorKhaki">
+            <Original>卡其</Original>
+            <English>Khaki</English>
+            <Chinesesimp>卡其</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_ColorNeutral">
             <Original>注意</Original>
             <English>Caution</English>
             <Chinesesimp>注意</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorOrange">
+            <Original>橙</Original>
+            <English>Orange</English>
+            <Chinesesimp>橙</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorPink">
+            <Original>粉</Original>
+            <English>Pink</English>
+            <Chinesesimp>粉</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ColorTarget">
             <Original>目标</Original>
@@ -102,9 +137,14 @@
             <Chinesesimp>目标</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ColorTooltip">
-            <Original>切换颜色（Q / E）</Original>
-            <English>Change color (Q / E)</English>
-            <Chinesesimp>切换颜色（Q / E）</Chinesesimp>
+            <Original>选择颜色（下拉，或 Q / E 循环）</Original>
+            <English>Pick a color (drop-down, or Q / E to cycle)</English>
+            <Chinesesimp>选择颜色（下拉，或 Q / E 循环）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorWhite">
+            <Original>白</Original>
+            <English>White</English>
+            <Chinesesimp>白</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ContextMenu">
             <Original>开简报主持</Original>

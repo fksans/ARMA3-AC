@@ -86,9 +86,9 @@ private _fnc_add = {
             private _def = BRF_iconDefs getOrDefault [_kind, []];
             if (_def isEqualTo []) exitWith {};
             private _markerType = _def select 4;
-            // b_ 开头的北约兵种标记按颜色换阵营：友军 b_、敌军 o_、注意 / 目标 n_
+            // b_ 开头的北约兵种标记按颜色换阵营：友军 b_、敌军 o_、其他颜色 n_
             if (_markerType select [0, 2] == "b_") then {
-                private _sided = (["b_", "o_", "n_", "n_"] select _colorIndex) + (_markerType select [2]);
+                private _sided = (["b_", "o_"] param [_colorIndex, "n_"]) + (_markerType select [2]);
                 if (isClass (configFile >> "CfgMarkers" >> _sided)) then {_markerType = _sided};
             };
             private _markerColor = _def select 6;

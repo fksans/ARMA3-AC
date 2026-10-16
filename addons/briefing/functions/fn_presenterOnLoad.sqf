@@ -89,7 +89,6 @@ _label ctrlAddEventHandler ["KeyDown", {["key", _this] call BRF_fnc_input}];
     [IDC_BRF_P_TOOL + TOOL_AREA, "tool", TOOL_AREA],
     [IDC_BRF_P_TOOL + TOOL_POINTER, "tool", TOOL_POINTER],
     [IDC_BRF_P_TOOL + TOOL_ERASER, "tool", TOOL_ERASER],
-    [IDC_BRF_P_COLOR, "color", 1],
     [IDC_BRF_P_ARROW, "arrow"],
     [IDC_BRF_P_UNDO, "undo"],
     [IDC_BRF_P_CLEAR, "clear"],
@@ -126,6 +125,24 @@ if (lbCurSel _bgm < 0) then {_bgm lbSetCurSel 0};
 _bgm ctrlAddEventHandler ["LBSelChanged", {
     params ["_ctrl", "_index"];
     profileNamespace setVariable ["BRF_bgm", _ctrl lbData _index];
+    ctrlSetFocus ((ctrlParent _ctrl) displayCtrl IDC_BRF_MAP);
+}];
+
+// ---- 颜色下拉框：每行「■ 名字」，文字就是这个颜色；Q / E 仍然循环切换（选中项由 BRF_fnc_presenterUpdate 同步） ----
+private _colorBox = _display displayCtrl IDC_BRF_P_COLOR;
+{
+    private _index = _colorBox lbAdd format ["■ %1", _x];
+    _colorBox lbSetColor [_index, BRF_palette select _forEachIndex];
+    _colorBox lbSetSelectColor [_index, BRF_palette select _forEachIndex];
+} forEach BRF_colorNames;
+_colorBox lbSetCurSel BRF_color;
+_colorBox ctrlAddEventHandler ["LBSelChanged", {
+    params ["_ctrl", "_index"];
+    if (uiNamespace getVariable ["BRF_suppressColorSel", false]) exitWith {};
+    if (_index >= 0) then {
+        BRF_color = _index;
+        [] call BRF_fnc_presenterUpdate;
+    };
     ctrlSetFocus ((ctrlParent _ctrl) displayCtrl IDC_BRF_MAP);
 }];
 

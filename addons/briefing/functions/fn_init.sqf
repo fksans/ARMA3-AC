@@ -15,23 +15,36 @@
 
 if (!hasInterface) exitWith {};
 
-// ---- 调色板：颜色序号 0 友军 / 1 敌军 / 2 中立·注意 / 3 目标·强调 ----
-BRF_palette = [
-    [0.30, 0.75, 1.00, 1],
-    [1.00, 0.30, 0.25, 1],
-    [1.00, 0.80, 0.20, 1],
-    [0.40, 1.00, 0.60, 1]
+// ---- 调色板：颜色序号 0 友军 / 1 敌军 / 2 中立·注意 / 3 目标·强调 / 4 起为通用颜色 ----
+// 每项：[名字 stringtable 键, 暗色地图用的亮色, 原版地图（白底）用的深色, 原版标记颜色 CfgMarkerColors]
+// 原版地图上用深色版本 + 深色描边，见 BRF_fnc_mapDraw；简报界面的暗色地图用亮色
+// 序号就是元素里的颜色序号，只能往后加，不能改顺序（旧元素、中途加入都靠它）
+private _colors = [
+    ["STR_BRF_ColorFriendly", [0.30, 0.75, 1.00, 1], [0.00, 0.33, 0.95, 1], "ColorBLUFOR"],
+    ["STR_BRF_ColorEnemy",    [1.00, 0.30, 0.25, 1], [0.90, 0.00, 0.00, 1], "ColorOPFOR"],
+    ["STR_BRF_ColorNeutral",  [1.00, 0.80, 0.20, 1], [0.95, 0.52, 0.00, 1], "ColorYellow"],
+    ["STR_BRF_ColorTarget",   [0.40, 1.00, 0.60, 1], [0.00, 0.58, 0.15, 1], "ColorGreen"],
+    ["STR_BRF_ColorWhite",    [0.95, 0.95, 0.95, 1], [1.00, 1.00, 1.00, 1], "ColorWhite"],
+    ["STR_BRF_ColorOrange",   [1.00, 0.55, 0.15, 1], [0.85, 0.35, 0.00, 1], "ColorOrange"],
+    ["STR_BRF_ColorPink",     [1.00, 0.50, 0.80, 1], [0.85, 0.10, 0.55, 1], "ColorPink"],
+    ["STR_BRF_ColorBrown",    [0.80, 0.55, 0.35, 1], [0.45, 0.25, 0.10, 1], "ColorBrown"],
+    ["STR_BRF_ColorKhaki",    [0.85, 0.80, 0.55, 1], [0.50, 0.45, 0.20, 1], "ColorKhaki"],
+    ["STR_BRF_ColorGrey",     [0.60, 0.65, 0.65, 1], [0.35, 0.35, 0.35, 1], "ColorGrey"],
+    ["STR_BRF_ColorGuer",     [0.25, 0.80, 0.25, 1], [0.00, 0.45, 0.00, 1], "ColorGUER"],
+    ["STR_BRF_ColorCiv",      [0.75, 0.45, 1.00, 1], [0.45, 0.10, 0.65, 1], "ColorCIV"]
 ];
-// 转地图标记时对应的 CfgMarkerColors
-// 原版地图（白底）上用的深色版本 + 深色描边，见 BRF_fnc_mapDraw；简报界面的暗色地图仍用上面的亮色
-BRF_paletteLight = [
-    [0.00, 0.33, 0.95, 1],
-    [0.90, 0.00, 0.00, 1],
-    [0.95, 0.52, 0.00, 1],
-    [0.00, 0.58, 0.15, 1]
-];
+BRF_colorNames = _colors apply {localize (_x select 0)};
+BRF_palette = _colors apply {_x select 1};
+BRF_paletteLight = _colors apply {_x select 2};
+BRF_markerColors = _colors apply {
+    private _name = _x select 3;
+    if (!isClass (configFile >> "CfgMarkerColors" >> _name)) then {
+        diag_log text format ["[BRF] marker color '%1' is not in CfgMarkerColors, using ColorBlack", _name];
+        _name = "ColorBlack";
+    };
+    _name
+};
 BRF_lightMap = false;           // 正在原版地图上画（BRF_fnc_mapDraw 期间为 true）
-BRF_markerColors = ["ColorBLUFOR", "ColorOPFOR", "ColorYellow", "ColorGreen"];
 // ---- 图标库：从配置 BRF_Icons 读取（CfgIcons.hpp），没有合法原版标记映射的不注册 ----
 // 每项：[id, 显示名, 缩写, 贴图, 原版标记类型, 分组, 原版标记颜色, 基础图形, 音效]
 BRF_iconTable = [];
