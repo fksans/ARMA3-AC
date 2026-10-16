@@ -61,13 +61,25 @@ if (_texture != "") then {
         _x params ["_closed", "_pts"];
         [_map, _pos, _pts apply {[(_x select 0) * _h, (_x select 1) * _h]}, _closed, _c, 2, _mpp, true] call BRF_fnc_drawPath;
     } forEach _lines;
+    // 实心块用 drawTriangle 按世界坐标画：drawIcon 的尺寸单位和屏幕像素不一定一致，偏移拼出来的图案（终点）会错位
+    private _fnc_square = {
+        // 中心 _at、边长 _side 像素、顺时针转 _angle 度的方块 -> 两个三角形
+        params ["_at", "_side", "_angle", "_col"];
+        private _k = _side / 2 * _mpp;
+        private _corners = [[_k, _k], [_k, -_k], [-_k, -_k], [-_k, _k]] apply {
+            _x params ["_px", "_py"];
+            _at vectorAdd [_px * cos _angle + _py * sin _angle, -_px * sin _angle + _py * cos _angle, 0]
+        };
+        _corners params ["_a", "_b", "_cc", "_d"];
+        _map drawTriangle [[_a, _b, _cc, _a, _cc, _d], _col, BRF_texFill];
+    };
     {
         _x params ["_fx", "_fy", "_size", "_angle"];
         private _at = _pos vectorAdd [_fx * _h * _mpp, _fy * _h * _mpp, 0];
         if (BRF_lightMap) then {
-            _map drawIcon [BRF_texWhite, [0, 0, 0, 0.6 * (_c select 3)], _at, _size * _h + 4, _size * _h + 4, _angle];
+            [_at, _size * _h + 4, _angle, [0, 0, 0, 0.6 * (_c select 3)]] call _fnc_square;
         };
-        _map drawIcon [BRF_texWhite, _c, _at, _size * _h, _size * _h, _angle];
+        [_at, _size * _h, _angle, _c] call _fnc_square;
     } forEach _fills;
 };
 

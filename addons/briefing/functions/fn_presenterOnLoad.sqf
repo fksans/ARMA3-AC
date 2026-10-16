@@ -27,6 +27,8 @@ BRF_lastKeyResult = false;
 BRF_modShift = false;
 BRF_modAlt = false;
 BRF_ctrlLine = false;           // Ctrl + 拖拽：临时按航线画（见 BRF_fnc_input）
+BRF_modCtrl = false;
+BRF_lastDownFrame = -1;
 BRF_lastView = [];
 
 private _map = _display displayCtrl IDC_BRF_MAP;
@@ -42,6 +44,20 @@ if (BRF_view isNotEqualTo []) then {
 
 // ---- 地图：鼠标 + 每帧绘制 ----
 _map ctrlAddEventHandler ["MouseButtonDown", {["down", _this] call BRF_fnc_input}];
+// 单独按住 Ctrl 左键时地图控件可能收不到按下事件（引擎留给原版的 Ctrl 拖拽画线）：界面上补挂一个。
+// 只在按住 Ctrl、鼠标在地图上（不在工具栏 / 状态栏）时补；推迟到下一帧，地图控件自己处理过的话什么都不做。
+_display displayAddEventHandler ["MouseButtonDown", {
+    params ["_display", "_btn"];
+    if (_btn != 0 || {!BRF_modCtrl}) exitWith {};
+    getMousePosition params ["_mx", "_my"];
+    if (_my < safeZoneY + BAR_H || {_my > safeZoneY + safeZoneH - BAR_H}) exitWith {};
+    private _frame = diag_frameNo;
+    [{
+        params ["_frame", "_args"];
+        if (BRF_lastDownFrame >= _frame) exitWith {};
+        ["down", _args] call BRF_fnc_input;
+    }, [_frame, [_display displayCtrl IDC_BRF_MAP, _btn, _mx, _my, BRF_modShift, true, BRF_modAlt]]] call CBA_fnc_execNextFrame;
+}];
 _map ctrlAddEventHandler ["MouseMoving", {["move", _this] call BRF_fnc_input}];
 _map ctrlAddEventHandler ["MouseButtonUp", {["up", _this] call BRF_fnc_input}];
 _map ctrlAddEventHandler ["MouseButtonDblClick", {["dbl", _this] call BRF_fnc_input}];

@@ -277,7 +277,8 @@ switch (_action) do {
     };
     case "back": {
         // 撤回最后播放的一步：只移除元素，镜头不动
-        while {BRF_planPlayed isNotEqualTo [] && {(BRF_planPlayed select (count BRF_planPlayed - 1)) isEqualTo []}} do {
+        // 跳过的空步 token 是 -1；只有动作、没有新元素的步元素列表也是空的，但它是真的一步，不能跳过
+        while {BRF_planTokens isNotEqualTo [] && {(BRF_planTokens select (count BRF_planTokens - 1)) == -1}} do {
             BRF_planPlayed deleteAt (count BRF_planPlayed - 1);
             BRF_planTokens deleteAt (count BRF_planTokens - 1);
             if (BRF_planUndo isNotEqualTo []) then {

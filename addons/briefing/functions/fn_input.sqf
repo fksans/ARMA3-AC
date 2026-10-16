@@ -121,6 +121,10 @@ switch (_event) do {
     case "down": {
         _args params ["", "_btn", "_mx", "_my", ["_shift", false], ["_ctrl", false], ["_alt", false]];
         if (_btn != 0) exitWith {};
+        // 地图控件自己收到了这次按下：界面上补挂的按下事件就不再补发（见 BRF_fnc_presenterOnLoad）
+        BRF_lastDownFrame = diag_frameNo;
+        // 补发的按下事件不带修饰键，用键盘事件记下的状态兜底
+        _ctrl = _ctrl || BRF_modCtrl;
 
         // 标签还没确认就点了别处：按当前输入确认
         if (BRF_iconPending isNotEqualTo []) exitWith {
@@ -270,12 +274,14 @@ switch (_event) do {
     case "keyUp": {
         _args params ["", "_key"];
         if (_key in [0x2A, 0x36]) then {BRF_modShift = false}; // Shift
+        if (_key in [0x1D, 0x9D]) then {BRF_modCtrl = false};  // Ctrl
         if (_key in [0x38, 0xB8]) then {BRF_modAlt = false};   // Alt
     };
 
     case "key": {
         _args params ["", "_key", "_shift", "_ctrl", "_alt"];
         if (_key in [0x2A, 0x36]) then {BRF_modShift = true};
+        if (_key in [0x1D, 0x9D]) then {BRF_modCtrl = true};
         if (_key in [0x38, 0xB8]) then {BRF_modAlt = true};
 
         // 同一个按键在控件和界面上各触发一次时只处理一次
