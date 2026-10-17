@@ -7,6 +7,7 @@ Zeus 在暗色战术地图上画线、标点，所有玩家全屏观看，同时
 - 依赖：**CBA_A3**。**ZEN** 可选（有的话 Zeus 右键菜单多一个入口）。可选联动 **Zeus 音乐播放器**（[fksans/ARMA3-ZUSE](https://github.com/fksans/ARMA3-ZUSE)）放 BGM。
 - **兼容性**：0.4.0 的元素格式多一项（已摧毁）、颜色序号最大到 11，全队都要用 0.4.0；旧版客户端会看不对或报错。
 - 设计文档：[DESIGN.md](DESIGN.md)（实现上的差异见末尾「实现说明」）。
+- 更新记录：[docs/CHANGELOG.md](docs/CHANGELOG.md)。
 
 ## 怎么用
 
@@ -152,6 +153,7 @@ Zeus 在暗色战术地图上画线、标点，所有玩家全屏观看，同时
 │       └── fn_demo.sqf              # 单机测试：一行代码看 5 种元素的动画
 ├── docs/SERVER_KEY_INSTALL.md       # 给腐竹：key + BattlEye 公共变量过滤
 ├── docs/CREDITS.md                  # 图标来源与许可
+├── docs/CHANGELOG.md                # 更新记录
 ├── tools/                           # fetch_icons.py（图标）/ make_sounds.py（音效）/ make_shapes.py（程序图形）
 ├── DESIGN.md / CLAUDE.md
 └── mod.cpp
