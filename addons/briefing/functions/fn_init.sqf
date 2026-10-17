@@ -175,6 +175,7 @@ BRF_state = [];                 // 当前元素 [[id, 类型, 颜色, 数据, �
 if (isNil "BRF_drawGrants" || {!(BRF_drawGrants isEqualType [])}) then {BRF_drawGrants = []};
 if (isNil "BRF_drawDenied" || {!(BRF_drawDenied isEqualType [])}) then {BRF_drawDenied = []};
 if (isNil "BRF_session" || {!(BRF_session isEqualTypeArray [false, "", 0])}) then {BRF_session = [false, "", -1]};
+BRF_sessionSeen = BRF_session select 0; // 本机处理过的会话状态（只在本机，见 BRF_fnc_onEvent 的 "session"）
 if (isNil "BRF_view" || {!(BRF_view isEqualType [])} || {count BRF_view < 3}) then {BRF_view = []};
 
 // 已有元素直接设为「已播完」

@@ -104,12 +104,17 @@ switch (_type) do {
     case "session": {
         params ["", ["_active", false, [false]], ["_name", "", [""]], ["_owner", -1, [0]]];
         BRF_session = [_active, _name, _owner];
+        // 只有「没开始 → 开始」才给大家弹出观看界面；接管（一直在进行、只是换了主持人）不弹，
+        // 已经自己关掉画面的人不会被重新拉进来，开着的人照常看。
+        // 用本机变量判断：BRF_session 是公共变量，网络上会被单独覆盖，到达顺序没保证
+        private _started = _active && {!BRF_sessionSeen};
+        BRF_sessionSeen = _active;
 
         if (_active) then {
             if (_owner == clientOwner) then {
                 [false] call BRF_fnc_closeViewer;
             } else {
-                [true] call BRF_fnc_openViewer;
+                if (_started) then {[true] call BRF_fnc_openViewer};
             };
         } else {
             BRF_ptrTarget = [];
