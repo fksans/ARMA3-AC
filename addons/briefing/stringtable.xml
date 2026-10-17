@@ -651,6 +651,11 @@
             <English>Too many elements (max %1), delete some first</English>
             <Chinesesimp>元素太多了（上限 %1 个），先删掉一些</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_MsgViewerDeferred">
+            <Original>[简报] 简报已开始，关掉当前界面后会自动打开简报画面</Original>
+            <English>[Briefing] A briefing has started; it opens when you close the current screen</English>
+            <Chinesesimp>[简报] 简报已开始，关掉当前界面后会自动打开简报画面</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_NoDrawAccess">
             <Original>你没有标注权限（小队长、被 Zeus 授权的人才能标注）</Original>
             <English>You can't draw (squad leaders and players granted by Zeus can)</English>
