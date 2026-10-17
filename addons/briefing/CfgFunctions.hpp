@@ -6,10 +6,16 @@ class CfgFunctions {
             // 初始化：快捷键、ZEN 菜单、公共变量监听、中途加入
             class init {postInit = 1;};
             class canPresent {};
+            class canDraw {};
             class isHost {};
             // 网络：事件分发 / 发送
             class onEvent {};
             class send {};
+            class collectState {};
+            // 原版地图：标记镜像、原样式绘制
+            class mirror {};
+            class mirrorSweep {};
+            class mapDraw {};
             class buildCache {};
             class purge {};
             // 主持端
@@ -19,8 +25,10 @@ class CfgFunctions {
             class presenterUpdate {};
             class presenterAction {};
             class presenterMessage {};
+            class presenterAccess {};
             class input {};
             class commit {};
+            class newId {};
             class simplify {};
             class smooth {};
             class segDist {};
@@ -30,7 +38,6 @@ class CfgFunctions {
             class pointer {};
             class undo {};
             class clear {};
-            class toMarkers {};
             class musicPlayAll {};
             class musicStop {};
             // 观看端
@@ -39,14 +46,20 @@ class CfgFunctions {
             class viewerOnLoad {};
             class viewerOnUnload {};
             class viewerUpdate {};
+            class viewerIntro {};
+            class viewerOutro {};
+            // 预案
+            class plan {};
             // 测试
             class demo {};
             // 渲染（主持端和观看端共用）
             class render {};
+            class renderElement {};
             class renderIcon {};
             class renderRing {};
             class renderArea {};
             class renderPreview {};
+            class renderOverlay {};
             class drawLine {};
             class drawPath {};
             class easeOutCubic {};

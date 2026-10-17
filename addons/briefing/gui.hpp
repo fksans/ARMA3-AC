@@ -7,7 +7,9 @@ class ctrlStaticBackground;
 class ctrlStructuredText;
 class ctrlButton;
 class ctrlEdit;
+class ctrlStaticPicture;
 class ctrlCombo;
+class ctrlListbox;
 
 // ---------------------------------------------------------------------------
 // 暗色地图：颜色全部压暗并换成青绿单色调，关掉卫星图和任务标记。
@@ -72,7 +74,6 @@ class BRF_RscButton: ctrlButton {
 
 // ---------------------------------------------------------------------------
 // 观看界面（所有玩家）
-// 地图控件不能放进 controls group，必须直接放在 controls 下。
 // ---------------------------------------------------------------------------
 class BRF_Viewer {
     idd = IDD_BRF_VIEWER;
@@ -81,13 +82,18 @@ class BRF_Viewer {
     onLoad = "call BRF_fnc_viewerOnLoad";
     onUnload = "call BRF_fnc_viewerOnUnload";
 
-    class controlsBackground {};
-    class controls {
+    // 地图放在 controlsBackground：地图控件获得焦点（点一下）时会画到同一层其他控件上面，
+    // 放在背景层才能保证标题、工具栏、输入框始终在地图上面（原版主地图也是这样放的）。
+    // 地图控件不能放进 controls group，背景层不是 group，可以。
+    class controlsBackground {
         class Map: BRF_RscMap {
             idc = IDC_BRF_MAP;
         };
+    };
+    class controls {
         // 上下两条暗边，像 AC 的简报画面
         class TopBar: ctrlStaticBackground {
+            idc = IDC_BRF_V_TOP_BAR;
             x = "safeZoneXAbs";
             y = "safeZoneY";
             w = "safeZoneWAbs";
@@ -95,6 +101,7 @@ class BRF_Viewer {
             colorBackground[] = {0, 0, 0, 0.55};
         };
         class BottomBar: TopBar {
+            idc = IDC_BRF_V_BOTTOM_BAR;
             y = QUOTE(safezoneY + safezoneH - 0.04 * safezoneH);
             h = QUOTE(0.04 * safezoneH);
         };
@@ -137,6 +144,56 @@ class BRF_Viewer {
             h = QUOTE(0.03 * safezoneH);
             colorText[] = {0.40, 0.90, 0.80, 0.6};
         };
+
+        // ---- 开场动画（放在最上层；位置和颜色由 BRF_fnc_viewerIntro 每帧设置，不播开场时隐藏）----
+        class IntroTop: ctrlStaticBackground {
+            idc = IDC_BRF_V_INTRO_TOP;
+            x = "safeZoneXAbs";
+            y = "safeZoneY";
+            w = "safeZoneWAbs";
+            h = QUOTE(safezoneH / 2);
+            colorBackground[] = {0, 0, 0, 1};
+        };
+        class IntroBottom: IntroTop {
+            idc = IDC_BRF_V_INTRO_BOTTOM;
+            y = QUOTE(safezoneY + safezoneH / 2);
+        };
+        class IntroGlowA: ctrlStaticBackground {
+            idc = IDC_BRF_V_INTRO_GLOW_A;
+            x = 0;
+            y = 0;
+            w = 0;
+            h = 0;
+            colorBackground[] = {0.40, 0.90, 0.80, 0.15};
+        };
+        class IntroGlowB: IntroGlowA {
+            idc = IDC_BRF_V_INTRO_GLOW_B;
+        };
+        class IntroLineA: IntroGlowA {
+            idc = IDC_BRF_V_INTRO_LINE_A;
+            colorBackground[] = {0.63, 1, 0.92, 1};
+        };
+        class IntroLineB: IntroLineA {
+            idc = IDC_BRF_V_INTRO_LINE_B;
+        };
+        class IntroMark: ctrlStaticBackground {
+            idc = IDC_BRF_V_INTRO_MARK;
+            x = QUOTE(0.5 - 4 * pixelW);
+            y = QUOTE(0.5 - 4 * pixelH);
+            w = QUOTE(8 * pixelW);
+            h = QUOTE(8 * pixelH);
+            colorBackground[] = {0.63, 1, 0.92, 1};
+        };
+        class IntroText: BRF_RscText {
+            idc = IDC_BRF_V_INTRO_TEXT;
+            style = 2; // ST_CENTER
+            font = "EtelkaMonospacePro";
+            sizeEx = QUOTE(TXT_SIZE_SMALL);
+            x = QUOTE(0.5 - 0.15 * safezoneW);
+            y = QUOTE(0.5 + 16 * pixelH);
+            w = QUOTE(0.3 * safezoneW);
+            h = QUOTE(0.03 * safezoneH);
+        };
     };
 };
 
@@ -151,12 +208,13 @@ class BRF_Presenter {
     onLoad = "call BRF_fnc_presenterOnLoad";
     onUnload = "call BRF_fnc_presenterOnUnload";
 
-    class controlsBackground {};
-    class controls {
+    // 地图放在 controlsBackground，原因见 BRF_Viewer
+    class controlsBackground {
         class Map: BRF_RscMap {
             idc = IDC_BRF_MAP;
         };
-
+    };
+    class controls {
         // ---- 顶部工具栏 ----
         class ToolbarBg: ctrlStaticBackground {
             x = "safeZoneXAbs";
@@ -201,60 +259,87 @@ class BRF_Presenter {
             tooltip = "$STR_BRF_ToolEraserTooltip";
             x = QUOTE(BTN_X(5));
         };
-        class Color: BRF_RscButton {
+        class Tool7: BRF_RscButton {
+            idc = 1207; // IDC_BRF_P_TOOL + 7
+            text = "$STR_BRF_ToolRuler";
+            tooltip = "$STR_BRF_ToolRulerTooltip";
+            x = QUOTE(BTN_X(6));
+        };
+        class Color: ctrlCombo {
             idc = IDC_BRF_P_COLOR;
             tooltip = "$STR_BRF_ColorTooltip";
-            x = QUOTE(BTN_X(6));
+            sizeEx = QUOTE(TXT_SIZE_SMALL);
+            x = QUOTE(BTN_X(7));
+            y = QUOTE(BTN_Y);
+            w = QUOTE(BTN_W);
+            h = QUOTE(BTN_H);
         };
         class Arrow: BRF_RscButton {
             idc = IDC_BRF_P_ARROW;
             tooltip = "$STR_BRF_ArrowTooltip";
-            x = QUOTE(BTN_X(7));
+            x = QUOTE(BTN_X(8));
         };
         class Undo: BRF_RscButton {
             idc = IDC_BRF_P_UNDO;
             text = "$STR_BRF_Undo";
             tooltip = "$STR_BRF_UndoTooltip";
-            x = QUOTE(BTN_X(8));
+            x = QUOTE(BTN_X(9));
         };
         class Clear: BRF_RscButton {
             idc = IDC_BRF_P_CLEAR;
             text = "$STR_BRF_Clear";
             tooltip = "$STR_BRF_ClearTooltip";
-            x = QUOTE(BTN_X(9));
+            x = QUOTE(BTN_X(10));
         };
         class Bgm: ctrlCombo {
             idc = IDC_BRF_P_BGM;
             tooltip = "$STR_BRF_BgmTooltip";
             sizeEx = QUOTE(TXT_SIZE_SMALL);
-            x = QUOTE(BTN_X(10));
+            x = QUOTE(BTN_X(11));
             y = QUOTE(BTN_Y);
             w = QUOTE(BTN_W * 2 + 0.004 * safezoneW);
             h = QUOTE(BTN_H);
         };
         class Session: BRF_RscButton {
             idc = IDC_BRF_P_SESSION;
-            x = QUOTE(BTN_X(12));
+            x = QUOTE(BTN_X(13));
             colorBackground[] = {0.10, 0.30, 0.15, 0.95};
         };
-        class Markers: BRF_RscButton {
-            idc = IDC_BRF_P_MARKERS;
-            text = "$STR_BRF_ToMarkers";
-            tooltip = "$STR_BRF_ToMarkersTooltip";
-            x = QUOTE(BTN_X(13));
-        };
-        class ClearMarkers: BRF_RscButton {
-            idc = IDC_BRF_P_CLEAR_MARKERS;
-            text = "$STR_BRF_ClearMarkers";
-            tooltip = "$STR_BRF_ClearMarkersTooltip";
+        class Rebuild: BRF_RscButton {
+            idc = IDC_BRF_P_REBUILD;
+            text = "$STR_BRF_Rebuild";
+            tooltip = "$STR_BRF_RebuildTooltip";
             x = QUOTE(BTN_X(14));
+        };
+        class Access: BRF_RscButton {
+            idc = IDC_BRF_P_ACCESS;
+            text = "$STR_BRF_Access";
+            tooltip = "$STR_BRF_AccessTooltip";
+            x = QUOTE(BTN_X(15));
+        };
+        class Plan: BRF_RscButton {
+            idc = IDC_BRF_P_PLAN;
+            tooltip = "$STR_BRF_PlanTooltip";
+            x = QUOTE(BTN_X(16));
         };
         class Close: BRF_RscButton {
             idc = IDC_BRF_P_CLOSE;
             text = "X";
             tooltip = "$STR_BRF_CloseTooltip";
-            x = QUOTE(BTN_X(15));
+            x = QUOTE(BTN_X(17));
             w = QUOTE(BTN_W * 0.5);
+        };
+
+        // ---- 预案状态条：编排模式（橙色）/ 有预案时的播放进度（青色）----
+        class PlanBanner: BRF_RscText {
+            idc = IDC_BRF_P_PLAN_BANNER;
+            style = 2; // ST_CENTER
+            sizeEx = QUOTE(TXT_SIZE_SMALL);
+            x = QUOTE(safezoneX + 0.25 * safezoneW);
+            y = QUOTE(safezoneY + BAR_H + 0.008 * safezoneH);
+            w = QUOTE(0.5 * safezoneW);
+            h = QUOTE(0.032 * safezoneH);
+            colorBackground[] = {0, 0.03, 0.04, 0.85};
         };
 
         // ---- 底部状态栏 ----
@@ -280,6 +365,44 @@ class BRF_Presenter {
             colorText[] = {1, 0.85, 0.4, 1};
         };
 
+        // ---- 图标面板：目标点工具时显示，按类别列出全部图标 ----
+        class IconTitle: BRF_RscText {
+            idc = IDC_BRF_P_ICON_TITLE;
+            text = "$STR_BRF_IconPanel";
+            sizeEx = QUOTE(TXT_SIZE_SMALL);
+            x = QUOTE(safezoneX + 0.006 * safezoneW);
+            y = QUOTE(safezoneY + BAR_H + 0.008 * safezoneH);
+            w = QUOTE(0.15 * safezoneW);
+            h = QUOTE(0.03 * safezoneH);
+            colorBackground[] = {0, 0.03, 0.04, 0.85};
+        };
+        class IconList: ctrlListbox {
+            idc = IDC_BRF_P_ICON_LIST;
+            sizeEx = QUOTE(TXT_SIZE_SMALL);
+            rowHeight = QUOTE(0.034 * safezoneH);
+            x = QUOTE(safezoneX + 0.006 * safezoneW);
+            y = QUOTE(safezoneY + BAR_H + 0.038 * safezoneH);
+            w = QUOTE(0.15 * safezoneW);
+            h = QUOTE(0.62 * safezoneH);
+            colorBackground[] = {0, 0.03, 0.04, 0.85};
+            colorSelectBackground[] = {0.12, 0.38, 0.36, 1};
+            colorSelectBackground2[] = {0.12, 0.38, 0.36, 1};
+        };
+
+        // ---- 标注权限面板：Zeus 点「权限」时显示在右侧，点一行切换 自动 → 授权 → 禁止 ----
+        class AccessTitle: IconTitle {
+            idc = IDC_BRF_P_ACCESS_TITLE;
+            text = "$STR_BRF_AccessPanel";
+            x = QUOTE(safezoneX + safezoneW - 0.226 * safezoneW);
+            w = QUOTE(0.22 * safezoneW);
+        };
+        class AccessList: IconList {
+            idc = IDC_BRF_P_ACCESS_LIST;
+            x = QUOTE(safezoneX + safezoneW - 0.226 * safezoneW);
+            w = QUOTE(0.22 * safezoneW);
+            h = QUOTE(0.5 * safezoneH);
+        };
+
         // ---- 目标点标签输入框（放点时出现在鼠标旁边） ----
         class Label: ctrlEdit {
             idc = IDC_BRF_P_LABEL;
@@ -288,6 +411,14 @@ class BRF_Presenter {
             x = 0;
             y = 0;
             w = QUOTE(0.14 * safezoneW);
+            h = QUOTE(0.032 * safezoneH);
+        };
+        // 标签输入框左边的图标缩略图（按当前颜色着色，见 BRF_fnc_presenterUpdate）
+        class LabelIcon: ctrlStaticPicture {
+            idc = IDC_BRF_P_LABEL_ICON;
+            x = 0;
+            y = 0;
+            w = QUOTE(0.032 * safezoneH * pixelW / pixelH);
             h = QUOTE(0.032 * safezoneH);
         };
 

@@ -52,7 +52,9 @@ switch (_type) do {
     case "icon": {
         _data params [["_pos", [], [[]]], ["_kind", "", [""]], ["_label", "", [""]]];
         if !(_pos isEqualTypeArray [0, 0]) exitWith {};
-        if (_label == "") then {_label = toUpper _kind};
+        if (_label == "") then {
+            _label = (BRF_iconDefs getOrDefault [_kind, ["", "", toUpper _kind]]) select 2;
+        };
         _cache = [[_pos select 0, _pos select 1, 0], toArray _label, -1];
     };
     case "ring": {

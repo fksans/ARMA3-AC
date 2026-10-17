@@ -24,6 +24,12 @@ params ["_map", "_pts", "_cum", "_target", "_col", "_w", "_dashed", "_arrowK", "
 private _glow = +_col;
 _glow set [3, 0.25 * (_col select 3)];
 private _gw = _w * 3;
+if (BRF_lightMap) then {
+    // 原版白底地图：发光看不见，改成深色描边，线条加粗一点
+    _w = _w + 1;
+    _glow = [0, 0, 0, 0.6 * (_col select 3)];
+    _gw = _w + 3;
+};
 
 private _head = _pts select 0;
 private _dir = [0, 1, 0];

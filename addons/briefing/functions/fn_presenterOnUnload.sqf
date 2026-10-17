@@ -11,3 +11,12 @@ BRF_areaPts = [];
 BRF_iconPending = [];
 BRF_hoverId = "";
 uiNamespace setVariable ["BRF_presenter", displayNull];
+
+// 指挥官标注：Esc 关掉后回到观看界面（简报已经结束时不回）
+if (BRF_role == "commander") then {
+    BRF_role = "zeus";
+    BRF_follow = true;
+    if (BRF_session select 0) then {
+        [] call BRF_fnc_openViewer;
+    };
+};

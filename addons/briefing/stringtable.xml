@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project name="BRF">
     <Package name="briefing">
+        <Key ID="STR_BRF_Access">
+            <Original>权限</Original>
+            <English>Access</English>
+            <Chinesesimp>权限</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_AccessAutoNo">
+            <Original>自动：只看</Original>
+            <English>Auto: view only</English>
+            <Chinesesimp>自动：只看</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_AccessAutoYes">
+            <Original>自动：可标注</Original>
+            <English>Auto: can draw</English>
+            <Chinesesimp>自动：可标注</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_AccessDenied">
+            <Original>已禁止</Original>
+            <English>Denied</English>
+            <Chinesesimp>已禁止</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_AccessGranted">
+            <Original>已授权</Original>
+            <English>Granted</English>
+            <Chinesesimp>已授权</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_AccessPanel">
+            <Original>标注权限（点击切换：自动 → 授权 → 禁止）</Original>
+            <English>Drawing access (click: auto → grant → deny)</English>
+            <Chinesesimp>标注权限（点击切换：自动 → 授权 → 禁止）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_AccessTooltip">
+            <Original>打开 / 关闭标注权限面板：谁可以在简报上画</Original>
+            <English>Show / hide the drawing permission panel</English>
+            <Chinesesimp>打开 / 关闭标注权限面板：谁可以在简报上画</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_AccessZeus">
+            <Original>Zeus</Original>
+            <English>Zeus</English>
+            <Chinesesimp>Zeus</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_ArrowFormat">
             <Original>箭头 %1</Original>
             <English>Arrow %1</English>
@@ -27,29 +67,29 @@
             <Chinesesimp>没有加载 Zeus 音乐播放器</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_Clear">
-            <Original>清屏</Original>
-            <English>Clear</English>
-            <Chinesesimp>清屏</Chinesesimp>
-        </Key>
-        <Key ID="STR_BRF_ClearMarkers">
-            <Original>清标记</Original>
-            <English>Del markers</English>
-            <Chinesesimp>清标记</Chinesesimp>
-        </Key>
-        <Key ID="STR_BRF_ClearMarkersTooltip">
-            <Original>删除之前转出的所有简报地图标记（BRF_mk_*）</Original>
-            <English>Delete all briefing map markers created earlier (BRF_mk_*)</English>
-            <Chinesesimp>删除之前转出的所有简报地图标记（BRF_mk_*）</Chinesesimp>
+            <Original>一键清除</Original>
+            <English>Clear all</English>
+            <Chinesesimp>一键清除</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ClearTooltip">
-            <Original>清空所有元素，3 秒内再点一次确认（Ctrl+Shift+Del）</Original>
-            <English>Remove everything; click again within 3 s to confirm (Ctrl+Shift+Del)</English>
-            <Chinesesimp>清空所有元素，3 秒内再点一次确认（Ctrl+Shift+Del）</Chinesesimp>
+            <Original>清除所有简报元素和对应的原版标记（只删 acb_ 开头的，含旧版 BRF_mk_），3 秒内再点一次确认（Ctrl+Shift+Del）</Original>
+            <English>Remove every briefing element and its map markers (acb_* only, plus legacy BRF_mk_*); click again within 3 s to confirm (Ctrl+Shift+Del)</English>
+            <Chinesesimp>清除所有简报元素和对应的原版标记（只删 acb_ 开头的，含旧版 BRF_mk_），3 秒内再点一次确认（Ctrl+Shift+Del）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_CloseTooltip">
             <Original>关闭主持界面（Esc）。简报不会结束，按 Ctrl+B 回来</Original>
             <English>Close the presenter (Esc). The briefing keeps running, press Ctrl+B to come back</English>
             <Chinesesimp>关闭主持界面（Esc）。简报不会结束，按 Ctrl+B 回来</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorBrown">
+            <Original>棕</Original>
+            <English>Brown</English>
+            <Chinesesimp>棕</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorCiv">
+            <Original>平民</Original>
+            <English>Civilian</English>
+            <Chinesesimp>平民</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ColorEnemy">
             <Original>敌军</Original>
@@ -61,10 +101,35 @@
             <English>Friendly</English>
             <Chinesesimp>友军</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_ColorGrey">
+            <Original>灰</Original>
+            <English>Grey</English>
+            <Chinesesimp>灰</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorGuer">
+            <Original>独立</Original>
+            <English>Independent</English>
+            <Chinesesimp>独立</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorKhaki">
+            <Original>卡其</Original>
+            <English>Khaki</English>
+            <Chinesesimp>卡其</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_ColorNeutral">
             <Original>注意</Original>
             <English>Caution</English>
             <Chinesesimp>注意</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorOrange">
+            <Original>橙</Original>
+            <English>Orange</English>
+            <Chinesesimp>橙</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorPink">
+            <Original>粉</Original>
+            <English>Pink</English>
+            <Chinesesimp>粉</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ColorTarget">
             <Original>目标</Original>
@@ -72,9 +137,14 @@
             <Chinesesimp>目标</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ColorTooltip">
-            <Original>切换颜色（Q / E）</Original>
-            <English>Change color (Q / E)</English>
-            <Chinesesimp>切换颜色（Q / E）</Chinesesimp>
+            <Original>选择颜色（下拉，或 Q / E 循环）</Original>
+            <English>Pick a color (drop-down, or Q / E to cycle)</English>
+            <Chinesesimp>选择颜色（下拉，或 Q / E 循环）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ColorWhite">
+            <Original>白</Original>
+            <English>White</English>
+            <Chinesesimp>白</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ContextMenu">
             <Original>开简报主持</Original>
@@ -92,19 +162,29 @@
             <Chinesesimp>逐点单击，回车或双击闭合，Esc 取消</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintEraser">
-            <Original>单击元素删除</Original>
-            <English>Click an element to delete it</English>
-            <Chinesesimp>单击元素删除</Chinesesimp>
+            <Original>单击元素删除（任何工具下鼠标悬停按 Del 也能删，按 X 摧毁 / 恢复）</Original>
+            <English>Click an element to delete it (or hover and press Del with any tool; X marks it destroyed / restores it)</English>
+            <Chinesesimp>单击元素删除（任何工具下鼠标悬停按 Del 也能删，按 X 摧毁 / 恢复）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_HintEraserOwn">
+            <Original>单击自己画的元素删除（悬停按 Del 删除、按 X 摧毁 / 恢复，只限自己画的）</Original>
+            <English>Click one of your own elements to delete it (hover + Del deletes, X marks destroyed / restores; own elements only)</English>
+            <Chinesesimp>单击自己画的元素删除（悬停按 Del 删除、按 X 摧毁 / 恢复，只限自己画的）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintIcon">
-            <Original>单击放点，输入标签后回车；Tab 切换图标种类</Original>
-            <English>Click to place, type a label and press Enter; Tab changes the icon</English>
-            <Chinesesimp>单击放点，输入标签后回车；Tab 切换图标种类</Chinesesimp>
+            <Original>单击放点，输入标签后回车；Tab 切换图标种类（任何工具下双击地图也能放点）</Original>
+            <English>Click to place, type a label and press Enter; Tab changes the icon (double-click the map to place with any tool)</English>
+            <Chinesesimp>单击放点，输入标签后回车；Tab 切换图标种类（任何工具下双击地图也能放点）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintLine">
-            <Original>拖拽画线；按住 Shift 松开 = 直线，按住 Alt 松开 = 虚线；A 切换箭头</Original>
-            <English>Drag to draw; release with Shift = straight, with Alt = dashed; A toggles the arrow</English>
-            <Chinesesimp>拖拽画线；按住 Shift 松开 = 直线，按住 Alt 松开 = 虚线；A 切换箭头</Chinesesimp>
+            <Original>拖拽画线；按住 Shift 松开 = 直线，按住 Alt 松开 = 虚线；A 切换箭头（任何工具下 Ctrl+拖拽 也能画线，Ctrl+Shift = 直线）</Original>
+            <English>Drag to draw; release with Shift = straight, with Alt = dashed; A toggles the arrow (Ctrl+drag draws a line with any tool, Ctrl+Shift = straight)</English>
+            <Chinesesimp>拖拽画线；按住 Shift 松开 = 直线，按住 Alt 松开 = 虚线；A 切换箭头（任何工具下 Ctrl+拖拽 也能画线，Ctrl+Shift = 直线）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_HintPlanEdit">
+            <Original>编排：画的东西只有你看得到 · N 新一步 · [ ] 切换步骤 · V 记录视角 · C 镜头开关 · Del 删除本步 · 悬停前面步的元素按 X = 本步摧毁它、橡皮点它 = 本步移除它 · P 退出</Original>
+            <English>Plan edit: only you see this · N new step · [ ] switch step · V record view · C camera on/off · Del delete step · hover an earlier step's element + X = this step destroys it, eraser = this step removes it · P exit</English>
+            <Chinesesimp>编排：画的东西只有你看得到 · N 新一步 · [ ] 切换步骤 · V 记录视角 · C 镜头开关 · Del 删除本步 · 悬停前面步的元素按 X = 本步摧毁它、橡皮点它 = 本步移除它 · P 退出</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_HintPointer">
             <Original>按住左键，所有人看到红点跟随</Original>
@@ -115,6 +195,281 @@
             <Original>按下定圆心，拖动定半径，松开提交</Original>
             <English>Press for the center, drag for the radius, release to place</English>
             <Chinesesimp>按下定圆心，拖动定半径，松开提交</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_HintRuler">
+            <Original>按住左键拖动测量距离和方位（度 / 密位），只有自己看得到；Esc 清除</Original>
+            <English>Drag to measure distance and bearing (degrees / mils), only you see it; Esc clears</English>
+            <Chinesesimp>按住左键拖动测量距离和方位（度 / 密位），只有自己看得到；Esc 清除</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconAa">
+            <Original>防空</Original>
+            <English>Anti-air</English>
+            <Chinesesimp>防空</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconAirfield">
+            <Original>机场</Original>
+            <English>Airfield</English>
+            <Chinesesimp>机场</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconAmbush">
+            <Original>伏击点</Original>
+            <English>Ambush</English>
+            <Chinesesimp>伏击点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconArmor">
+            <Original>装甲</Original>
+            <English>Armor</English>
+            <Chinesesimp>装甲</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconArt">
+            <Original>炮兵</Original>
+            <English>Artillery</English>
+            <Chinesesimp>炮兵</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconBridge">
+            <Original>桥梁</Original>
+            <English>Bridge</English>
+            <Chinesesimp>桥梁</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatAirSea">
+            <Original>空中 / 海上</Original>
+            <English>Air / sea</English>
+            <Chinesesimp>空中 / 海上</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatBasic">
+            <Original>基础</Original>
+            <English>Basic</English>
+            <Chinesesimp>基础</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatFacility">
+            <Original>设施</Original>
+            <English>Facilities</English>
+            <Chinesesimp>设施</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatGeneral">
+            <Original>通用标记</Original>
+            <English>General</English>
+            <Chinesesimp>通用标记</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatGround">
+            <Original>地面单位</Original>
+            <English>Ground units</English>
+            <Chinesesimp>地面单位</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCatTactical">
+            <Original>战术标记</Original>
+            <English>Tactical</English>
+            <Chinesesimp>战术标记</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconCheckpoint">
+            <Original>检查站</Original>
+            <English>Checkpoint</English>
+            <Chinesesimp>检查站</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconComms">
+            <Original>通信站</Original>
+            <English>Comms</English>
+            <Chinesesimp>通信站</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconDanger">
+            <Original>雷区 / 危险</Original>
+            <English>Danger / mines</English>
+            <Chinesesimp>雷区 / 危险</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconExtract">
+            <Original>撤离点</Original>
+            <English>Extraction</English>
+            <Chinesesimp>撤离点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconFuel">
+            <Original>油库</Original>
+            <English>Fuel</English>
+            <Chinesesimp>油库</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGAmbush">
+            <Original>伏击</Original>
+            <English>Ambush</English>
+            <Chinesesimp>伏击</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGBox">
+            <Original>方块</Original>
+            <English>Box</English>
+            <Chinesesimp>方块</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGCircle">
+            <Original>圆圈</Original>
+            <English>Circle</English>
+            <Chinesesimp>圆圈</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGCross">
+            <Original>叉</Original>
+            <English>Cross</English>
+            <Chinesesimp>叉</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGDot">
+            <Original>点</Original>
+            <English>Dot</English>
+            <Chinesesimp>点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGEnd">
+            <Original>终点</Original>
+            <English>End</English>
+            <Chinesesimp>终点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGFlag">
+            <Original>旗帜</Original>
+            <English>Flag</English>
+            <Chinesesimp>旗帜</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGJoin">
+            <Original>会合</Original>
+            <English>Join</English>
+            <Chinesesimp>会合</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGMarker">
+            <Original>标记</Original>
+            <English>Marker</English>
+            <Chinesesimp>标记</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGObjective">
+            <Original>目标圈</Original>
+            <English>Objective</English>
+            <Chinesesimp>目标圈</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGPickup">
+            <Original>接应</Original>
+            <English>Pickup</English>
+            <Chinesesimp>接应</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGStart">
+            <Original>起点</Original>
+            <English>Start</English>
+            <Chinesesimp>起点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGTriangle">
+            <Original>三角</Original>
+            <English>Triangle</English>
+            <Chinesesimp>三角</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGUnknown">
+            <Original>未知</Original>
+            <English>Unknown</English>
+            <Chinesesimp>未知</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconGWarning">
+            <Original>警告</Original>
+            <English>Warning</English>
+            <Chinesesimp>警告</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconHeli">
+            <Original>直升机</Original>
+            <English>Helicopter</English>
+            <Chinesesimp>直升机</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconHq">
+            <Original>指挥部</Original>
+            <English>HQ</English>
+            <Chinesesimp>指挥部</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconIed">
+            <Original>IED</Original>
+            <English>IED</English>
+            <Chinesesimp>IED</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconInf">
+            <Original>步兵</Original>
+            <English>Infantry</English>
+            <Chinesesimp>步兵</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconLanding">
+            <Original>登陆艇</Original>
+            <English>Landing craft</English>
+            <Chinesesimp>登陆艇</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconMech">
+            <Original>机械化步兵</Original>
+            <English>Mechanized</English>
+            <Chinesesimp>机械化步兵</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconMed">
+            <Original>医疗点</Original>
+            <English>Medical</English>
+            <Chinesesimp>医疗点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconMortar">
+            <Original>迫击炮</Original>
+            <English>Mortar</English>
+            <Chinesesimp>迫击炮</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconMotor">
+            <Original>摩托化步兵</Original>
+            <English>Motorized</English>
+            <Chinesesimp>摩托化步兵</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconOp">
+            <Original>观察哨</Original>
+            <English>Observation post</English>
+            <Chinesesimp>观察哨</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconPanel">
+            <Original>图标库（Tab 循环）</Original>
+            <English>Icons (Tab cycles)</English>
+            <Chinesesimp>图标库（Tab 循环）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconPlane">
+            <Original>固定翼</Original>
+            <English>Fixed-wing</English>
+            <Chinesesimp>固定翼</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconRadar">
+            <Original>雷达站</Original>
+            <English>Radar</English>
+            <Chinesesimp>雷达站</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconRally">
+            <Original>集结点</Original>
+            <English>Rally point</English>
+            <Chinesesimp>集结点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconRecon">
+            <Original>侦察</Original>
+            <English>Recon</English>
+            <Chinesesimp>侦察</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconShip">
+            <Original>舰船</Original>
+            <English>Ship</English>
+            <Chinesesimp>舰船</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconSniper">
+            <Original>狙击手</Original>
+            <English>Sniper</English>
+            <Chinesesimp>狙击手</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconSupply">
+            <Original>补给点</Original>
+            <English>Supply</English>
+            <Chinesesimp>补给点</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconText">
+            <Original>纯文字</Original>
+            <English>Text only</English>
+            <Chinesesimp>纯文字</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconUav">
+            <Original>无人机</Original>
+            <English>UAV</English>
+            <Chinesesimp>无人机</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IconVip">
+            <Original>人质 / VIP</Original>
+            <English>Hostage / VIP</English>
+            <Chinesesimp>人质 / VIP</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_IntroDataLink">
+            <Original>DATA LINK</Original>
+            <English>DATA LINK</English>
+            <Chinesesimp>DATA LINK</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_Keybind">
             <Original>简报：主持 / 观看</Original>
@@ -156,20 +511,30 @@
             <English>&lt;t align='center' size='1.2'&gt;%1 is hosting the briefing&lt;/t&gt;&lt;br/&gt;&lt;t align='center' color='#99ffffff'&gt;Only one host at a time. Take over to keep drawing yourself, or just watch.&lt;/t&gt;</English>
             <Chinesesimp>&lt;t align='center' size='1.2'&gt;%1 正在主持简报&lt;/t&gt;&lt;br/&gt;&lt;t align='center' color='#99ffffff'&gt;同一时间只能有一个主持人。接管后由你继续画、继续讲；只看则打开观看界面。&lt;/t&gt;</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_MarkerDestroyed">
+            <Original>%1（已摧毁）</Original>
+            <English>%1 (destroyed)</English>
+            <Chinesesimp>%1（已摧毁）</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_MsgAreaPoints">
             <Original>区域至少要 3 个点</Original>
             <English>An area needs at least 3 points</English>
             <Chinesesimp>区域至少要 3 个点</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_MsgClearConfirm">
-            <Original>再按一次清屏确认（3 秒内）</Original>
-            <English>Press clear again within 3 s to confirm</English>
-            <Chinesesimp>再按一次清屏确认（3 秒内）</Chinesesimp>
+            <Original>再按一次：清除所有简报元素和 acb_ 标记（3 秒内）</Original>
+            <English>Press again within 3 s to remove all elements and acb_ markers</English>
+            <Chinesesimp>再按一次：清除所有简报元素和 acb_ 标记（3 秒内）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_MsgCleared">
-            <Original>已清屏</Original>
-            <English>Cleared</English>
-            <Chinesesimp>已清屏</Chinesesimp>
+            <Original>已清除所有简报元素和 acb_ 标记</Original>
+            <English>All elements and acb_ markers removed</English>
+            <Chinesesimp>已清除所有简报元素和 acb_ 标记</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgCommanderOn">
+            <Original>标注模式：你画的内容所有人都能看到。Space 跟随 / 自由，Esc 返回观看</Original>
+            <English>Drawing mode: everyone sees what you draw. Space follow / free, Esc back to viewing</English>
+            <Chinesesimp>标注模式：你画的内容所有人都能看到。Space 跟随 / 自由，Esc 返回观看</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_MsgEnded">
             <Original>简报已结束。需要的话点「转标记」留在地图上</Original>
@@ -181,16 +546,6 @@
             <English>Pushed your view to everyone</English>
             <Chinesesimp>已把当前视角推给所有人</Chinesesimp>
         </Key>
-        <Key ID="STR_BRF_MsgMarkers">
-            <Original>已转成 %1 个地图标记</Original>
-            <English>Created %1 map markers</English>
-            <Chinesesimp>已转成 %1 个地图标记</Chinesesimp>
-        </Key>
-        <Key ID="STR_BRF_MsgMarkersCleared">
-            <Original>已删除简报地图标记</Original>
-            <English>Briefing map markers deleted</English>
-            <Chinesesimp>已删除简报地图标记</Chinesesimp>
-        </Key>
         <Key ID="STR_BRF_MsgNotRunning">
             <Original>简报还没开始（或不是你在主持）</Original>
             <English>No briefing of yours is running</English>
@@ -200,6 +555,86 @@
             <Original>没有可以撤销的</Original>
             <English>Nothing to undo</English>
             <Chinesesimp>没有可以撤销的</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanActionDestroy">
+            <Original>本步会摧毁这个元素（再按一次取消）</Original>
+            <English>This step will destroy that element (press again to undo)</English>
+            <Chinesesimp>本步会摧毁这个元素（再按一次取消）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanActionEarlier">
+            <Original>只能摧毁 / 移除前面步骤里的元素</Original>
+            <English>Only elements from earlier steps can be destroyed / removed</English>
+            <Chinesesimp>只能摧毁 / 移除前面步骤里的元素</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanActionOff">
+            <Original>已取消本步对这个元素的动作</Original>
+            <English>Action on that element removed from this step</English>
+            <Chinesesimp>已取消本步对这个元素的动作</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanActionRemove">
+            <Original>本步会移除这个元素（再点一次取消）</Original>
+            <English>This step will remove that element (click again to undo)</English>
+            <Chinesesimp>本步会移除这个元素（再点一次取消）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanAtStart">
+            <Original>还没有播放任何一步</Original>
+            <English>No step has been played yet</English>
+            <Chinesesimp>还没有播放任何一步</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanBack">
+            <Original>已撤回，当前 %1 / %2 步</Original>
+            <English>Stepped back, now %1 / %2</English>
+            <Chinesesimp>已撤回，当前 %1 / %2 步</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanClearConfirm">
+            <Original>3 秒内再按一次清空整个预案</Original>
+            <English>Press again within 3 s to clear the whole plan</English>
+            <Chinesesimp>3 秒内再按一次清空整个预案</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanCleared">
+            <Original>预案已清空</Original>
+            <English>Plan cleared</English>
+            <Chinesesimp>预案已清空</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanDeleteConfirm">
+            <Original>这一步有内容，3 秒内再按一次 Del 删除</Original>
+            <English>This step has content, press Del again within 3 s to delete it</English>
+            <Chinesesimp>这一步有内容，3 秒内再按一次 Del 删除</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanDone">
+            <Original>预案已经全部播完，按 ← 撤回</Original>
+            <English>Plan finished, press ← to step back</English>
+            <Chinesesimp>预案已经全部播完，按 ← 撤回</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanEditOff">
+            <Original>退出编排，预案共 %1 步，按 → 播放</Original>
+            <English>Plan saved with %1 steps, press → to play</English>
+            <Chinesesimp>退出编排，预案共 %1 步，按 → 播放</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanEditOn">
+            <Original>编排模式：画的东西只进预案，玩家看不到</Original>
+            <English>Plan edit: what you draw goes into the plan, players can't see it</English>
+            <Chinesesimp>编排模式：画的东西只进预案，玩家看不到</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanEmpty">
+            <Original>还没有预案，按 P 开始编排</Original>
+            <English>No plan yet, press P to start editing</English>
+            <Chinesesimp>还没有预案，按 P 开始编排</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanStep">
+            <Original>预案第 %1 / %2 步</Original>
+            <English>Plan step %1 / %2</English>
+            <Chinesesimp>预案第 %1 / %2 步</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgPlanViewRecorded">
+            <Original>已把当前视角记为这一步的镜头</Original>
+            <English>Current view recorded for this step</English>
+            <Chinesesimp>已把当前视角记为这一步的镜头</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_MsgRebuilt">
+            <Original>已重建 %1 个 acb_ 标记</Original>
+            <English>Rebuilt %1 acb_ markers</English>
+            <Chinesesimp>已重建 %1 个 acb_ 标记</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_MsgStarted">
             <Original>简报开始，所有玩家已打开观看界面</Original>
@@ -216,6 +651,16 @@
             <English>Too many elements (max %1), delete some first</English>
             <Chinesesimp>元素太多了（上限 %1 个），先删掉一些</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_MsgViewerDeferred">
+            <Original>[简报] 简报已开始，关掉当前界面后会自动打开简报画面</Original>
+            <English>[Briefing] A briefing has started; it opens when you close the current screen</English>
+            <Chinesesimp>[简报] 简报已开始，关掉当前界面后会自动打开简报画面</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_NoDrawAccess">
+            <Original>你没有标注权限（小队长、被 Zeus 授权的人才能标注）</Original>
+            <English>You can't draw (squad leaders and players granted by Zeus can)</English>
+            <Chinesesimp>你没有标注权限（小队长、被 Zeus 授权的人才能标注）</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_NotCurator">
             <Original>只有 Zeus 才能主持简报</Original>
             <English>Only a Zeus can host a briefing</English>
@@ -231,6 +676,56 @@
             <English>on</English>
             <Chinesesimp>开</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_OutroText">
+            <Original>DATA LINK TERMINATED</Original>
+            <English>DATA LINK TERMINATED</English>
+            <Chinesesimp>DATA LINK TERMINATED</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_Plan">
+            <Original>预案 P</Original>
+            <English>Plan P</English>
+            <Chinesesimp>预案 P</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanBannerEdit">
+            <Original>编排模式 · 第 %1 / %2 步 · 本步 %3 个元素、%4 个动作 · 镜头：%5</Original>
+            <English>PLAN EDIT · step %1 / %2 · %3 elements, %4 actions · camera: %5</English>
+            <Chinesesimp>编排模式 · 第 %1 / %2 步 · 本步 %3 个元素、%4 个动作 · 镜头：%5</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanBannerPlay">
+            <Original>预案 %1 / %2 · → 下一步 · ← 撤回 · P 编排</Original>
+            <English>Plan %1 / %2 · → next · ← back · P edit</English>
+            <Chinesesimp>预案 %1 / %2 · → 下一步 · ← 撤回 · P 编排</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanCamOff">
+            <Original>不动</Original>
+            <English>stay</English>
+            <Chinesesimp>不动</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanCamOn">
+            <Original>飞过去</Original>
+            <English>fly</English>
+            <Chinesesimp>飞过去</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanEditing">
+            <Original>■ 编排中</Original>
+            <English>■ Editing</English>
+            <Chinesesimp>■ 编排中</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_PlanTooltip">
+            <Original>编排预案（P）：把内容分步画好，讲的时候按 → 一步步展示，按 ← 撤回</Original>
+            <English>Edit the plan (P): draw your briefing in steps, then press → to reveal them one by one and ← to take a step back</English>
+            <Chinesesimp>编排预案（P）：把内容分步画好，讲的时候按 → 一步步展示，按 ← 撤回</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_Rebuild">
+            <Original>重建标记</Original>
+            <English>Rebuild</English>
+            <Chinesesimp>重建标记</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_RebuildTooltip">
+            <Original>按当前简报内容重新生成所有 acb_ 原版标记（标记丢了、错乱时用）</Original>
+            <English>Recreate every acb_ map marker from the current briefing (if markers went missing)</English>
+            <Chinesesimp>按当前简报内容重新生成所有 acb_ 原版标记（标记丢了、错乱时用）</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_SessionEnd">
             <Original>■ 结束简报</Original>
             <English>■ End briefing</English>
@@ -241,10 +736,15 @@
             <English>▶ Start briefing</English>
             <Chinesesimp>▶ 开始简报</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_StatusCommander">
+            <Original>指挥官标注 · 主持：%1 · %2</Original>
+            <English>Commander drawing · Host: %1 · %2</English>
+            <Chinesesimp>指挥官标注 · 主持：%1 · %2</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_StatusFormat">
-            <Original>%1 · %2 · 图标：%3 · %4 · 元素 %5/%6 · %7</Original>
-            <English>%1 · %2 · Icon: %3 · %4 · Elements %5/%6 · %7</English>
-            <Chinesesimp>%1 · %2 · 图标：%3 · %4 · 元素 %5/%6 · %7</Chinesesimp>
+            <Original>当前工具：%1 · 当前颜色：%2 · 当前图标：%3 · 当前状态：%4 · 元素 %5/%6 · %7</Original>
+            <English>Current tool: %1 · Current color: %2 · Current icon: %3 · Current status: %4 · Elements %5/%6 · %7</English>
+            <Chinesesimp>当前工具：%1 · 当前颜色：%2 · 当前图标：%3 · 当前状态：%4 · 元素 %5/%6 · %7</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_StatusIdle">
             <Original>简报未开始</Original>
@@ -260,16 +760,6 @@
             <Original>接管</Original>
             <English>Take over</English>
             <Chinesesimp>接管</Chinesesimp>
-        </Key>
-        <Key ID="STR_BRF_ToMarkers">
-            <Original>转标记</Original>
-            <English>To markers</English>
-            <Chinesesimp>转标记</Chinesesimp>
-        </Key>
-        <Key ID="STR_BRF_ToMarkersTooltip">
-            <Original>把当前画面转成普通的全局地图标记（会先删掉上一次转出的）</Original>
-            <English>Turn the current drawing into regular global map markers (replaces the previous ones)</English>
-            <Chinesesimp>把当前画面转成普通的全局地图标记（会先删掉上一次转出的）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ToolArea">
             <Original>4 区域</Original>
@@ -287,9 +777,9 @@
             <Chinesesimp>6 橡皮</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ToolEraserTooltip">
-            <Original>单击元素删除</Original>
-            <English>Click an element to delete it</English>
-            <Chinesesimp>单击元素删除</Chinesesimp>
+            <Original>单击元素删除（任何工具下鼠标悬停按 Del 也能删，按 X 摧毁 / 恢复）</Original>
+            <English>Click an element to delete it (or hover and press Del with any tool; X marks it destroyed / restores it)</English>
+            <Chinesesimp>单击元素删除（任何工具下鼠标悬停按 Del 也能删，按 X 摧毁 / 恢复）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ToolIcon">
             <Original>2 目标点</Original>
@@ -331,6 +821,16 @@
             <English>SAM / AA / artillery range: press for the center, drag for the radius</English>
             <Chinesesimp>SAM、防空、炮兵射程：按下定圆心，拖动定半径</Chinesesimp>
         </Key>
+        <Key ID="STR_BRF_ToolRuler">
+            <Original>7 测量尺</Original>
+            <English>7 Ruler</English>
+            <Chinesesimp>7 测量尺</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ToolRulerTooltip">
+            <Original>测量两点距离和方位：按住左键拖动（只有自己看得到）</Original>
+            <English>Measure distance and bearing: drag with the left button (only you see it)</English>
+            <Chinesesimp>测量两点距离和方位：按住左键拖动（只有自己看得到）</Chinesesimp>
+        </Key>
         <Key ID="STR_BRF_Undo">
             <Original>撤销</Original>
             <English>Undo</English>
@@ -342,19 +842,24 @@
             <Chinesesimp>删除自己最后一个元素（Ctrl+Z）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ViewerFollow">
-            <Original>跟随主持人视角  [Space]</Original>
-            <English>Following the host  [Space]</English>
-            <Chinesesimp>跟随主持人视角  [Space]</Chinesesimp>
+            <Original>当前：跟随主持人视角  [Space]</Original>
+            <English>Current: following the host  [Space]</English>
+            <Chinesesimp>当前：跟随主持人视角  [Space]</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ViewerFree">
-            <Original>自由查看  [Space]</Original>
-            <English>Free look  [Space]</English>
-            <Chinesesimp>自由查看  [Space]</Chinesesimp>
+            <Original>当前：自由查看  [Space]</Original>
+            <English>Current: free look  [Space]</English>
+            <Chinesesimp>当前：自由查看  [Space]</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ViewerHint">
             <Original>Space 跟随 / 自由查看 · 右键拖动平移 · 滚轮缩放 · Esc 关闭（Ctrl+B 重新打开）</Original>
             <English>Space follow / free look · right-drag to pan · wheel to zoom · Esc to close (Ctrl+B to reopen)</English>
             <Chinesesimp>Space 跟随 / 自由查看 · 右键拖动平移 · 滚轮缩放 · Esc 关闭（Ctrl+B 重新打开）</Chinesesimp>
+        </Key>
+        <Key ID="STR_BRF_ViewerHintDraw">
+            <Original>D 进入标注 · Space 跟随 / 自由查看 · 右键拖动平移 · 滚轮缩放 · Esc 关闭（Ctrl+B 重新打开）</Original>
+            <English>D to draw · Space follow / free look · right-drag to pan · wheel to zoom · Esc to close (Ctrl+B to reopen)</English>
+            <Chinesesimp>D 进入标注 · Space 跟随 / 自由查看 · 右键拖动平移 · 滚轮缩放 · Esc 关闭（Ctrl+B 重新打开）</Chinesesimp>
         </Key>
         <Key ID="STR_BRF_ViewerHost">
             <Original>主持：%1</Original>

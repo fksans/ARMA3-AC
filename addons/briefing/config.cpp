@@ -21,4 +21,6 @@ class CfgPatches {
 };
 
 #include "CfgFunctions.hpp"
+#include "CfgIcons.hpp"
+#include "CfgShapes.hpp"
 #include "gui.hpp"

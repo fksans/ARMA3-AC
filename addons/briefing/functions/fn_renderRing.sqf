@@ -11,9 +11,10 @@
  * 4: t0 <NUMBER>
  * 5: 当前时间 <NUMBER>
  * 6: 1 像素 = 多少米 <NUMBER>
+ * 7: 已摧毁（不再脉冲） <BOOL> (default: false)
  */
 
-params ["_map", "_data", "_cache", "_col", "_t0", "_now", "_mpp"];
+params ["_map", "_data", "_cache", "_col", "_t0", "_now", "_mpp", ["_destroyed", false]];
 _data params ["", "_radius"];
 _cache params ["_center"];
 
@@ -23,6 +24,7 @@ if (_r <= 0) exitWith {};
 
 private _glow = +_col;
 _glow set [3, 0.25 * (_col select 3)];
+if (BRF_lightMap) then {_glow = [0, 0, 0, 0.6 * (_col select 3)]}; // 原版白底地图：深色描边
 
 private _fnc_circle = {
     params ["_rad", "_c", "_w", "_g"];
@@ -32,7 +34,7 @@ private _fnc_circle = {
     private _prev = _center vectorAdd [0, _rad, 0];
     for "_i" from 1 to _segments do {
         private _p = _center vectorAdd [_rad * sin (_i * _step), _rad * cos (_i * _step), 0];
-        if (_g) then {_map drawLine [_prev, _p, _glow, _w * 3]};
+        if (_g || BRF_lightMap) then {_map drawLine [_prev, _p, _glow, [_w * 3, _w + 3] select BRF_lightMap]};
         _map drawLine [_prev, _p, _c, _w];
         _prev = _p;
     };
@@ -58,8 +60,8 @@ private _k = 6;
 [_map, _center, [[-_k, 0], [_k, 0]], false, _col, 2, _mpp] call BRF_fnc_drawPath;
 [_map, _center, [[0, -_k], [0, _k]], false, _col, 2, _mpp] call BRF_fnc_drawPath;
 
-// 脉冲
-if (_age > RING_EXPAND_TIME) then {
+// 脉冲（摧毁后不再脉冲）
+if (_age > RING_EXPAND_TIME && {!_destroyed}) then {
     private _ph = ((_age - RING_EXPAND_TIME) mod RING_PULSE_PERIOD) / RING_PULSE_PERIOD;
     private _pulse = +_col;
     _pulse set [3, (_col select 3) * (1 - _ph) * 0.8];

@@ -7,12 +7,13 @@
  * 0: 地图控件 <CONTROL>
  * 1: 鼠标 x <NUMBER>
  * 2: 鼠标 y <NUMBER>
+ * 3: 在哪些元素记录里找 <ARRAY> (default: BRF_els；编排模式下传预案当前步的元素)
  *
  * Return Value:
  * 元素 id <STRING>，没有命中为 ""
  */
 
-params ["_map", "_mx", "_my"];
+params ["_map", "_mx", "_my", ["_records", BRF_els, [[]]]];
 
 private _p = (_map ctrlMapScreenToWorld [_mx, _my]) + [0];
 private _threshold = HIT_PX * BRF_mpp;
@@ -42,7 +43,7 @@ private _fnc_inPolygon = {
 };
 
 private _hit = "";
-private _live = BRF_els select {(_x select E_T1) < 0};
+private _live = _records select {(_x select E_T1) < 0};
 reverse _live; // 最后画的在最上面
 
 // 第一遍：边
