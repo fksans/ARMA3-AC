@@ -276,6 +276,7 @@ switch (_event) do {
         if (_key in [0x2A, 0x36]) then {BRF_modShift = false}; // Shift
         if (_key in [0x1D, 0x9D]) then {BRF_modCtrl = false};  // Ctrl
         if (_key in [0x38, 0xB8]) then {BRF_modAlt = false};   // Alt
+        BRF_keysDown deleteAt _key;
     };
 
     case "key": {
@@ -290,6 +291,17 @@ switch (_event) do {
             _return = BRF_lastKeyResult;
         };
         BRF_lastKey = _stamp;
+
+        // 按住不放时 KeyDown 会自动重复：删除 / 清除 / 摧毁 / 预案这类键只响应第一下，
+        // 否则按住 Del 会一步接一步把预案全删掉。还在按着（没收到 KeyUp）并且上一下在 0.6 秒内才算重复，
+        // 万一漏了 KeyUp，隔一会儿再按也照常响应
+        private _now = diag_tickTime;
+        private _isRepeat = _now - (BRF_keysDown getOrDefault [_key, -10]) < 0.6;
+        BRF_keysDown set [_key, _now];
+        if (_isRepeat && {BRF_iconPending isEqualTo []} && {_key in [0xD3, 0x2D, 0x19, 0x31, 0x2C, 0x2F, 0x2E, 0x21, 0x1E, 0xCD, 0xD1, 0x1B, 0xCB, 0xC9, 0x1A, 0xC7]}) exitWith {
+            BRF_lastKeyResult = true;
+            _return = true;
+        };
 
         private _handled = true;
 

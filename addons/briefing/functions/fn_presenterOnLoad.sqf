@@ -28,6 +28,7 @@ BRF_modShift = false;
 BRF_modAlt = false;
 BRF_ctrlLine = false;           // Ctrl + 拖拽：临时按航线画（见 BRF_fnc_input）
 BRF_modCtrl = false;
+BRF_keysDown = createHashMap;    // 正按着的键 -> 最近一次 KeyDown 的时刻（识别按住不放的自动重复，见 BRF_fnc_input）
 BRF_lastDownFrame = -1;
 BRF_lastView = [];
 
